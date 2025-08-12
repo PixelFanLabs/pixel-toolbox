@@ -11,12 +11,15 @@ import { defaultSettings, exportPresets } from './config/settings';
 function App() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [settings, setSettings] = useState<ProcessingSettings>(defaultSettings);
-  const [activeTab, setActiveTab] = useState<'upload' | 'preview' | 'export'>('upload');
+  const [activeTab, setActiveTab] = useState<'upload' | 'settings' | 'preview' | 'export'>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<ExportPreset | null>(null);
 
   const handleImagesUploaded = useCallback((newImages: ImageFile[]) => {
     setImages(prevImages => [...prevImages, ...newImages]);
+    if (newImages.length > 0 && activeTab === 'upload') {
+      setActiveTab('settings');
+    }
   }, [activeTab]);
 
   const handleRemoveImage = useCallback((id: string) => {
@@ -45,19 +48,20 @@ function App() {
     switch (activeTab) {
       case 'upload':
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
-            <ImageUploader
-              images={images}
-              onImagesUploaded={handleImagesUploaded}
-              onRemoveImage={handleRemoveImage}
-            />
-            <SettingsPanel
-              settings={settings}
-              onSettingsChange={handleSettingsChange}
-              onPresetSelect={handlePresetSelect}
-              selectedPreset={selectedPreset}
-            />
-          </div>
+          <ImageUploader
+            images={images}
+            onImagesUploaded={handleImagesUploaded}
+            onRemoveImage={handleRemoveImage}
+          />
+        );
+      case 'settings':
+        return (
+          <SettingsPanel
+            settings={settings}
+            onSettingsChange={handleSettingsChange}
+            onPresetSelect={handlePresetSelect}
+            selectedPreset={selectedPreset}
+          />
         );
       case 'preview':
         return (
@@ -98,7 +102,22 @@ function App() {
             }`}
           >
             <Upload size={18} />
-            <span>Upload & Settings</span>
+            <span>Upload</span>
+          </button>
+          
+          <button
+            onClick={() => setActiveTab('settings')}
+            disabled={images.length === 0}
+            className={`flex items-center space-x-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
+              activeTab === 'settings'
+                ? 'bg-blue-600 text-white shadow-md'
+                : images.length === 0
+                ? 'text-slate-400 cursor-not-allowed'
+                : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
+            }`}
+          >
+            <Settings size={18} />
+            <span>Settings</span>
           </button>
           
           <button

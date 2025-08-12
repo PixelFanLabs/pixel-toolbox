@@ -21,44 +21,39 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <div>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-800 mb-2">Quick Presets</h2>
-        <p className="text-slate-600">Choose a preset or customize your own settings</p>
+    <div className="p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">Optimization Settings</h2>
+        <p className="text-slate-600">Configure how your images will be processed and optimized.</p>
       </div>
 
       {/* Export Presets */}
-      <div className="mb-6">
-        <h3 className="text-md font-semibold text-slate-800 mb-3 flex items-center">
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
           <Sparkles className="w-5 h-5 mr-2 text-yellow-500" />
-          Popular Use Cases
+          Quick Presets
         </h3>
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {exportPresets.map((preset) => (
             <button
               key={preset.id}
               onClick={() => onPresetSelect(preset)}
-              className={`w-full p-3 rounded-lg border-2 text-left transition-all duration-200 ${
+              className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
                 selectedPreset?.id === preset.id
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
               }`}
             >
-              <div className="flex items-center space-x-3">
-                <span className="text-xl flex-shrink-0">{preset.icon}</span>
+              <div className="flex items-start space-x-3">
+                <span className="text-2xl">{preset.icon}</span>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-semibold text-slate-800">{preset.name}</h4>
-                    <div className="text-xs text-slate-500 uppercase font-medium">
-                      {preset.format} • {preset.quality}%
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-600 mb-1">{preset.description}</p>
-                  <div className="text-xs text-slate-500">
+                  <h4 className="font-semibold text-slate-800">{preset.name}</h4>
+                  <p className="text-sm text-slate-600 mb-2">{preset.description}</p>
+                  <div className="text-xs text-slate-500 space-y-1">
                     {preset.width && preset.height && (
-                      <span>{preset.width} × {preset.height}px • </span>
+                      <div>{preset.width} × {preset.height}px</div>
                     )}
-                    <span>{preset.useCase}</span>
+                    <div className="uppercase">{preset.format} • {preset.quality}% quality</div>
                   </div>
                 </div>
               </div>
@@ -67,9 +62,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Format Settings */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           <h3 className="text-lg font-semibold text-slate-800 flex items-center">
             <Settings className="w-5 h-5 mr-2 text-blue-500" />
             Format & Quality
@@ -79,11 +74,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <label className="block text-sm font-medium text-slate-700 mb-3">
               Output Format
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               {formatOptions.map((format) => (
                 <label
                   key={format.value}
-                  className={`flex items-center p-2 rounded-lg border cursor-pointer transition-all ${
+                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all ${
                     settings.format === format.value
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
@@ -98,8 +93,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                     className="sr-only"
                   />
                   <div className="flex-1">
-                    <div className="font-medium text-slate-800 text-sm">{format.label}</div>
-                    <div className="text-xs text-slate-600">{format.description}</div>
+                    <div className="font-medium text-slate-800">{format.label}</div>
+                    <div className="text-sm text-slate-600">{format.description}</div>
                   </div>
                 </label>
               ))}
@@ -107,7 +102,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-3">
               Quality Level: {settings.quality}%
             </label>
             <input
@@ -127,7 +122,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </div>
 
         {/* Resize Settings */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           <h3 className="text-lg font-semibold text-slate-800 flex items-center">
             <Crop className="w-5 h-5 mr-2 text-green-500" />
             Resize & Crop
@@ -161,10 +156,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-3">
               Resize Mode
             </label>
-            <div className="space-y-1">
+            <div className="space-y-2">
               {[
                 { value: 'fit', label: 'Fit', description: 'Resize to fit within bounds, maintain aspect ratio' },
                 { value: 'fill', label: 'Fill', description: 'Fill entire area, may crop image' },
@@ -172,7 +167,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               ].map((mode) => (
                 <label
                   key={mode.value}
-                  className={`flex items-center p-2 rounded-lg border cursor-pointer transition-all ${
+                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all ${
                     settings.resizeMode === mode.value
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
@@ -187,8 +182,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                     className="sr-only"
                   />
                   <div className="flex-1">
-                    <div className="font-medium text-slate-800 text-sm">{mode.label}</div>
-                    <div className="text-xs text-slate-600">{mode.description}</div>
+                    <div className="font-medium text-slate-800">{mode.label}</div>
+                    <div className="text-sm text-slate-600">{mode.description}</div>
                   </div>
                 </label>
               ))}
@@ -211,13 +206,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       </div>
 
       {/* Optimization Toggle */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+      <div className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Zap className="w-5 h-5 text-yellow-600" />
+            <Zap className="w-6 h-6 text-yellow-600" />
             <div>
               <h4 className="font-semibold text-slate-800">Smart Optimization</h4>
-              <p className="text-xs text-slate-600">
+              <p className="text-sm text-slate-600">
                 Automatically optimize file size while maintaining visual quality
               </p>
             </div>
@@ -229,7 +224,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={(e) => handleSettingChange('optimize', e.target.checked)}
               className="sr-only peer"
             />
-            <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
         </div>
       </div>
