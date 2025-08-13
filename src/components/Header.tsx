@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import useLocation, useNavigate
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
@@ -9,6 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation(); // Get current location
+  const navigate = useNavigate(); // Get navigate function
   const isHomePage = location.pathname === '/'; // Determine if it's the home page
 
   useEffect(() => {
@@ -34,6 +35,29 @@ const Header: React.FC<HeaderProps> = () => {
     };
   }, [scrolled, isHomePage]); // Add isHomePage to dependency array
 
+  const handleOptimizeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === '/') {
+      // If already on home page, scroll to #optimize section
+      e.preventDefault(); // Prevent default Link navigation
+      const optimizeSection = document.getElementById('optimize');
+      if (optimizeSection) {
+        optimizeSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If not on home page, navigate to home and then scroll
+      // This will be handled by the Link component's default behavior
+      // and a useEffect in OptimizeImagesSection if needed, but for now,
+      // just navigating to '/' is sufficient.
+    }
+  };
+
+  const handleNavLinkClick = (path: string) => {
+    if (location.pathname === path) {
+      // If already on the target page, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const headerClass = `fixed top-0 left-0 w-full z-50 transition-all duration-700 ${
     scrolled ? 'bg-slate-900 shadow-sm' : 'bg-transparent'
   }`;
@@ -48,7 +72,7 @@ const Header: React.FC<HeaderProps> = () => {
               <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
             </div>
             <div>
-              <Link to="/" className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</Link>
+              <Link to="/" className="text-3xl font-extrabold text-white font-poppins" onClick={() => handleNavLinkClick('/')}>PixelToolbox</Link>
             </div>
           </div>
 
@@ -56,13 +80,13 @@ const Header: React.FC<HeaderProps> = () => {
           <nav>
             <ul className="flex space-x-6">
               <li>
-                <Link to="/" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">Optimize Images</Link>
+                <Link to="/" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={handleOptimizeClick}>Optimize Images</Link>
               </li>
               <li>
-                <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">About</Link>
+                <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={() => handleNavLinkClick('/about')}>About</Link>
               </li>
               <li>
-                <Link to="/faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">FAQ</Link>
+                <Link to="/faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
               </li>
             </ul>
           </nav>
