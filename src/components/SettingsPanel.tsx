@@ -28,12 +28,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
           Select Image format
         </h3>
-        <div className="grid grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+        <div className="grid grid-cols-1 gap-4 max-h-96 overflow-y-auto">
           {exportPresets.map((preset) => (
             <button
               key={preset.id}
               onClick={() => onPresetSelect(preset)}
-              className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
+              className={`py-4 px-6 rounded-lg border-2 text-left transition-all duration-200 ${
                 selectedPreset?.id === preset.id
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
