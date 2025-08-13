@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'; // Import useLocation
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Removed useLocation
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import OptimizeImagesSection from './components/OptimizeImagesSection';
@@ -7,13 +7,10 @@ import AboutPage from './pages/AboutPage';
 import FAQPage from './pages/FAQPage';
 
 function App() {
-  const location = useLocation(); // Get current location
-  const isHomePage = location.pathname === '/'; // Check if it's the home page
-
   return (
     <Router>
       <div id="top" className="min-h-screen flex flex-col">
-        <Header isHomePage={isHomePage} /> {/* Pass isHomePage prop */}
+        <Header /> {/* Removed isHomePage prop */}
 
         <main className="flex-grow">
           <Routes>

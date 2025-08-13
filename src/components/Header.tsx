@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Import useLocation
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
-  isHomePage: boolean; // New prop
+  // Removed isHomePage prop
 }
 
-const Header: React.FC<HeaderProps> = ({ isHomePage }) => { // Destructure isHomePage
+const Header: React.FC<HeaderProps> = () => {
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation(); // Get current location
+  const isHomePage = location.pathname === '/'; // Determine if it's the home page
 
   useEffect(() => {
     const handleScroll = () => {
