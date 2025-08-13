@@ -8,6 +8,10 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 150px; /* Adjust this value based on your fixed header's height and desired spacing */
+}
+
 :root {
   --color-royal-blue: #1E3A8A;
   --color-golden-yellow: #F5B700;
