@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Shield, Github } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 interface HeaderProps {
   onAboutClick: () => void;
@@ -21,26 +21,9 @@ const Header: React.FC<HeaderProps> = ({ onAboutClick }) => {
             </div>
           </div>
 
-          {/* Features */}
-          <div className="hidden md:flex items-center space-x-6 text-sm text-slate-600">
-            <div className="flex items-center space-x-2">
-              <Shield className="w-4 h-4 text-green-600" strokeWidth={1.5} />
-              <span>Client-side processing</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Zap className="w-4 h-4 text-yellow-600" strokeWidth={1.5} />
-              <span>Batch optimization</span>
-            </div>
-            <a
-              href="https://github.com/pixeltoolbox/pixeltoolbox"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              <Github className="w-4 h-4" strokeWidth={1.5} />
-              <span>Open Source</span>
-            </a>
-            <button onClick={onAboutClick} className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+          {/* About Button */}
+          <div>
+            <button onClick={onAboutClick} className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors font-medium">
               <span>About</span>
             </button>
           </div>

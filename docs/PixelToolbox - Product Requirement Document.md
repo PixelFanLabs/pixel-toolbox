@@ -173,3 +173,22 @@ Development will follow an informal, personal-project cadence—no fixed timelin
 
 ---
 
+## 11. Voice and Look & Feel
+
+The PixelToolbox application is designed with a specific voice and aesthetic in mind, aiming to create a cohesive and positive user experience.
+
+**Voice:**
+
+*   **Trustworthy:** Emphasizing client-side processing and open-source code to build user confidence and ensure data privacy.
+*   **Efficient:** Communicating speed, streamlined workflows, and smart defaults that save users time and effort.
+*   **Professional:** Maintaining a clear, concise, and expert tone in all communications and UI text.
+*   **Intuitive:** Using simple, direct language that guides users effortlessly through tasks, minimizing jargon.
+*   **Light-hearted:** While professional, the voice avoids being overly formal or dry, incorporating a friendly and approachable undertone.
+
+**Look & Feel:**
+
+*   **Modern & Clean:** A contemporary design featuring clean lines, ample whitespace, and a minimalist aesthetic to reduce visual clutter.
+*   **Professional:** A polished and refined visual presentation, ensuring high-quality typography, consistent spacing, and thoughtful use of color.
+*   **Creative & Stunning:** Incorporating subtle visual flair, engaging imagery (especially in the hero section), and smooth micro-interactions to create a delightful and memorable experience.
+*   **Intuitive:** A logical and predictable layout with clear visual hierarchies, making it easy for users to understand and interact with the application's features.
+*   **Light but Grounded:** Utilizing a light color palette (e.g., subtle gradients) for an airy feel, balanced with darker elements (like the footer) to provide visual stability and depth.

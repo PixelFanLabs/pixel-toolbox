@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Shield, DollarSign, Sparkles, Timer } from 'lucide-react';
 
 const features = [
@@ -8,50 +8,90 @@ const features = [
     icon: <Shield size={48} strokeWidth={1.5} className="text-blue-500" />,
   },
   {
-    name: 'Free & Accessible',
-    description: 'PixelToolbox is a free service from PixelFanLabs, dedicated to making powerful and simplified tools accessible to everyone.',
-    icon: <DollarSign size={48} strokeWidth={1.5} className="text-blue-500" />,
-  },
-  {
     name: 'Simplified Workflow',
-    description: 'Stop researching image formats and juggling multiple tools. Our all-in-one toolkit eliminates the guesswork with smart defaults, delivering the perfect web-ready images instantly.',
+    description: 'Stop researching image formats and juggling multiple tools. Our all-in-one toolkit eliminates the guesswork, delivering web-ready images instantly.',
     icon: <Sparkles size={48} strokeWidth={1.5} className="text-blue-500" />,
   },
   {
     name: 'Faster Workflows',
-    description: 'Our lightning-fast processing quickly optimizes your images in bulk, delivering files that are ready to render instantly and perform flawlessly in any application.',
+    description: 'Our lightning-fast processing optimizes your images instantly, delivering files that perform flawlessly in any application.',
     icon: <Timer size={48} strokeWidth={1.5} className="text-blue-500" />,
+  },
+  {
+    name: 'Free & Accessible',
+    description: 'PixelToolbox is a free service from PixelFanLabs, dedicated to making powerful and simplified tools accessible to everyone.',
+    icon: <DollarSign size={48} strokeWidth={1.5} className="text-blue-500" />,
   },
 ];
 
 const Hero: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollLeft = e.currentTarget.scrollLeft;
-    const cardWidth = e.currentTarget.scrollWidth / features.length;
-    const newIndex = Math.round(scrollLeft / cardWidth);
-    setActiveIndex(newIndex);
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const scrollLeft = scrollContainerRef.current.scrollLeft;
+      const cardElements = Array.from(scrollContainerRef.current.children) as HTMLElement[];
+      const containerWidth = scrollContainerRef.current.offsetWidth;
+
+      cardElements.forEach((card, index) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const viewportCenter = containerWidth / 2;
+        const distance = Math.abs(viewportCenter - cardCenter);
+
+        // Normalize distance to a 0-1 range, where 0 is at center, 1 is at edge
+        const normalizedDistance = Math.min(1, distance / (containerWidth / 2 + cardRect.width / 2));
+
+        // Apply scale and opacity based on normalized distance
+        const scale = 1 - (normalizedDistance * 0.1); // Scale down by up to 10%
+        const opacity = 1 - (normalizedDistance * 0.3); // Fade out by up to 30%
+
+        card.style.transform = `scale(${scale})`;
+        card.style.opacity = `${opacity}`;
+      });
+
+      // Update active dot
+      const firstVisibleCardIndex = cardElements.findIndex(card => {
+        const rect = card.getBoundingClientRect();
+        return rect.left >= 0 && rect.left < containerWidth;
+      });
+      if (firstVisibleCardIndex !== -1) {
+        setActiveIndex(firstVisibleCardIndex);
+      }
+    }
   };
 
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      // Initial call to set styles
+      handleScroll();
+      return () => {
+        container.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
   return (
-    <div className="relative bg-gray-800 overflow-hidden py-12 lg:py-24">
+    <div className="relative bg-transparent overflow-hidden py-8 lg:py-16">
       <img
-        className="absolute inset-0 h-full w-full object-cover opacity-20"
-        src="https://img.freepik.com/free-vector/vibrant-fluid-gradient-background-with-curvy-shapes_1017-32108.jpg?w=2000&t=st=1662582927~exp=1662583527~hmac=b4a3d19d47ac088c642f3b3554a4a4f0f1d3b3e3b3e3b3e3b3e3b3e3b3e3b3e3"
+        className="absolute inset-0 h-full w-full object-cover"
+        src="/images/hero-image-pixeltoolbox.avif"
         alt="Background"
       />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-          <span className="block xl:inline">Your complete toolkit for</span>{' '}
-          <span className="block text-blue-400 xl:inline">web-ready images</span>
+      <div className="absolute inset-0 bg-black/30"></div> {/* Darkening overlay */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white text-balance drop-shadow-lg whitespace-nowrap">
+          Your complete toolkit for <span className="text-blue-300">web-ready images</span>
         </h1>
 
-        <div className="mt-10">
+        <div className="mt-12">
           <div className="lg:hidden">
-            <div className="flex overflow-x-auto space-x-8 pb-4 no-scrollbar" onScroll={handleScroll}>
+            <div ref={scrollContainerRef} className="flex overflow-x-auto space-x-8 pb-4 no-scrollbar">
               {features.map((feature) => (
-                <div key={feature.name} className="flex-shrink-0 w-80 bg-slate-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div key={feature.name} className="flex-shrink-0 w-80 bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <div className="flex items-center justify-center h-12 w-12 rounded-md">
@@ -63,7 +103,7 @@ const Hero: React.FC = () => {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <p className="text-base text-gray-500">{feature.description}</p>
+                    <p className="text-base text-gray-800">{feature.description}</p>
                   </div>
                 </div>
               ))}
@@ -74,7 +114,7 @@ const Hero: React.FC = () => {
                   key={index}
                   className={`h-2 w-2 rounded-full mx-1 ${activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'}`}
                   onClick={() => {
-                    const container = document.querySelector('.overflow-x-auto');
+                    const container = scrollContainerRef.current;
                     if (container) {
                       const cardWidth = container.scrollWidth / features.length;
                       container.scrollTo({
@@ -90,7 +130,7 @@ const Hero: React.FC = () => {
 
           <div className="hidden lg:grid lg:grid-cols-4 lg:gap-8">
             {features.map((feature) => (
-              <div key={feature.name} className="bg-slate-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+              <div key={feature.name} className="bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md">
@@ -102,7 +142,7 @@ const Hero: React.FC = () => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <p className="text-base text-gray-500">{feature.description}</p>
+                  <p className="text-base text-gray-800">{feature.description}</p>
                 </div>
               </div>
             ))}
