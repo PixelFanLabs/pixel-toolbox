@@ -82,7 +82,7 @@ const Hero: React.FC = () => {
         alt="Background"
       />
       <div className="absolute inset-0 bg-black/30"></div> {/* Darkening overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 flex flex-col h-full pb-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 flex flex-col h-full pb-8">
         <div className="mb-auto">
           <div className="text-xl text-white text-center mb-8 drop-shadow-lg">
             Your complete toolkit for <span className="text-blue-300">web-ready images</span>

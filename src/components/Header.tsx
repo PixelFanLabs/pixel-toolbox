@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   return (
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? 'bg-slate-900 shadow-sm' : 'bg-transparent'}`}>
-      <div className="max-w-6xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center space-x-3">

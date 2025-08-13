@@ -9,7 +9,7 @@ html {
 }
 
 section[id] {
-  scroll-margin-top: 150px; /* Adjust this value based on your fixed header's height and desired spacing */
+  scroll-margin-top: 100px; /* Adjust this value based on your fixed header's height and desired spacing */
 }
 
 :root {
