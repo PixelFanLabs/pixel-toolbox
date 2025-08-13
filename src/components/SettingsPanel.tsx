@@ -44,12 +44,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <div className="min-w-0 flex-1">
                   <h4 className="font-semibold text-slate-800">{preset.name}</h4>
                   <p className="text-sm text-slate-600 mb-2">{preset.description}</p>
-                  <div className="text-xs text-slate-500 space-y-1">
-                    {preset.width && preset.height && (
-                      <div>{preset.width} × {preset.height}px</div>
-                    )}
-                    <div className="uppercase">{preset.format} • {preset.quality}% quality</div>
-                  </div>
+                  {selectedPreset?.id === preset.id && (
+                    <div className="text-xs text-slate-500 space-y-1">
+                      {preset.width && preset.height && (
+                        <div>{preset.width} × {preset.height}px</div>
+                      )}
+                      <div className="uppercase">{preset.format} • {preset.quality}% quality</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </button>
