@@ -1,13 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import { Upload, AlertCircle } from 'lucide-react';
+import { Upload, AlertCircle, XCircle } from 'lucide-react'; // Added XCircle
 import { ImageFile } from '../types';
-import { generateId, getImageDimensions } from '../utils/helpers';
+import { generateId, getImageDimensions, formatFileSize } from '../utils/helpers'; // Added formatFileSize
 
 interface ImageUploaderProps {
   onImagesUploaded: (images: ImageFile[]) => void;
+  images: ImageFile[]; // Added images prop
+  handleRemoveImage: (id: string) => void; // Added handleRemoveImage prop
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images, handleRemoveImage }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +80,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded }) => {
     if (validFiles.length > 0) {
       processFiles(validFiles);
     }
-  }, []);
+  }, [validateFiles, processFiles]);
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -154,6 +156,30 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded }) => {
             <h4 className="text-red-800 font-medium">Upload Error</h4>
             <p className="text-red-700 text-sm">{error}</p>
           </div>
+        </div>
+      )}
+
+      {/* Image List */}
+      {images.length > 0 && (
+        <div className="mt-8 space-y-4 max-h-64 overflow-y-auto"> {/* Added max-h and overflow for scroll */}
+          {images.map((image) => (
+            <div key={image.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+              <div className="flex items-center space-x-3">
+                <img src={image.originalUrl} alt={image.file.name} className="w-12 h-12 object-cover rounded-md" />
+                <div>
+                  <h4 className="font-medium text-slate-800 text-sm truncate">{image.file.name}</h4>
+                  <p className="text-xs text-slate-600">{formatFileSize(image.originalSize)}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => handleRemoveImage(image.id)}
+                className="text-slate-400 hover:text-red-500 transition-colors"
+                title="Remove image"
+              >
+                <XCircle className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>

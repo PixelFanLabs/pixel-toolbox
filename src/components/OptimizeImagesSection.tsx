@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
 import ImageProcessingSettings from './ImageProcessingSettings'; // Import the new component
-import PreviewPanel from './PreviewPanel';
 import ExportPanel from './ExportPanel';
 import { defaultSettings } from '../config/settings';
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
@@ -40,7 +39,7 @@ const OptimizeImagesSection: React.FC = () => {
     <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-20">
       <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">Optimize Images</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12"> {/* Revert to grid layout */}
-        <ImageUploader onImagesUploaded={handleImagesUploaded} />
+        <ImageUploader onImagesUploaded={handleImagesUploaded} images={images} handleRemoveImage={handleRemoveImage} />
         <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
       </div>
 
@@ -51,7 +50,7 @@ const OptimizeImagesSection: React.FC = () => {
 
       {images.length > 0 && (
         <div className="mt-12">
-          <PreviewPanel images={images} settings={settings} isProcessing={isProcessing} setIsProcessing={setIsProcessing} handleRemoveImage={handleRemoveImage} />
+          {/* Removed PreviewPanel */}
           <ExportPanel images={images} settings={settings} isProcessing={isProcessing} handleRemoveImage={handleRemoveImage} />
         </div>
       )}
