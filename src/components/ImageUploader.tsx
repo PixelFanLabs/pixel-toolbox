@@ -118,7 +118,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
         multiple
         accept="image/*"
         onChange={handleFileSelect}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        className="hidden"
         id="file-upload"
       />
       
