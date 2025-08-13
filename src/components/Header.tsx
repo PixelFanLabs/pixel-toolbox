@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = () => {
           <nav>
             <ul className="flex space-x-6">
               <li>
-                <a href="#optimize" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">Optimize Images</a>
+                <Link to="/" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">Optimize Images</Link>
               </li>
               <li>
                 <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">About</Link>
