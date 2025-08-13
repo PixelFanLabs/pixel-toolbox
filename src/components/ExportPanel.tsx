@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
-import { Download, Package, Check, FileText } from 'lucide-react';
-import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
+import { Download, Package, Check, FileText, Play, RotateCcw, Eye, BarChart3, Clock } from 'lucide-react'; // Added Play, RotateCcw, Eye, BarChart3, Clock
+import { ImageFile, ProcessingSettings } from '../types'; // Removed ExportPreset
 import { formatFileSize, calculateCompressionRatio } from '../utils/helpers';
 import JSZip from 'jszip';
 
 interface ExportPanelProps {
-  images: ImageFile[];
+  images: ImageFile[]; // These are now processed images
   settings: ProcessingSettings;
-  selectedPreset: ExportPreset | null;
+  isProcessing: boolean;
+  processingProgress: number;
+  processingTime: number;
+  handleRemoveImage: (id: string) => void; // Keep this for individual image removal
 }
 
 const ExportPanel: React.FC<ExportPanelProps> = ({
   images,
   settings,
-  selectedPreset,
+  isProcessing,
+  processingProgress,
+  processingTime,
+  handleRemoveImage,
 }) => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportComplete, setExportComplete] = useState(false);
+  const [showComparison, setShowComparison] = useState(false); // For comparison view in individual images
 
   const totalOriginalSize = images.reduce((acc, img) => acc + img.originalSize, 0);
   const totalProcessedSize = images.reduce((acc, img) => acc + (img.processedSize || 0), 0);
@@ -30,14 +37,14 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       const response = await fetch(image.processedUrl);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = `${image.file.name.split('.')[0]}_optimized.${settings.format}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error downloading image:', error);
@@ -51,7 +58,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
     try {
       const zip = new JSZip();
-      
+
       for (const image of images) {
         if (image.processedUrl) {
           const response = await fetch(image.processedUrl);
@@ -64,7 +71,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       // Add metadata file
       const metadata = {
         exportedAt: new Date().toISOString(),
-        preset: selectedPreset?.name || 'Custom',
+        // selectedPreset is no longer passed directly, so we can't use it here
         settings: {
           format: settings.format,
           quality: settings.quality,
@@ -78,19 +85,19 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           compressionRatio: `${averageCompression.toFixed(1)}%`,
         },
       };
-      
+
       zip.file('export_info.json', JSON.stringify(metadata, null, 2));
 
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(zipBlob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = `pixeltoolbox_export_${new Date().toISOString().split('T')[0]}.zip`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       URL.revokeObjectURL(url);
       setExportComplete(true);
     } catch (error) {
@@ -100,47 +107,64 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
     }
   };
 
-  if (images.length === 0) {
-    return (
-      <div className="p-8 text-center">
-        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Package className="w-8 h-8 text-slate-400" />
-        </div>
-        <h3 className="text-xl font-semibold text-slate-800 mb-2">No processed images</h3>
-        <p className="text-slate-600">Process some images first to enable export options.</p>
-      </div>
-    );
-  }
+  // No longer need the empty state check here, as ExportPanel is only rendered when images are processed
 
   return (
     <div className="p-8">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
-        <p className="text-slate-600">Download your optimized images individually or as a batch.</p>
-      </div>
-
-      {/* Export Summary */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4">Export Summary</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-700">{images.length}</div>
-            <div className="text-sm text-slate-600">Images</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-700">{formatFileSize(totalSavings)}</div>
-            <div className="text-sm text-slate-600">Space Saved</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-700">{averageCompression.toFixed(1)}%</div>
-            <div className="text-sm text-slate-600">Compression</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-orange-700">{settings.format.toUpperCase()}</div>
-            <div className="text-sm text-slate-600">Format</div>
-          </div>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
+          <p className="text-slate-600">Download your optimized images individually or as a batch.</p>
         </div>
       </div>
+
+      {/* Processing Progress (moved from PreviewPanel) */}
+      {isProcessing && (
+        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-blue-800">Processing Images</h3>
+            <span className="text-blue-700 font-medium">{Math.round(processingProgress)}%</span>
+          </div>
+          <div className="w-full bg-blue-200 rounded-full h-2">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${processingProgress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+
+      {/* Results Summary (moved from PreviewPanel) */}
+      {images.length > 0 && (
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <BarChart3 className="w-5 h-5 text-green-600" />
+              <span className="font-medium text-green-800">File Size Saved</span>
+            </div>
+            <div className="text-2xl font-bold text-green-700">{formatFileSize(totalSavings)}</div>
+            <div className="text-sm text-green-600">{(averageCompression).toFixed(1)}% average reduction</div>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Eye className="w-5 h-5 text-blue-600" />
+              <span className="font-medium text-blue-800">Images Processed</span>
+            </div>
+            <div className="text-2xl font-bold text-blue-700">{images.length}</div>
+            <div className="text-sm text-blue-600">Ready for export</div>
+          </div>
+
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Clock className="w-5 h-5 text-purple-600" />
+              <span className="font-medium text-purple-800">Processing Time</span>
+            </div>
+            <div className="text-2xl font-bold text-purple-700">{processingTime.toFixed(1)}s</div>
+            <div className="text-sm text-purple-600">Average: {(processingTime / images.length).toFixed(1)}s per image</div>
+          </div>
+        </div>
+      )}
 
       {/* Batch Export */}
       <div className="bg-white border border-slate-200 rounded-lg p-6 mb-8">
@@ -179,12 +203,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           </button>
         </div>
 
-        {selectedPreset && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <h4 className="font-medium text-yellow-800 mb-1">Applied Preset: {selectedPreset.name}</h4>
-            <p className="text-yellow-700 text-sm">{selectedPreset.description}</p>
-          </div>
-        )}
+        {/* Removed selectedPreset display here */}
       </div>
 
       {/* Individual Images */}
