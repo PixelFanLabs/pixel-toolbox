@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
+import ImageProcessingSettings from './ImageProcessingSettings'; // Import the new component
 import PreviewPanel from './PreviewPanel';
 import ExportPanel from './ExportPanel';
 import { defaultSettings } from '../config/settings';
@@ -38,13 +39,14 @@ const OptimizeImagesSection: React.FC = () => {
   return (
     <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-20">
       <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">Optimize Images</h2>
-      <div className="flex flex-col items-center">
-        <div className="w-full">
-          <ImageUploader onImagesUploaded={handleImagesUploaded} />
-        </div>
-        <div className="w-full mt-12">
-          <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12"> {/* Revert to grid layout */}
+        <ImageUploader onImagesUploaded={handleImagesUploaded} />
+        <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
+      </div>
+
+      {/* New component for Format & Quality, Resize & Crop, and Optimization Toggle */}
+      <div className="mt-12">
+        <ImageProcessingSettings settings={settings} onSettingsChange={handleSettingsChange} />
       </div>
 
       {images.length > 0 && (
