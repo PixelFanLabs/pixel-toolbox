@@ -75,23 +75,25 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative bg-transparent overflow-hidden min-h-screen">
+    <div className="relative bg-transparent overflow-hidden h-[55vh]">
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"
         alt="Background"
       />
       <div className="absolute inset-0 bg-black/30"></div> {/* Darkening overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-        <div className="text-xl text-white text-center mb-8 drop-shadow-lg">
-          Your complete toolkit for <span className="text-blue-300">web-ready images</span>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 flex flex-col h-full pb-8">
+        <div className="mb-auto">
+          <div className="text-xl text-white text-center mb-8 drop-shadow-lg">
+            Your complete toolkit for <span className="text-blue-300">web-ready images</span>
+          </div>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-auto">
           <div className="lg:hidden">
             <div ref={scrollContainerRef} className="flex overflow-x-auto space-x-8 pb-4 no-scrollbar">
               {features.map((feature) => (
-                <div key={feature.name} className="flex-shrink-0 w-80 bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
+                <div key={feature.name} className="group relative flex-shrink-0 w-80 bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl transition-all duration-300 overflow-hidden">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       <div className="flex items-center justify-center h-12 w-12 rounded-md">
@@ -102,7 +104,7 @@ const Hero: React.FC = () => {
                       <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
                     </div>
                   </div>
-                  <div className="mt-4">
+                  <div className="absolute bottom-0 left-0 right-0 mt-4 pt-2 max-h-screen opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/70 backdrop-blur-md p-6 transform translate-y-full group-hover:translate-y-0">
                     <p className="text-base text-gray-800">{feature.description}</p>
                   </div>
                 </div>
@@ -130,7 +132,7 @@ const Hero: React.FC = () => {
 
           <div className="hidden lg:grid lg:grid-cols-4 lg:gap-8">
             {features.map((feature) => (
-              <div key={feature.name} className="bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
+              <div key={feature.name} className="group relative bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl transition-all duration-300 overflow-hidden">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md">
@@ -141,7 +143,7 @@ const Hero: React.FC = () => {
                     <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
                   </div>
                 </div>
-                <div className="mt-4">
+                <div className="absolute bottom-0 left-0 right-0 mt-4 pt-2 max-h-screen opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/70 backdrop-blur-md p-6 transform translate-y-full group-hover:translate-y-0">
                   <p className="text-base text-gray-800">{feature.description}</p>
                 </div>
               </div>
