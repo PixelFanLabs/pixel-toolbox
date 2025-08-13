@@ -166,8 +166,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
             <div key={image.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
               <div className="flex items-center space-x-3">
                 <img src={image.originalUrl} alt={image.file.name} className="w-12 h-12 object-cover rounded-md" />
-                <div>
-                  <h4 className="font-medium text-slate-800 text-sm truncate">{image.file.name}</h4>
+                <div className="flex-1 min-w-0"> {/* Added flex-1 min-w-0 */}
+                  <h4 className="font-medium text-slate-800 text-sm truncate" title={image.file.name}>{image.file.name}</h4> {/* Added title attribute */}
                   <p className="text-xs text-slate-600">{formatFileSize(image.originalSize)}</p>
                 </div>
               </div>
