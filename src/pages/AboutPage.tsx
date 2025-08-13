@@ -1,6 +1,6 @@
 import React from 'react';
 
-const About: React.FC = () => {
+const AboutPage: React.FC = () => {
   return (
     <section id="about" className="py-16 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,4 +44,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About;
+export default AboutPage;

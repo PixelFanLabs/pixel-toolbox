@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FAQ: React.FC = () => {
+const FAQPage: React.FC = () => {
   return (
     <section id="faq" className="py-16 bg-gray-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,4 +28,4 @@ const FAQ: React.FC = () => {
   );
 };
 
-export default FAQ;
+export default FAQPage;
