@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
+  isHomePage: boolean; // New prop
 }
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC<HeaderProps> = ({ isHomePage }) => { // Destructure isHomePage
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -16,15 +17,27 @@ const Header: React.FC<HeaderProps> = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Only add scroll listener if it's the home page
+    if (isHomePage) {
+      window.addEventListener('scroll', handleScroll);
+    } else {
+      // If not home page, ensure scrolled is true so header is solid
+      setScrolled(true);
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      if (isHomePage) {
+        window.removeEventListener('scroll', handleScroll);
+      }
     };
-  }, [scrolled]);
+  }, [scrolled, isHomePage]); // Add isHomePage to dependency array
+
+  const headerClass = `fixed top-0 left-0 w-full z-50 transition-all duration-700 ${
+    scrolled ? 'bg-slate-900 shadow-sm' : 'bg-transparent'
+  }`;
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? 'bg-slate-900 shadow-sm' : 'bg-transparent'}`}>
+    <header className={headerClass}>
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
@@ -33,7 +46,7 @@ const Header: React.FC<HeaderProps> = () => {
               <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
             </div>
             <div>
-              <Link to="/" className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</Link> {/* Changed to Link */}
+              <Link to="/" className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</Link>
             </div>
           </div>
 
@@ -44,10 +57,10 @@ const Header: React.FC<HeaderProps> = () => {
                 <a href="#optimize" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">Optimize Images</a>
               </li>
               <li>
-                <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">About</Link> {/* Changed to Link */}
+                <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">About</Link>
               </li>
               <li>
-                <Link to="/faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">FAQ</Link> {/* Changed to Link */}
+                <Link to="/faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">FAQ</Link>
               </li>
             </ul>
           </nav>

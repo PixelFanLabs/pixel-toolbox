@@ -1,27 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import routing components
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'; // Import useLocation
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import OptimizeImagesSection from './components/OptimizeImagesSection';
-import AboutPage from './pages/AboutPage'; // Import new AboutPage
-import FAQPage from './pages/FAQPage';     // Import new FAQPage
+import AboutPage from './pages/AboutPage';
+import FAQPage from './pages/FAQPage';
 
 function App() {
+  const location = useLocation(); // Get current location
+  const isHomePage = location.pathname === '/'; // Check if it's the home page
+
   return (
-    <Router> {/* Wrap with Router */}
+    <Router>
       <div id="top" className="min-h-screen flex flex-col">
-        <Header />
+        <Header isHomePage={isHomePage} /> {/* Pass isHomePage prop */}
 
         <main className="flex-grow">
-          <Routes> {/* Define routes */}
+          <Routes>
             <Route path="/" element={
               <>
-                <HomePage /> {/* Hero section */}
+                <HomePage />
                 <OptimizeImagesSection />
               </>
             } />
-            <Route path="/about" element={<AboutPage />} /> {/* About Page */}
-            <Route path="/faq" element={<FAQPage />} />     {/* FAQ Page */}
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/faq" element={<FAQPage />} />
           </Routes>
         </main>
 
