@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, RotateCcw, Eye, BarChart3, Clock } from 'lucide-react';
+import { Play, RotateCcw, Eye, BarChart3, Clock, XCircle } from 'lucide-react'; // Added XCircle
 import { ImageFile, ProcessingSettings } from '../types';
 import { processImage } from '../utils/imageProcessor';
 import { formatFileSize, calculateCompressionRatio } from '../utils/helpers';
@@ -7,17 +7,17 @@ import { formatFileSize, calculateCompressionRatio } from '../utils/helpers';
 interface PreviewPanelProps {
   images: ImageFile[];
   settings: ProcessingSettings;
-  onImagesProcessed: (images: ImageFile[]) => void;
   isProcessing: boolean;
   setIsProcessing: (processing: boolean) => void;
+  handleRemoveImage: (id: string) => void; // Added handleRemoveImage
 }
 
 const PreviewPanel: React.FC<PreviewPanelProps> = ({
   images,
   settings,
-  onImagesProcessed,
   isProcessing,
   setIsProcessing,
+  handleRemoveImage, // Destructured
 }) => {
   const [processingProgress, setProcessingProgress] = useState(0);
   const [processingTime, setProcessingTime] = useState(0);
@@ -58,7 +58,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
 
     const endTime = Date.now();
     setProcessingTime((endTime - startTime) / 1000);
-    onImagesProcessed(updatedImages);
+    // onImagesProcessed(updatedImages); // Removed this line
     setIsProcessing(false);
   };
 
@@ -68,7 +68,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
       processedUrl: undefined,
       processedSize: undefined,
     }));
-    onImagesProcessed(resetImages);
+    // onImagesProcessed(resetImages); // Removed this line
     setProcessingProgress(0);
     setProcessingTime(0);
   };
@@ -104,7 +104,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               </button>
             </>
           )}
-          
+
           <button
             onClick={handleProcessImages}
             disabled={isProcessing || images.length === 0}
@@ -145,7 +145,7 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
               <span className="font-medium text-green-800">File Size Saved</span>
             </div>
             <div className="text-2xl font-bold text-green-700">{formatFileSize(totalSavings)}</div>
-            <div className="text-sm text-green-600">{averageCompression.toFixed(1)}% average reduction</div>
+            <div className="text-sm text-green-600">{(averageCompression).toFixed(1)}% average reduction</div>
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -168,104 +168,24 @@ const PreviewPanel: React.FC<PreviewPanelProps> = ({
         </div>
       )}
 
-      {/* Image Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Image List */}
+      <div className="space-y-4">
         {images.map((image) => (
-          <div key={image.id} className="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
-            <div className="p-4 border-b border-slate-200">
-              <h3 className="font-medium text-slate-800 truncate">{image.file.name}</h3>
+          <div key={image.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+            <div className="flex items-center space-x-4">
+              <img src={image.originalUrl} alt={image.file.name} className="w-16 h-16 object-cover rounded-md" />
+              <div>
+                <h4 className="font-medium text-slate-800">{image.file.name}</h4>
+                <p className="text-sm text-slate-600">{formatFileSize(image.originalSize)}</p>
+              </div>
             </div>
-
-            {showComparison && image.processedUrl ? (
-              // Comparison view
-              <div className="grid grid-cols-2">
-                <div className="p-4 border-r border-slate-200">
-                  <h4 className="text-sm font-medium text-slate-600 mb-2">Original</h4>
-                  <div className="aspect-video bg-white rounded border border-slate-200 overflow-hidden mb-3">
-                    <img
-                      src={image.originalUrl}
-                      alt={`${image.file.name} original`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="space-y-1 text-xs text-slate-600">
-                    <div className="flex justify-between">
-                      <span>Size:</span>
-                      <span>{formatFileSize(image.originalSize)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Format:</span>
-                      <span className="uppercase">{image.format}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h4 className="text-sm font-medium text-slate-600 mb-2">Processed</h4>
-                  <div className="aspect-video bg-white rounded border border-slate-200 overflow-hidden mb-3">
-                    <img
-                      src={image.processedUrl}
-                      alt={`${image.file.name} processed`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="space-y-1 text-xs text-slate-600">
-                    <div className="flex justify-between">
-                      <span>Size:</span>
-                      <span className="text-green-600 font-medium">
-                        {formatFileSize(image.processedSize || 0)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Format:</span>
-                      <span className="uppercase">{settings.format}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Saved:</span>
-                      <span className="text-green-600 font-medium">
-                        {calculateCompressionRatio(image.originalSize, image.processedSize || image.originalSize).toFixed(1)}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              // Single view
-              <div className="p-4">
-                <div className="aspect-video bg-white rounded border border-slate-200 overflow-hidden mb-3">
-                  <img
-                    src={image.processedUrl || image.originalUrl}
-                    alt={image.file.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="space-y-1 text-slate-600">
-                    <div className="flex justify-between">
-                      <span>Size:</span>
-                      <span>{formatFileSize(image.processedSize || image.originalSize)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Format:</span>
-                      <span className="uppercase">{image.processedUrl ? settings.format : image.format}</span>
-                    </div>
-                  </div>
-                  <div className="space-y-1 text-slate-600">
-                    <div className="flex justify-between">
-                      <span>Dimensions:</span>
-                      <span>{image.width} × {image.height}px</span>
-                    </div>
-                    {image.processedSize && (
-                      <div className="flex justify-between">
-                        <span>Saved:</span>
-                        <span className="text-green-600 font-medium">
-                          {calculateCompressionRatio(image.originalSize, image.processedSize).toFixed(1)}%
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
+            <button
+              onClick={() => handleRemoveImage(image.id)}
+              className="text-slate-400 hover:text-red-500 transition-colors"
+              title="Remove image"
+            >
+              <XCircle className="w-5 h-5" />
+            </button>
           </div>
         ))}
       </div>

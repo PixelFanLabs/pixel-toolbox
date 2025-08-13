@@ -51,7 +51,7 @@ const OptimizeImagesSection: React.FC = () => {
 
       {images.length > 0 && (
         <div className="mt-12">
-          <PreviewPanel images={images} settings={settings} isProcessing={isProcessing} setIsProcessing={setIsProcessing} />
+          <PreviewPanel images={images} settings={settings} isProcessing={isProcessing} setIsProcessing={setIsProcessing} handleRemoveImage={handleRemoveImage} />
           <ExportPanel images={images} settings={settings} isProcessing={isProcessing} handleRemoveImage={handleRemoveImage} />
         </div>
       )}
