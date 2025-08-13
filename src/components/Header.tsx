@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
-  onAboutClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onAboutClick }) => {
+const Header: React.FC<HeaderProps> = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -33,16 +32,24 @@ const Header: React.FC<HeaderProps> = ({ onAboutClick }) => {
               <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</h1>
+              <a href="#top" className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</a>
             </div>
           </div>
 
-          {/* About Button */}
-          <div>
-            <button onClick={onAboutClick} className="flex items-center space-x-2 text-blue-300 hover:text-blue-100 transition-colors font-medium">
-              <span>About</span>
-            </button>
-          </div>
+          {/* Navigation */}
+          <nav>
+            <ul className="flex space-x-6">
+              <li>
+                <a href="#optimize" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">Optimize Images</a>
+              </li>
+              <li>
+                <a href="#about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">About</a>
+              </li>
+              <li>
+                <a href="#faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium">FAQ</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </header>

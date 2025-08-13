@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import Header from './components/Header';
 import About from './components/About';
 import HomePage from './components/HomePage';
+import FAQ from './components/FAQ';
+import OptimizeImagesSection from './components/OptimizeImagesSection';
 import MainContent from './components/MainContent';
 import { ImageFile, ProcessingSettings, ExportPreset } from './types';
 import { defaultSettings } from './config/settings';
@@ -12,7 +14,6 @@ function App() {
   const [activeTab, setActiveTab] = useState<'upload' | 'settings' | 'preview' | 'export'>('upload');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<ExportPreset | null>(null);
-  const [showAboutPage, setShowAboutPage] = useState(false);
 
   const handleImagesUploaded = useCallback((newImages: ImageFile[]) => {
     setImages(prevImages => [...prevImages, ...newImages]);
@@ -41,31 +42,33 @@ function App() {
   }, [settings]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header onAboutClick={() => setShowAboutPage(true)} />
+    <div id="top" className="min-h-screen flex flex-col">
+      <Header />
       
       <main className="flex-grow">
-        {showAboutPage ? (
-          <About onBackClick={() => setShowAboutPage(false)} />
-        ) : images.length === 0 ? (
-          <HomePage onImagesUploaded={handleImagesUploaded} />
-        ) : (
-          <MainContent
-            images={images}
-            settings={settings}
-            activeTab={activeTab}
-            isProcessing={isProcessing}
-            selectedPreset={selectedPreset}
-            showAboutPage={showAboutPage}
-            handleImagesUploaded={handleImagesUploaded}
-            handleRemoveImage={handleRemoveImage}
-            handleSettingsChange={handleSettingsChange}
-            handlePresetSelect={handlePresetSelect}
-            setActiveTab={setActiveTab}
-            setImages={setImages}
-            setIsProcessing={setIsProcessing}
-          />
-        )}
+        <HomePage onImagesUploaded={handleImagesUploaded} /> {/* Hero section */}
+        <div id="optimize">
+          {images.length === 0 ? (
+            <OptimizeImagesSection onImagesUploaded={handleImagesUploaded} />
+          ) : (
+            <MainContent
+              images={images}
+              settings={settings}
+              activeTab={activeTab}
+              isProcessing={isProcessing}
+              selectedPreset={selectedPreset}
+              handleImagesUploaded={handleImagesUploaded}
+              handleRemoveImage={handleRemoveImage}
+              handleSettingsChange={handleSettingsChange}
+              handlePresetSelect={handlePresetSelect}
+              setActiveTab={setActiveTab}
+              setImages={setImages}
+              setIsProcessing={setIsProcessing}
+            />
+          )}
+        </div>
+        <About />
+        <FAQ />
       </main>
 
       {/* Footer */}

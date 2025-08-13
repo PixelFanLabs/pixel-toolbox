@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --color-royal-blue: #1E3A8A;
   --color-golden-yellow: #F5B700;
