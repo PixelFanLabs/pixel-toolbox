@@ -1,7 +1,7 @@
 import React from 'react';
 import { Settings, Sparkles, Crop, Zap } from 'lucide-react';
 import { ProcessingSettings, ExportPreset } from '../types';
-import { exportPresets, formatOptions, qualityPresets } from '../config/settings';
+import { exportPresets, formatOptions } from '../config/settings';
 
 interface SettingsPanelProps {
   settings: ProcessingSettings;
@@ -16,7 +16,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   onPresetSelect,
   selectedPreset,
 }) => {
-  const handleSettingChange = (key: keyof ProcessingSettings, value: any) => {
+  const handleSettingChange = (key: keyof ProcessingSettings, value: ProcessingSettings[keyof ProcessingSettings]) => {
     onSettingsChange({ ...settings, [key]: value });
   };
 
@@ -30,7 +30,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       {/* Export Presets */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-          <Sparkles className="w-5 h-5 mr-2 text-yellow-500" />
+          <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
           Quick Presets
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -66,7 +66,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         {/* Format Settings */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-            <Settings className="w-5 h-5 mr-2 text-blue-500" />
+            <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
             Format & Quality
           </h3>
 
@@ -124,7 +124,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         {/* Resize Settings */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-            <Crop className="w-5 h-5 mr-2 text-green-500" />
+            <Crop className="w-5 h-5 mr-2 text-green-500" strokeWidth={1.5} />
             Resize & Crop
           </h3>
 
@@ -209,7 +209,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       <div className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Zap className="w-6 h-6 text-yellow-600" />
+            <Zap className="w-6 h-6 text-yellow-600" strokeWidth={1.5} />
             <div>
               <h4 className="font-semibold text-slate-800">Smart Optimization</h4>
               <p className="text-sm text-slate-600">

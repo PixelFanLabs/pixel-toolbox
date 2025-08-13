@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Play, RotateCcw, Eye, BarChart3, Clock } from 'lucide-react';
 import { ImageFile, ProcessingSettings } from '../types';
 import { processImage } from '../utils/imageProcessor';

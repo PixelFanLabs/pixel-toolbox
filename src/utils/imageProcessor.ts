@@ -25,7 +25,7 @@ export async function processImage(
         }
 
         // Calculate dimensions
-        let { width, height } = calculateDimensions(
+        const { width, height } = calculateDimensions(
           img.width,
           img.height,
           settings.width,
