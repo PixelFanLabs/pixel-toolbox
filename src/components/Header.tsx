@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
@@ -6,8 +6,25 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onAboutClick }) => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
   return (
-    <header className="bg-white shadow-sm border-b border-slate-200">
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900 shadow-sm border-b border-slate-700' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
@@ -16,14 +33,13 @@ const Header: React.FC<HeaderProps> = ({ onAboutClick }) => {
               <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 font-poppins">PixelToolbox</h1>
-              <p className="text-sm text-slate-600">Your complete toolkit for web-ready images</p>
+              <h1 className="text-3xl font-extrabold text-white font-poppins">PixelToolbox</h1>
             </div>
           </div>
 
           {/* About Button */}
           <div>
-            <button onClick={onAboutClick} className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors font-medium">
+            <button onClick={onAboutClick} className="flex items-center space-x-2 text-blue-300 hover:text-blue-100 transition-colors font-medium">
               <span>About</span>
             </button>
           </div>

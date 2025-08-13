@@ -75,17 +75,17 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative bg-transparent overflow-hidden py-8 lg:py-16">
+    <div className="relative bg-transparent overflow-hidden min-h-screen">
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"
         alt="Background"
       />
       <div className="absolute inset-0 bg-black/30"></div> {/* Darkening overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white text-balance drop-shadow-lg whitespace-nowrap">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+        <div className="text-xl text-white text-center mb-8 drop-shadow-lg">
           Your complete toolkit for <span className="text-blue-300">web-ready images</span>
-        </h1>
+        </div>
 
         <div className="mt-12">
           <div className="lg:hidden">

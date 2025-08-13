@@ -41,7 +41,7 @@ function App() {
   }, [settings]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Header onAboutClick={() => setShowAboutPage(true)} />
       
       <main className="flex-grow">
