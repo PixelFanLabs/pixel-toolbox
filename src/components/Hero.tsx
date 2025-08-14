@@ -32,6 +32,7 @@ const Hero: React.FC = () => {
   const [taglineOpacity, setTaglineOpacity] = useState(1);
   const [previewIndex, setPreviewIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,6 +63,16 @@ const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      cardRefs.current[previewIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [previewIndex]);
+
   return (
     <div className="relative bg-transparent overflow-hidden h-[55vh] flex flex-col">
       <img
@@ -71,7 +82,7 @@ const Hero: React.FC = () => {
       />
       <div className="absolute inset-0 bg-black/40"></div>
       
-      <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col h-full pt-24">
+      <div className="relative z-10 w-full lg:max-w-6xl mx-auto px-4 sm:px-6 flex flex-col h-full pt-24">
         {/* Tagline */}
         <div className="flex-1 flex items-center justify-center">
           <div 
@@ -86,68 +97,54 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12">
+          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12">
             {features.map((feature, index) => (
               <div
                 key={feature.name}
-                className="relative group cursor-pointer h-full flex flex-col items-center justify-end" // Added h-full, flex-col, items-center, justify-end
+                ref={(el) => (cardRefs.current[index] = el)}
+                className="group [perspective:1000px] h-48 w-64 snap-center shrink-0"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                {/* Expanded Card on Hover */}
-                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-transparent backdrop-blur-md rounded-xl shadow-2xl border border-white/50 p-6 transition-all duration-500 ease-out origin-bottom ${
-                  hoveredCard === index 
-                    ? 'opacity-100 translate-y-0 scale-100' 
-                    : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
-                }`}>
-                  <div className="flex flex-col items-center mb-4">
-                    <div className={`mb-2 transition-transform duration-500 ease-out ${hoveredCard === index ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
+                <div
+                  className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] lg:[transform:rotateY(0)] lg:group-hover:[transform:rotateY(180deg)]`}>
+                  {/* Front */}
+                  <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center [backface-visibility:hidden]">
+                    <div className="mb-3">
                       {React.cloneElement(feature.icon, {
                         size: 32,
-                        className: "text-white/90"
+                        className: "text-white/90",
                       })}
                     </div>
-                    <h3 className="text-sm lg:text-base font-medium text-white/80">{feature.name}</h3>
+                    <h3 className="text-sm lg:text-base font-medium text-white/80">
+                      {feature.name}
+                    </h3>
                   </div>
-                  <p className="text-gray-200 text-sm leading-relaxed text-center">{feature.description}</p>
-                </div>
 
-                {/* Auto-preview Card (alternating) */}
-                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-transparent backdrop-blur-md rounded-xl shadow-xl border border-white/50 p-6 transition-all duration-700 ease-out origin-bottom ${
-                  previewIndex === index && hoveredCard === null
-                    ? 'opacity-100 translate-y-0 scale-100' 
-                    : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
-                }`}>
-                  <div className="flex flex-col items-center mb-4">
-                    <div className={`mb-2 transition-transform duration-700 ease-out ${previewIndex === index && hoveredCard === null ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
-                      {React.cloneElement(feature.icon, {
-                        size: 32,
-                        className: "text-white/90"
-                      })}
+                  {/* Back */}
+                  <div className="absolute inset-0 w-full h-full bg-black/20 backdrop-blur-md rounded-xl p-6 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                    <div className="flex flex-row items-center mb-4">
+                      <div className="mr-4">
+                        {React.cloneElement(feature.icon, {
+                          size: 32,
+                          className: "text-white/90",
+                        })}
+                      </div>
+                      <h3 className="text-sm lg:text-base font-medium text-white/80">
+                        {feature.name}
+                      </h3>
                     </div>
-                    <h3 className="text-sm lg:text-base font-medium text-white/80">{feature.name}</h3>
+                    <p className="text-gray-200 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                  <p className="text-gray-200 text-sm leading-relaxed text-center">{feature.description}</p>
-                </div>
-
-                {/* Initial Icon and Tagline (always visible, but hidden when card is expanded) */}
-                <div className={`flex flex-col items-center text-center p-4 transition-all duration-300 ease-out ${hoveredCard === index || (previewIndex === index && hoveredCard === null) ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                  <div className="mb-3">
-                    {React.cloneElement(feature.icon, {
-                      size: 32,
-                      className: "text-white/90"
-                    })}
-                  </div>
-                  <h3 className="text-sm lg:text-base font-medium text-white/80">
-                    {feature.name}
-                  </h3>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Subtle indicator dots */}
-          <div className="flex justify-center mt-6 space-x-2">
+          <div className="flex justify-center mt-6 space-x-2 lg:hidden">
             {features.map((_, index) => (
               <div
                 key={index}
