@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, ChevronDown } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Zap } from 'lucide-react';
 import { ProcessingSettings, ExportPreset } from '../types';
 import { exportPresets } from '../config/settings';
+import ImageProcessingSettings from './ImageProcessingSettings';
 
 interface SettingsPanelProps {
   settings: ProcessingSettings;
@@ -11,10 +12,13 @@ interface SettingsPanelProps {
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
+  settings,
+  onSettingsChange,
   onPresetSelect,
   selectedPreset,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isFineTuneExpanded, setFineTuneExpanded] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handlePresetSelect = (preset: ExportPreset) => {
@@ -87,6 +91,23 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           )}
         </div>
       </div>
+
+      <div className="mb-8">
+        <button
+          className="w-full flex items-center justify-between p-4 bg-slate-100 rounded-lg shadow-sm hover:bg-slate-200 transition-colors"
+          onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
+        >
+          <h2 className="text-xl font-bold text-slate-800">Fine-Tune Options</h2>
+          {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
+        </button>
+      </div>
+
+      {isFineTuneExpanded && (
+        <ImageProcessingSettings
+          settings={settings}
+          onSettingsChange={onSettingsChange}
+        />
+      )}
     </div>
   );
 };

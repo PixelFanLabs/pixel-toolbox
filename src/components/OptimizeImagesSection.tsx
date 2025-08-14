@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
-import ImageProcessingSettings from './ImageProcessingSettings';
 import ExportPanel from './ExportPanel';
 import { defaultSettings } from '../config/settings';
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
@@ -79,10 +78,6 @@ const OptimizeImagesSection: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <ImageUploader onImagesUploaded={handleImagesUploaded} images={images} handleRemoveImage={handleRemoveImage} />
         <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
-      </div>
-
-      <div className="mt-12">
-        <ImageProcessingSettings settings={settings} onSettingsChange={handleSettingsChange} />
       </div>
 
       {/* Preview Button */}

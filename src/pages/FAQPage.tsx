@@ -22,6 +22,10 @@ const FAQPage: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Do I need to install any software?</h3>
             <p className="text-gray-600">No, PixelToolbox is a web-based application. You can access it directly from your browser without any installation.</p>
           </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">What exactly does selecting “Smart Optimization” do?</h3>
+            <p className="text-gray-600">“Smart Optimization” improves the visual quality of your images by applying a high-quality smoothing algorithm during the resizing process. It doesn’t change your other settings (like format or quality); it works with them to produce a better-looking result, especially when making images smaller.</p>
+          </div>
         </div>
       </div>
     </section>
