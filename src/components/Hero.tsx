@@ -6,25 +6,25 @@ const features = [
     name: 'Secure & Private',
     description: 'Your photos are processed securely in your browser, so no data ever leaves your device. Source code is available on GitHub for independent review.',
     icon: <Shield size={32} strokeWidth={1.5} className="text-white/90" />,
-    color: 'text-blue-600',
+    color: 'text-blue-300',
   },
   {
     name: 'Simplified Workflow',
     description: 'Stop researching image formats and juggling multiple tools. Our all-in-one toolkit eliminates the guesswork, delivering web-ready images instantly.',
     icon: <Sparkles size={32} strokeWidth={1.5} className="text-white/90" />,
-    color: 'text-yellow-500',
+    color: 'text-yellow-300',
   },
   {
-    name: 'Faster Workflows',
+    name: 'Faster Processing',
     description: 'Our lightning-fast processing optimizes your images instantly, delivering files that perform flawlessly in any application.',
     icon: <Timer size={32} strokeWidth={1.5} className="text-white/90" />,
-    color: 'text-green-500',
+    color: 'text-green-300',
   },
   {
     name: 'Free & Accessible',
     description: 'PixelToolbox is a free service from PixelFanLabs, dedicated to making powerful and simplified tools accessible to everyone.',
     icon: <DollarSign size={32} strokeWidth={1.5} className="text-white/90" />,
-    color: 'text-purple-500',
+    color: 'text-purple-300',
   },
 ];
 
@@ -71,7 +71,7 @@ const Hero: React.FC = () => {
       />
       <div className="absolute inset-0 bg-black/40"></div>
       
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col h-full pt-24">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col h-full pt-24">
         {/* Tagline */}
         <div className="flex-1 flex items-center justify-center">
           <div 
@@ -86,7 +86,7 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12">
             {features.map((feature, index) => (
               <div
                 key={feature.name}
@@ -95,49 +95,39 @@ const Hero: React.FC = () => {
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Expanded Card on Hover */}
-                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-6 transition-all duration-500 ease-out origin-bottom ${
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-transparent backdrop-blur-md rounded-xl shadow-2xl border border-white/50 p-6 transition-all duration-500 ease-out origin-bottom ${
                   hoveredCard === index 
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                 }`}>
-                  <div className="flex items-center mb-4">
-                    <div className={`mr-4 transition-transform duration-500 ease-out ${hoveredCard === index ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
+                  <div className="flex flex-col items-center mb-4">
+                    <div className={`mb-2 transition-transform duration-500 ease-out ${hoveredCard === index ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
                       {React.cloneElement(feature.icon, {
-                        size: 24,
-                        className: feature.color // Use feature.color
+                        size: 32,
+                        className: "text-white/90"
                       })}
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
+                    <h3 className="text-sm lg:text-base font-medium text-white/80">{feature.name}</h3>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
-
-                  {/* Arrow pointing down */}
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                    <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white/95"></div>
-                  </div>
+                  <p className="text-gray-200 text-sm leading-relaxed text-center">{feature.description}</p>
                 </div>
 
                 {/* Auto-preview Card (alternating) */}
-                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-white/10 p-6 transition-all duration-700 ease-out origin-bottom ${
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-transparent backdrop-blur-md rounded-xl shadow-xl border border-white/50 p-6 transition-all duration-700 ease-out origin-bottom ${
                   previewIndex === index && hoveredCard === null
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                 }`}>
-                  <div className="flex items-center mb-4">
-                    <div className={`mr-4 transition-transform duration-700 ease-out ${previewIndex === index && hoveredCard === null ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
+                  <div className="flex flex-col items-center mb-4">
+                    <div className={`mb-2 transition-transform duration-700 ease-out ${previewIndex === index && hoveredCard === null ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
                       {React.cloneElement(feature.icon, {
-                        size: 24,
-                        className: feature.color // Use feature.color
+                        size: 32,
+                        className: "text-white/90"
                       })}
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
+                    <h3 className="text-sm lg:text-base font-medium text-white/80">{feature.name}</h3>
                   </div>
-                  <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
-
-                  {/* Arrow pointing down */}
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                    <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white/90"></div>
-                  </div>
+                  <p className="text-gray-200 text-sm leading-relaxed text-center">{feature.description}</p>
                 </div>
 
                 {/* Initial Icon and Tagline (always visible, but hidden when card is expanded) */}
