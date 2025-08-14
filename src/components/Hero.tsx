@@ -90,34 +90,27 @@ const Hero: React.FC = () => {
             {features.map((feature, index) => (
               <div
                 key={feature.name}
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer h-full flex flex-col items-center justify-end" // Added h-full, flex-col, items-center, justify-end
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                {/* Base Card */}
-                <div className="flex flex-col items-center text-center p-4 transition-all duration-300 ease-out">
-                  <div className="mb-3 transition-transform duration-300 group-hover:scale-110">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-sm lg:text-base font-medium text-white/80 group-hover:text-white transition-colors duration-300">
-                    {feature.name}
-                  </h3>
-                </div>
-
                 {/* Expanded Card on Hover */}
-                <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-6 transition-all duration-500 ease-out ${
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-6 transition-all duration-500 ease-out origin-bottom ${
                   hoveredCard === index 
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                 }`}>
                   <div className="flex items-center mb-4">
-                    <div className="mr-4">
-                      <Shield size={24} strokeWidth={1.5} className="text-blue-600" />
+                    <div className={`mr-4 transition-transform duration-500 ease-out ${hoveredCard === index ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
+                      {React.cloneElement(feature.icon, {
+                        size: 24,
+                        className: feature.color // Use feature.color
+                      })}
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
                   </div>
                   <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
-                  
+
                   {/* Arrow pointing down */}
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
                     <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white/95"></div>
@@ -125,26 +118,39 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Auto-preview Card (alternating) */}
-                <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-white/10 p-6 transition-all duration-700 ease-out ${
+                <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-4 w-80 bg-white/90 backdrop-blur-md rounded-xl shadow-xl border border-white/10 p-6 transition-all duration-700 ease-out origin-bottom ${
                   previewIndex === index && hoveredCard === null
                     ? 'opacity-100 translate-y-0 scale-100' 
                     : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                 }`}>
                   <div className="flex items-center mb-4">
-                    <div className="mr-4">
-                      {React.cloneElement(feature.icon, { 
-                        size: 24, 
-                        className: "text-blue-600" 
+                    <div className={`mr-4 transition-transform duration-700 ease-out ${previewIndex === index && hoveredCard === null ? 'translate-y-0' : 'translate-y-16'}`}> {/* Icon container */}
+                      {React.cloneElement(feature.icon, {
+                        size: 24,
+                        className: feature.color // Use feature.color
                       })}
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">{feature.name}</h3>
                   </div>
                   <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
-                  
+
                   {/* Arrow pointing down */}
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
                     <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white/90"></div>
                   </div>
+                </div>
+
+                {/* Initial Icon and Tagline (always visible, but hidden when card is expanded) */}
+                <div className={`flex flex-col items-center text-center p-4 transition-all duration-300 ease-out ${hoveredCard === index || (previewIndex === index && hoveredCard === null) ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                  <div className="mb-3">
+                    {React.cloneElement(feature.icon, {
+                      size: 32,
+                      className: "text-white/90"
+                    })}
+                  </div>
+                  <h3 className="text-sm lg:text-base font-medium text-white/80">
+                    {feature.name}
+                  </h3>
                 </div>
               </div>
             ))}
