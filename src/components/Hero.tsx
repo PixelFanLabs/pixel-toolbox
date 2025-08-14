@@ -6,21 +6,25 @@ const features = [
     name: 'Secure & Private',
     description: 'Your photos are processed securely in your browser, so no data ever leaves your device. Source code is available on GitHub for independent review.',
     icon: <Shield size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-blue-600',
   },
   {
     name: 'Simplified Workflow',
     description: 'Stop researching image formats and juggling multiple tools. Our all-in-one toolkit eliminates the guesswork, delivering web-ready images instantly.',
     icon: <Sparkles size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-yellow-500',
   },
   {
     name: 'Faster Workflows',
     description: 'Our lightning-fast processing optimizes your images instantly, delivering files that perform flawlessly in any application.',
     icon: <Timer size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-green-500',
   },
   {
     name: 'Free & Accessible',
     description: 'PixelToolbox is a free service from PixelFanLabs, dedicated to making powerful and simplified tools accessible to everyone.',
     icon: <DollarSign size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-purple-500',
   },
 ];
 

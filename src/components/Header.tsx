@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = () => {
 
           {/* Navigation */}
           <nav>
-            <ul className="flex space-x-6">
+            <ul className="flex items-center space-x-6">
               <li>
                 <Link to="/" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={handleOptimizeClick}>Optimize Images</Link>
               </li>
