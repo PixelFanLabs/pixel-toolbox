@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Removed useNavigate
 import { Zap } from 'lucide-react';
 
 interface HeaderProps {
@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation(); // Get current location
-  const navigate = useNavigate(); // Get navigate function
+  // const navigate = useNavigate(); // Removed navigate function
   const isHomePage = location.pathname === '/'; // Determine if it's the home page
 
   useEffect(() => {
@@ -36,19 +36,8 @@ const Header: React.FC<HeaderProps> = () => {
   }, [scrolled, isHomePage]); // Add isHomePage to dependency array
 
   const handleOptimizeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (location.pathname === '/') {
-      // If already on home page, scroll to #optimize section
-      e.preventDefault(); // Prevent default Link navigation
-      const optimizeSection = document.getElementById('optimize');
-      if (optimizeSection) {
-        optimizeSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      // If not on home page, navigate to home and then scroll
-      // This will be handled by the Link component's default behavior
-      // and a useEffect in OptimizeImagesSection if needed, but for now,
-      // just navigating to '/' is sufficient.
-    }
+    // Always scroll to the top of the page when Optimize Images is clicked
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNavLinkClick = (path: string) => {
