@@ -97,7 +97,7 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12">
+          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12 px-24 lg:px-0">
             {features.map((feature, index) => (
               <div
                 key={feature.name}
