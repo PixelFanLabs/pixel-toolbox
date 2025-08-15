@@ -170,7 +170,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Subtle indicator dots */}
-          <div className="flex justify-center mt-6 space-x-2 lg:hidden">
+          <div className="flex justify-center mt-6 space-x-2 desktop:hidden">
             {features.map((_, index) => (
               <div
                 key={index}
