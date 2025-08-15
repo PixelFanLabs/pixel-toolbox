@@ -29,6 +29,11 @@ const KofiModal: React.FC<KofiModalProps> = ({ isOpen, onClose }) => {
           className='border-none w-full h-[712px] bg-[#f9f9f9] p-1'
           title='pixelfan'
         ></iframe>
+        <div className="text-center py-2">
+          <a href="https://ko-fi.com/pixelfan" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-blue-500">
+            Visit my Ko-fi page
+          </a>
+        </div>
       </div>
     </div>
   );
