@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setPreviewIndex((prev) => (prev + 1) % features.length);
-    }, 3000); // Change every 3 seconds
+    }, 8000); // Change every 8 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -82,11 +82,11 @@ const Hero: React.FC = () => {
       />
       <div className="absolute inset-0 bg-black/40"></div>
       
-      <div className="relative z-10 w-full lg:max-w-6xl mx-auto px-4 sm:px-6 flex flex-col h-full pt-24">
+      <div className="relative z-10 w-full lg:max-w-6xl mx-auto flex flex-col h-full pt-24">
         {/* Tagline */}
         <div className="flex-1 flex items-center justify-center">
           <div 
-            className="text-center transition-opacity duration-300 ease-out"
+            className="text-center transition-opacity duration-300 ease-out px-4 sm:px-6"
             style={{ opacity: taglineOpacity }}
           >
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-white leading-tight tracking-wide">
@@ -97,7 +97,8 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12 px-24 lg:px-0">
+          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12">
+            <div className="shrink-0 w-[calc(50%-128px)] lg:w-0"></div>
             {features.map((feature, index) => (
               <div
                 key={feature.name}
@@ -134,13 +135,14 @@ const Hero: React.FC = () => {
                         {feature.name}
                       </h3>
                     </div>
-                    <p className="text-gray-200 text-sm leading-relaxed">
+                    <p className="text-gray-200 text-sm leading-relaxed pb-4">
                       {feature.description}
                     </p>
                   </div>
                 </div>
               </div>
             ))}
+            <div className="shrink-0 w-[calc(50%-128px)] lg:w-0"></div>
           </div>
 
           {/* Subtle indicator dots */}
@@ -148,7 +150,8 @@ const Hero: React.FC = () => {
             {features.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                onClick={() => setPreviewIndex(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
                   previewIndex === index ? 'bg-white/80 scale-125' : 'bg-white/40'
                 }`}
               />
