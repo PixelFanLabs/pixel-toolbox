@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Zap, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {}
 
@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = () => {
           {/* Logo and Title */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
-              <Zap className="w-6 h-6 text-white" strokeWidth={1.5} />
+              <img src="/images/logo-blue-pixeltookbox.png" alt="PixelToolbox Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <Link to="/" className="text-3xl font-extrabold text-white font-poppins" onClick={() => handleNavLinkClick('/')}>PixelToolbox</Link>
@@ -94,7 +94,12 @@ const Header: React.FC<HeaderProps> = () => {
 
           {/* Hamburger Menu Button */}
           <div className="lg:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="text-white"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+            >
               {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
@@ -102,7 +107,7 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`absolute top-full left-0 w-full bg-slate-900 lg:hidden transition-all duration-300 ease-in-out ${
+      <div id="mobile-menu" className={`absolute top-full left-0 w-full bg-slate-900 lg:hidden transition-all duration-300 ease-in-out ${
         isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
       } overflow-hidden`}>
         <nav className="py-4">

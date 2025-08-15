@@ -2,9 +2,9 @@ import React from 'react';
 
 const FAQPage: React.FC = () => {
   return (
-    <section id="faq" className="py-16 bg-gray-100">
+    <section id="faq" className="pt-24 pb-16 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center my-12">Frequently Asked Questions</h2>
         <div className="space-y-8">
           <div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Is PixelToolbox secure?</h3>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, ChevronDown, ChevronUp, Zap } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { ProcessingSettings, ExportPreset } from '../types';
 import { exportPresets } from '../config/settings';
 import ImageProcessingSettings from './ImageProcessingSettings';
