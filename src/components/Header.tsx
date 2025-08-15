@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
-interface HeaderProps {}
+interface HeaderProps {
+  openKofiModal: () => void;
+}
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -79,16 +81,15 @@ const Header: React.FC<HeaderProps> = () => {
                 `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
               </li>
               <li>
-                <a
-                  href="https://ko-fi.com/P5P41JNX62"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={openKofiModal}
                   className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
                 >
                   <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
                   Buy me a coffee
-                </a>
+                </button>
               </li>
+              
             </ul>
           </nav>
 
@@ -131,16 +132,15 @@ const Header: React.FC<HeaderProps> = () => {
               `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
             </li>
             <li>
-              <a
-                href="https://ko-fi.com/P5P41JNX62"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={openKofiModal}
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
               >
                 <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
                 Buy me a coffee
-              </a>
+              </button>
             </li>
+            
           </ul>
         </nav>
       </div>

@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import OptimizeImagesSection from './components/OptimizeImagesSection';
 import AboutPage from './pages/AboutPage';
 import FAQPage from './pages/FAQPage';
+import KofiModal from './components/KofiModal';
 
 function App() {
+  const [isKofiModalOpen, setIsKofiModalOpen] = useState(false);
+
+  const openKofiModal = () => setIsKofiModalOpen(true);
+  const closeKofiModal = () => setIsKofiModalOpen(false);
+
   return (
     <Router>
       <div id="top" className="min-h-screen flex flex-col">
-        <Header />
+        <Header openKofiModal={openKofiModal} />
 
         <main className="flex-grow">
           <Routes>
@@ -31,6 +37,8 @@ function App() {
             <p>© 2025 PixelToolbox. A free web service created by PixelFanLabs.</p>
           </div>
         </footer>
+
+        <KofiModal isOpen={isKofiModalOpen} onClose={closeKofiModal} />
       </div>
     </Router>
   );
