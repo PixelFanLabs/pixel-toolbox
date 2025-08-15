@@ -103,12 +103,16 @@ const Hero: React.FC = () => {
               <div
                 key={feature.name}
                 ref={(el) => (cardRefs.current[index] = el)}
-                className="group [perspective:1000px] h-48 w-64 snap-center shrink-0"
+                className="group [perspective:1000px] h-52 w-64 snap-center shrink-0"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <div
-                  className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] lg:[transform:rotateY(0)] lg:group-hover:[transform:rotateY(180deg)]`}>
+                  className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] ${
+                    (previewIndex === index && hoveredCard === null) || hoveredCard === index
+                      ? 'lg:[transform:rotateY(180deg)]'
+                      : 'lg:[transform:rotateY(0deg)]'
+                  }`}>
                   {/* Front */}
                   <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center [backface-visibility:hidden]">
                     <div className="mb-3">
@@ -135,7 +139,7 @@ const Hero: React.FC = () => {
                         {feature.name}
                       </h3>
                     </div>
-                    <p className="text-gray-200 text-sm leading-relaxed pb-4">
+                    <p className="text-gray-200 text-sm leading-relaxed pb-8">
                       {feature.description}
                     </p>
                   </div>
