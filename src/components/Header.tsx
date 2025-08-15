@@ -20,6 +20,7 @@ const Header: React.FC<HeaderProps> = () => {
 
     if (isHomePage) {
       window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Call once on mount to set initial state
     } else {
       setScrolled(true);
     }

@@ -29,7 +29,9 @@ const features = [
 ];
 
 const Hero: React.FC = () => {
-  const [taglineOpacity, setTaglineOpacity] = useState(1);
+  const [taglineOpacity, setTaglineOpacity] = useState(0);
+  const [taglineScale, setTaglineScale] = useState(0.8);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // To store timeout ID
   const [previewIndex, setPreviewIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -40,19 +42,36 @@ const Hero: React.FC = () => {
       const heroHeight = window.innerHeight * 0.55; // 55vh
       const fadeStart = heroHeight * 0.3;
       const fadeEnd = heroHeight * 0.8;
-      
-      if (scrollY < fadeStart) {
-        setTaglineOpacity(1);
-      } else if (scrollY > fadeEnd) {
-        setTaglineOpacity(0);
-      } else {
-        const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-        setTaglineOpacity(1 - progress);
+      const delay = 200; // Slight delay in milliseconds
+
+      // Clear any existing timeout to prevent multiple animations
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
+
+      timeoutRef.current = setTimeout(() => {
+        if (scrollY < fadeStart) {
+          setTaglineOpacity(1);
+          setTaglineScale(1);
+        } else if (scrollY > fadeEnd) {
+          setTaglineOpacity(0);
+          setTaglineScale(0.8);
+        } else {
+          const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+          setTaglineOpacity(1 - progress);
+          setTaglineScale(1 - (progress * 0.2)); // Scale from 1 to 0.8
+        }
+      }, delay);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll(); // Call once on mount to set initial state
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -86,8 +105,8 @@ const Hero: React.FC = () => {
         {/* Tagline */}
         <div className="flex-1 flex items-center justify-center">
           <div 
-            className="text-center transition-opacity duration-300 ease-out px-4 sm:px-6"
-            style={{ opacity: taglineOpacity }}
+            className="text-center transition-opacity transition-transform duration-700 ease-out px-4 sm:px-6"
+            style={{ opacity: taglineOpacity, transform: `scale(${taglineScale})` }}
           >
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-white leading-tight tracking-wide">
               Your complete toolkit for <span className="font-medium text-blue-300">web-ready images</span>
