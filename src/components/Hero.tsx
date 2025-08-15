@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
   }, [previewIndex]);
 
   return (
-    <div className="relative bg-transparent overflow-hidden h-[55vh] flex flex-col">
+    <div className="relative bg-blue-800 overflow-hidden h-[55vh] flex flex-col">
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"

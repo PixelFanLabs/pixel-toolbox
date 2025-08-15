@@ -60,13 +60,22 @@ const Header: React.FC<HeaderProps> = () => {
           <nav className="hidden lg:flex">
             <ul className="flex items-center space-x-6">
               <li>
-                <Link to="/" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
+                <Link to="/" className={`
+                  ${location.pathname === '/' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                  hover:text-blue-100 transition-colors font-medium
+                `} onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
               </li>
               <li>
-                <Link to="/about" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={() => handleNavLinkClick('/about')}>About</Link>
+                <Link to="/about" className={`
+                  ${location.pathname === '/about' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                  hover:text-blue-100 transition-colors font-medium
+                `} onClick={() => handleNavLinkClick('/about')}>About</Link>
               </li>
               <li>
-                <Link to="/faq" className="text-blue-300 hover:text-blue-100 transition-colors font-medium" onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
+                <Link to="/faq" className={`
+                  ${location.pathname === '/faq' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                  hover:text-blue-100 transition-colors font-medium
+                `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
               </li>
               <li>
                 <a
@@ -98,13 +107,22 @@ const Header: React.FC<HeaderProps> = () => {
         <nav className="py-4">
           <ul className="flex flex-col items-center space-y-4">
             <li>
-              <Link to="/" className="text-white hover:text-blue-300 transition-colors font-medium" onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
+              <Link to="/" className={`
+                ${location.pathname === '/' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                hover:text-blue-300 transition-colors font-medium
+              `} onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
             </li>
             <li>
-              <Link to="/about" className="text-white hover:text-blue-300 transition-colors font-medium" onClick={() => handleNavLinkClick('/about')}>About</Link>
+              <Link to="/about" className={`
+                ${location.pathname === '/about' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                hover:text-blue-300 transition-colors font-medium
+              `} onClick={() => handleNavLinkClick('/about')}>About</Link>
             </li>
             <li>
-              <Link to="/faq" className="text-white hover:text-blue-300 transition-colors font-medium" onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
+              <Link to="/faq" className={`
+                ${location.pathname === '/faq' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                hover:text-blue-300 transition-colors font-medium
+              `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
             </li>
             <li>
               <a
