@@ -49,8 +49,8 @@ const Header: React.FC<HeaderProps> = () => {
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
-              <img src="/images/logo-blue-pixeltookbox.png" alt="PixelToolbox Logo" className="w-full h-full object-contain" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center">
+              <img src="/images/logo-pixeltookbox.png" alt="PixelToolbox Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <Link to="/" className="text-3xl font-extrabold text-white font-poppins" onClick={() => handleNavLinkClick('/')}>PixelToolbox</Link>
