@@ -64,7 +64,7 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 1168) {
       cardRefs.current[previewIndex]?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -97,8 +97,8 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 lg:justify-center lg:overflow-visible lg:snap-none lg:py-0 gap-6 lg:gap-12">
-            <div className="shrink-0 w-[calc(50%-128px)] lg:w-0"></div>
+          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 desktop:justify-center desktop:overflow-visible desktop:snap-none desktop:py-0 gap-6 desktop:gap-12">
+            <div className="shrink-0 w-[calc(50%-128px)] desktop:w-0"></div>
             {features.map((feature, index) => (
               <div
                 key={feature.name}
@@ -110,8 +110,8 @@ const Hero: React.FC = () => {
                 <div
                   className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] ${
                     (previewIndex === index && hoveredCard === null) || hoveredCard === index
-                      ? 'lg:[transform:rotateY(180deg)]'
-                      : 'lg:[transform:rotateY(0deg)]'
+                      ? 'desktop:[transform:rotateY(180deg)]'
+                      : 'desktop:[transform:rotateY(0deg)]'
                   }`}>
                   {/* Front */}
                   <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center [backface-visibility:hidden]">
@@ -146,7 +146,7 @@ const Hero: React.FC = () => {
                 </div>
               </div>
             ))}
-            <div className="shrink-0 w-[calc(50%-128px)] lg:w-0"></div>
+            <div className="shrink-0 w-[calc(50%-128px)] desktop:w-0"></div>
           </div>
 
           {/* Subtle indicator dots */}
