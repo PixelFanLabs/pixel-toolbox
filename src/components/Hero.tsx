@@ -122,9 +122,10 @@ const Hero: React.FC = () => {
               <div
                 key={feature.name}
                 ref={(el) => (cardRefs.current[index] = el)}
-                className="group [perspective:1000px] h-52 w-64 snap-center shrink-0"
+                className="group [perspective:1000px] h-52 w-64 snap-center shrink-0 cursor-pointer"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => setPreviewIndex(index)}
               >
                 <div
                   className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] ${

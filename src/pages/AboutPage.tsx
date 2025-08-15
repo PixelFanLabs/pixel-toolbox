@@ -18,6 +18,13 @@ const AboutPage: React.FC = () => {
           . We believe that everyone should have access to high-quality, easy-to-use tools to make their digital lives easier.
         </p>
 
+        <div className="text-left mt-8">
+          <h3 className="text-2xl font-semibold mb-4 text-gray-900">Why We Built This</h3>
+          <p className="text-lg text-gray-600 max-w-3xl">
+            We got tired of juggling multiple tools to get images ready for websites. First, you need to find a format converter, then a resizer, and then an optimizer. We wanted to create a seamless workflow that takes you from raw image to web-ready asset in seconds. That's why we built PixelToolbox with batch processing and smart defaults, so you can focus on your creative work, not on the technical details.
+          </p>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-8 my-8">
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h3 className="text-2xl font-semibold mb-3 text-gray-800">Our Mission</h3>
@@ -31,13 +38,6 @@ const AboutPage: React.FC = () => {
               In an age where data privacy is more important than ever, we want to be clear: **we do not save your data**. All image processing happens directly in your browser. Your files are never uploaded to our servers. This client-side approach ensures that your images remain private and secure, always under your control.
             </p>
           </div>
-        </div>
-
-        <div className="text-center mt-8">
-          <h3 className="text-2xl font-semibold mb-4 text-gray-900">Why We Built This</h3>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            We got tired of juggling multiple tools to get images ready for websites. First, you need to find a format converter, then a resizer, and then an optimizer. We wanted to create a seamless workflow that takes you from raw image to web-ready asset in seconds. That's why we built PixelToolbox with batch processing and smart defaults, so you can focus on your creative work, not on the technical details.
-          </p>
         </div>
       </div>
     </section>
