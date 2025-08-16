@@ -42,7 +42,7 @@ const Hero: React.FC = () => {
       const heroHeight = window.innerHeight * 0.55; // 55vh
       const fadeStart = heroHeight * 0.3;
       const fadeEnd = heroHeight * 0.8;
-      const delay = 200; // Slight delay in milliseconds
+      const delay = 500; // Slight delay in milliseconds
 
       // Clear any existing timeout to prevent multiple animations
       if (timeoutRef.current) {
@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setPreviewIndex((prev) => (prev + 1) % features.length);
-    }, 8000); // Change every 8 seconds
+    }, 5000); // Change every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
