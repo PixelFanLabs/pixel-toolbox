@@ -5,148 +5,179 @@ const features = [
   {
     name: 'Secure & Private',
     description: 'Your photos are processed securely in your browser, so no data ever leaves your device. Source code is available on GitHub for independent review.',
-    icon: <Shield size={48} strokeWidth={1.5} className="text-blue-500" />,
+    icon: <Shield size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-blue-300',
   },
   {
     name: 'Simplified Workflow',
     description: 'Stop researching image formats and juggling multiple tools. Our all-in-one toolkit eliminates the guesswork, delivering web-ready images instantly.',
-    icon: <Sparkles size={48} strokeWidth={1.5} className="text-blue-500" />,
+    icon: <Sparkles size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-yellow-300',
   },
   {
-    name: 'Faster Workflows',
+    name: 'Faster Processing',
     description: 'Our lightning-fast processing optimizes your images instantly, delivering files that perform flawlessly in any application.',
-    icon: <Timer size={48} strokeWidth={1.5} className="text-blue-500" />,
+    icon: <Timer size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-green-300',
   },
   {
     name: 'Free & Accessible',
     description: 'PixelToolbox is a free service from PixelFanLabs, dedicated to making powerful and simplified tools accessible to everyone.',
-    icon: <DollarSign size={48} strokeWidth={1.5} className="text-blue-500" />,
+    icon: <DollarSign size={32} strokeWidth={1.5} className="text-white/90" />,
+    color: 'text-purple-300',
   },
 ];
 
 const Hero: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const scrollLeft = scrollContainerRef.current.scrollLeft;
-      const cardElements = Array.from(scrollContainerRef.current.children) as HTMLElement[];
-      const containerWidth = scrollContainerRef.current.offsetWidth;
-
-      cardElements.forEach((card, index) => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const viewportCenter = containerWidth / 2;
-        const distance = Math.abs(viewportCenter - cardCenter);
-
-        // Normalize distance to a 0-1 range, where 0 is at center, 1 is at edge
-        const normalizedDistance = Math.min(1, distance / (containerWidth / 2 + cardRect.width / 2));
-
-        // Apply scale and opacity based on normalized distance
-        const scale = 1 - (normalizedDistance * 0.1); // Scale down by up to 10%
-        const opacity = 1 - (normalizedDistance * 0.3); // Fade out by up to 30%
-
-        card.style.transform = `scale(${scale})`;
-        card.style.opacity = `${opacity}`;
-      });
-
-      // Update active dot
-      const firstVisibleCardIndex = cardElements.findIndex(card => {
-        const rect = card.getBoundingClientRect();
-        return rect.left >= 0 && rect.left < containerWidth;
-      });
-      if (firstVisibleCardIndex !== -1) {
-        setActiveIndex(firstVisibleCardIndex);
-      }
-    }
-  };
+  const [taglineOpacity, setTaglineOpacity] = useState(0);
+  const [taglineScale, setTaglineScale] = useState(0.8);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // To store timeout ID
+  const [previewIndex, setPreviewIndex] = useState(0);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll);
-      // Initial call to set styles
-      handleScroll();
-      return () => {
-        container.removeEventListener('scroll', handleScroll);
-      };
-    }
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroHeight = window.innerHeight * 0.55; // 55vh
+      const fadeStart = heroHeight * 0.3;
+      const fadeEnd = heroHeight * 0.8;
+      const delay = 200; // Slight delay in milliseconds
+
+      // Clear any existing timeout to prevent multiple animations
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        if (scrollY < fadeStart) {
+          setTaglineOpacity(1);
+          setTaglineScale(1);
+        } else if (scrollY > fadeEnd) {
+          setTaglineOpacity(0);
+          setTaglineScale(0.8);
+        } else {
+          const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+          setTaglineOpacity(1 - progress);
+          setTaglineScale(1 - (progress * 0.2)); // Scale from 1 to 0.8
+        }
+      }, delay);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once on mount to set initial state
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPreviewIndex((prev) => (prev + 1) % features.length);
+    }, 8000); // Change every 8 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 1168) {
+      cardRefs.current[previewIndex]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [previewIndex]);
+
   return (
-    <div className="relative bg-transparent overflow-hidden h-[55vh]">
+    <div className="relative bg-blue-800 overflow-hidden h-[55vh] flex flex-col">
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"
         alt="Background"
       />
-      <div className="absolute inset-0 bg-black/30"></div> {/* Darkening overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20 flex flex-col h-full pb-8">
-        <div className="mb-auto">
-          <div className="text-xl text-white text-center mb-8 drop-shadow-lg">
-            Your complete toolkit for <span className="text-blue-300">web-ready images</span>
+      <div className="absolute inset-0 bg-black/40"></div>
+      
+      <div className="relative z-10 w-full lg:max-w-6xl mx-auto flex flex-col h-full pt-24">
+        {/* Tagline */}
+        <div className="flex-1 flex items-center justify-center">
+          <div 
+            className="text-center transition-opacity transition-transform duration-700 ease-out px-4 sm:px-6"
+            style={{ opacity: taglineOpacity, transform: `scale(${taglineScale})` }}
+          >
+            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-white leading-tight tracking-wide">
+              Your complete toolkit for <span className="font-medium text-blue-300">web-ready images</span>
+            </h1>
           </div>
         </div>
 
-        <div className="mt-auto">
-          <div className="lg:hidden">
-            <div ref={scrollContainerRef} className="flex overflow-x-auto space-x-8 pb-4 no-scrollbar">
-              {features.map((feature) => (
-                <div key={feature.name} className="group relative flex-shrink-0 w-80 bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl transition-all duration-300 overflow-hidden">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <div className="flex items-center justify-center h-12 w-12 rounded-md">
-                        {feature.icon}
-                      </div>
+        {/* Feature Cards */}
+        <div className="pb-8">
+          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 desktop:justify-center desktop:overflow-visible desktop:snap-none desktop:py-0 gap-6 desktop:gap-12">
+            <div className="shrink-0 w-[calc(50%-128px)] desktop:w-0"></div>
+            {features.map((feature, index) => (
+              <div
+                key={feature.name}
+                ref={(el) => (cardRefs.current[index] = el)}
+                className="group [perspective:1000px] h-52 w-64 snap-center shrink-0"
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <div
+                  className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] [transform:rotateY(180deg)] ${
+                    (previewIndex === index && hoveredCard === null) || hoveredCard === index
+                      ? 'desktop:[transform:rotateY(180deg)]'
+                      : 'desktop:[transform:rotateY(0deg)]'
+                  }`}>
+                  {/* Front */}
+                  <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center [backface-visibility:hidden]">
+                    <div className="mb-3">
+                      {React.cloneElement(feature.icon, {
+                        size: 32,
+                        className: "text-white/90",
+                      })}
                     </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
-                    </div>
+                    <h3 className="text-sm lg:text-base font-medium text-white/80">
+                      {feature.name}
+                    </h3>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 mt-4 pt-2 max-h-screen opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/70 backdrop-blur-md p-6 transform translate-y-full group-hover:translate-y-0">
-                    <p className="text-base text-gray-800">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-center mt-4">
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  className={`h-2 w-2 rounded-full mx-1 ${activeIndex === index ? 'bg-blue-600' : 'bg-gray-300'}`}
-                  onClick={() => {
-                    const container = scrollContainerRef.current;
-                    if (container) {
-                      const cardWidth = container.scrollWidth / features.length;
-                      container.scrollTo({
-                        left: cardWidth * index,
-                        behavior: 'smooth',
-                      });
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
 
-          <div className="hidden lg:grid lg:grid-cols-4 lg:gap-8">
-            {features.map((feature) => (
-              <div key={feature.name} className="group relative bg-white/70 backdrop-blur-md rounded-lg p-6 shadow-xl transition-all duration-300 overflow-hidden">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-md">
-                      {feature.icon}
+                  {/* Back */}
+                  <div className="absolute inset-0 w-full h-full bg-black/20 backdrop-blur-md rounded-xl p-6 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                    <div className="flex flex-row items-center mb-4">
+                      <div className="mr-4">
+                        {React.cloneElement(feature.icon, {
+                          size: 32,
+                          className: "text-white/90",
+                        })}
+                      </div>
+                      <h3 className="text-sm lg:text-base font-medium text-white/80">
+                        {feature.name}
+                      </h3>
                     </div>
+                    <p className="text-gray-200 text-sm leading-relaxed pb-8">
+                      {feature.description}
+                    </p>
                   </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900">{feature.name}</h3>
-                  </div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 mt-4 pt-2 max-h-screen opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/70 backdrop-blur-md p-6 transform translate-y-full group-hover:translate-y-0">
-                  <p className="text-base text-gray-800">{feature.description}</p>
                 </div>
               </div>
+            ))}
+            <div className="shrink-0 w-[calc(50%-128px)] desktop:w-0"></div>
+          </div>
+
+          {/* Subtle indicator dots */}
+          <div className="flex justify-center mt-6 space-x-2 lg:hidden">
+            {features.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setPreviewIndex(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  previewIndex === index ? 'bg-white/80 scale-125' : 'bg-white/40'
+                }`}
+              />
             ))}
           </div>
         </div>
