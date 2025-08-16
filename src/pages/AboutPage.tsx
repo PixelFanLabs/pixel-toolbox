@@ -59,7 +59,7 @@ const AboutPage: React.FC = () => {
         <div className="mb-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl transform -rotate-3"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform -rotate-3"></div>
               <img
                 src="/images/photo-design-pixeltoolbox.avif"
                 alt="Visual representing the meaning behind PixelToolbox"
@@ -77,7 +77,7 @@ const AboutPage: React.FC = () => {
                 <p>
                   All image processing happens directly in your browser. Your files are never uploaded to our servers. This client-side approach ensures your images remain private and secure, always under your control.
                 </p>
-                <p className="text-green-700 font-medium">
+                <p className="text-blue-700 font-medium">
                   For complete transparency, the source code is available on GitHub for independent review.
                 </p>
               </div>
@@ -90,7 +90,7 @@ const AboutPage: React.FC = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-12">
             Our Values
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center group">
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
                 <Shield className="w-8 h-8 text-blue-600" />
@@ -107,14 +107,7 @@ const AboutPage: React.FC = () => {
             </div>
             <div className="text-center group">
               <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-                <Code className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">Open Source</h3>
-              <p className="text-slate-600">Transparent code you can trust and review.</p>
-            </div>
-            <div className="text-center group">
-              <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 transition-colors">
-                <Users className="w-8 h-8 text-orange-600" />
+                <Users className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">User Focused</h3>
               <p className="text-slate-600">Built for creators, by creators.</p>

@@ -65,9 +65,6 @@ const FAQPage: React.FC = () => {
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6">
-            <HelpCircle className="w-10 h-10 text-white" />
-          </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
             Frequently Asked <span className="text-blue-600">Questions</span>
           </h1>
@@ -99,34 +96,6 @@ const FAQPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Categories Overview */}
-        {!searchTerm && (
-          <div className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 text-center mb-8">
-              Browse by Category
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories.map((category, index) => {
-                const categoryItems = faqData.filter(item => item.category === category);
-                const categoryIcon = categoryItems[0]?.icon;
-                return (
-                  <div key={category} className="group">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                      <div className="flex items-center space-x-3 mb-3">
-                        {categoryIcon}
-                        <h3 className="text-lg font-semibold text-slate-900">{category}</h3>
-                      </div>
-                      <p className="text-slate-600 text-sm">
-                        {categoryItems.length} question{categoryItems.length !== 1 ? 's' : ''}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
         {/* FAQ Items */}
         <div className="max-w-4xl mx-auto">
           <div className="space-y-4">
@@ -152,15 +121,7 @@ const FAQPage: React.FC = () => {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-4 flex-1 min-w-0">
-                          <div className="flex-shrink-0 mt-1">
-                            {item.icon}
-                          </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center space-x-3 mb-2">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
-                                {item.category}
-                              </span>
-                            </div>
                             <h3 className="text-lg md:text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
                               {item.question}
                             </h3>
@@ -179,7 +140,7 @@ const FAQPage: React.FC = () => {
                     <div className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
                       <div className="px-6 pb-6">
                         <div className="pl-10">
-                          <div className="border-l-4 border-blue-200 pl-6">
+                          <div>
                             <p className="text-slate-700 leading-relaxed text-lg">
                               {item.answer}
                             </p>
@@ -197,16 +158,16 @@ const FAQPage: React.FC = () => {
         {/* Call to Action */}
         <div className="mt-20 text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Still have questions?
+            Ready to optimize your images?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Can't find what you're looking for? Try PixelToolbox and see how easy image optimization can be.
+            Join thousands of creators who trust PixelToolbox for their image optimization needs.
           </p>
           <a
             href="/#optimize"
             className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-full font-semibold text-lg hover:bg-blue-50 transition-colors shadow-lg"
           >
-            Start Optimizing Images
+            Start Optimizing Now
           </a>
         </div>
       </div>
