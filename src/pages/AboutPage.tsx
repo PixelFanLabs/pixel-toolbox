@@ -1,39 +1,137 @@
 import React from 'react';
+import { Shield, Heart, Code, Users } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
   return (
-    <section id="about" className="pt-24 pb-16 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center my-8">About PixelToolbox</h2>
-        <p className="text-lg mb-4 text-center text-gray-600 max-w-2xl mx-auto font-bold">
-          PixelToolbox is a free service brought to you by{' '}
-          <a
-            href="https://pixelfanlabs.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            PixelFanLabs
-          </a>
-          . We believe that everyone should have access to high-quality, easy-to-use tools to make their digital lives easier.
-        </p>
-
-        <div className="mt-8">
-          <h3 className="text-2xl font-semibold mb-4 text-gray-900 text-center">Why We Built This</h3>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            We got tired of juggling multiple tools to get images ready for websites. First, you need to find a format converter, then a resizer, and then an optimizer. We wanted to create a seamless workflow that takes you from raw image to web-ready asset in seconds. That's why we built PixelToolbox with batch processing and smart defaults, so you can focus on your creative work, not on the technical details.
+    <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+            About <span className="text-blue-600">PixelToolbox</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            A free service brought to you by{' '}
+            <a
+              href="https://pixelfanlabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+            >
+              PixelFanLabs
+            </a>
           </p>
         </div>
 
-        {/* Your Privacy is Our Priority section, moved and restyled */}
-        <div className="my-8">
-          <h3 className="text-2xl font-semibold mb-4 text-gray-900 text-center">Your Privacy is Our Priority</h3>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            In an age where data privacy is more important than ever, we want to be clear: <strong>we do not save your data.</strong> All image processing happens directly in your browser. Your files are never uploaded to our servers. This client-side approach ensures that your images remain private and secure, always under your control.
+        {/* Why We Built This Section */}
+        <div className="mb-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                Why We Built This
+              </h2>
+              <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  Juggling multiple tools to get images ready for the web is a hassle. You're left researching the right resolution for an avatar, the best format for a logo, and how to make your photos load faster.
+                </p>
+                <p>
+                  Then, you have to find a format converter, a resizer, and an optimizer. We were tired of this workflow, and we believe everyone should have access to high-quality, easy-to-use tools to make their digital lives easier.
+                </p>
+                <p className="text-blue-700 font-medium">
+                  That's why we built PixelToolbox—to take you from raw image to web-ready asset in seconds. With batch processing and smart defaults, PixelToolbox lets you focus on your creative work, not the technical details.
+                </p>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
+                <img
+                  src="/images/photo-fustrated-pixeltoolbox.avif"
+                  alt="Visual representing frustration with multiple tools"
+                  className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Privacy Section */}
+        <div className="mb-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform -rotate-3"></div>
+              <img
+                src="/images/photo-design-pixeltoolbox.avif"
+                alt="Visual representing the meaning behind PixelToolbox"
+                className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
+              />
+            </div>
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                Your Privacy is Our Priority
+              </h2>
+              <div className="space-y-6 text-lg text-slate-700 leading-relaxed">
+                <p>
+                  In an age where data privacy is more important than ever, we want to be clear: <strong className="text-slate-900">we do not save your data.</strong>
+                </p>
+                <p>
+                  All image processing happens directly in your browser. Your files are never uploaded to our servers. This client-side approach ensures your images remain private and secure, always under your control.
+                </p>
+                <p className="text-blue-700 font-medium">
+                  For complete transparency, the source code is available on GitHub for independent review.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Values Grid */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-12">
+            Our Values
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
+                <Shield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Privacy First</h3>
+              <p className="text-slate-600">Your data stays on your device, always.</p>
+            </div>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
+                <Heart className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">Free Forever</h3>
+              <p className="text-slate-600">Quality tools shouldn't cost a fortune.</p>
+            </div>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
+                <Users className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">User Focused</h3>
+              <p className="text-slate-600">Built for creators, by creators.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to optimize your images?
+          </h2>
+          <p className="text-xl mb-8 text-blue-100">
+            Join thousands of creators who trust PixelToolbox for their image optimization needs.
           </p>
+          <a
+            href="/#optimize"
+            className="inline-flex items-center px-8 py-4 bg-white text-blue-600 rounded-full font-semibold text-lg hover:bg-blue-50 transition-colors shadow-lg"
+          >
+            Start Optimizing Now
+          </a>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

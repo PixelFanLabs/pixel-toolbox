@@ -35,6 +35,7 @@ const Hero: React.FC = () => {
   const [previewIndex, setPreviewIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,11 +84,15 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth < 1168) {
-      cardRefs.current[previewIndex]?.scrollIntoView({
+    if (window.innerWidth < 1168 && carouselRef.current && cardRefs.current[previewIndex]) {
+      const cardElement = cardRefs.current[previewIndex];
+      const carouselElement = carouselRef.current;
+
+      const scrollLeft = cardElement.offsetLeft - (carouselElement.offsetWidth / 2) + (cardElement.offsetWidth / 2);
+
+      carouselElement.scrollTo({
+        left: scrollLeft,
         behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
       });
     }
   }, [previewIndex]);
@@ -97,6 +102,8 @@ const Hero: React.FC = () => {
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"
+        srcSet="/images/hero-image-pixeltoolbox-small.avif 600w, /images/hero-image-pixeltoolbox-medium.avif 1200w, /images/hero-image-pixeltoolbox.avif 1920w"
+        sizes="100vw"
         alt="Background"
       />
       <div className="absolute inset-0 bg-black/40"></div>
@@ -116,7 +123,7 @@ const Hero: React.FC = () => {
 
         {/* Feature Cards */}
         <div className="pb-8">
-          <div className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 desktop:justify-center desktop:overflow-visible desktop:snap-none desktop:py-0 gap-6 desktop:gap-12">
+          <div ref={carouselRef} className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 desktop:justify-center desktop:overflow-visible desktop:snap-none desktop:py-0 gap-6 desktop:gap-12">
             <div className="shrink-0 w-[calc(50%-128px)] desktop:w-0"></div>
             {features.map((feature, index) => (
               <div
