@@ -80,12 +80,12 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
               </li>
               <li>
                 <button
-                  onClick={openKofiModal}
+ onClick={openKofiModal}
                   className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
                 >
                   <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
-                  Buy me a coffee
-                </button>
+ Support Me
+ </button>
               </li>
               
             </ul>
@@ -131,12 +131,12 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
             </li>
             <li>
               <button
-                onClick={openKofiModal}
+ onClick={openKofiModal}
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
               >
                 <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
-                Buy me a coffee
-              </button>
+ Support Me
+ </button>
             </li>
             
           </ul>

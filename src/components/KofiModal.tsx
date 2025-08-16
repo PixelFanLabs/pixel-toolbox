@@ -10,11 +10,11 @@ const KofiModal: React.FC<KofiModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+      className="fixed inset-0 bg-black bg-opacity-50 z-50"
       onClick={onClose}
     >
       <div 
-        className="relative bg-white rounded-lg shadow-xl w-full max-w-md p-4"
+        className="fixed bottom-4 left-4 bg-white rounded-lg shadow-xl p-4"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
       >
         <button 
