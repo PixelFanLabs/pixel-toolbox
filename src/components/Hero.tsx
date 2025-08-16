@@ -31,7 +31,7 @@ const features = [
 const Hero: React.FC = () => {
   const [taglineOpacity, setTaglineOpacity] = useState(0);
   const [taglineScale, setTaglineScale] = useState(0.8);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null); // To store timeout ID
+  const timeoutRef = useRef<number | null>(null); // To store timeout ID
   const [previewIndex, setPreviewIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
