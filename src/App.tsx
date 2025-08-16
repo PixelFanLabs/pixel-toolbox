@@ -25,7 +25,8 @@ function App() {
           'type': 'floating-chat',
           'floating-chat.donateButton.text': 'Support Me',
           'floating-chat.donateButton.background-color': '#805ad5', // Purple color
-          'floating-chat.donateButton.text-color': '#fff'
+          'floating-chat.donateButton.text-color': '#fff',
+
         });
       }
     };
