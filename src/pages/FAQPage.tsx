@@ -116,7 +116,7 @@ const FAQPage: React.FC = () => {
                     className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 hover:border-blue-300 transition-all duration-300 overflow-hidden group"
                   >
                     <button
-                      className="w-full text-left p-6 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
+                      className="w-full text-left p-6 focus:outline-none"
                       onClick={() => toggleItem(index)}
                     >
                       <div className="flex items-start justify-between">
