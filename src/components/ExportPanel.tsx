@@ -31,6 +31,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
   const averageCompression = calculateCompressionRatio(totalOriginalSize, totalProcessedSize);
 
   const downloadSingle = async (image: ImageFile) => {
+    // Disable individual download for srcset format
+    if (settings.format === 'srcset') {
+      console.warn('Individual download not available for srcset format. Please use "Download All".');
+      return;
+    }
     if (!image.processedUrl) return;
 
     try {
@@ -60,10 +65,19 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       const zip = new JSZip();
 
       for (const image of images) {
-        if (image.processedUrl) {
+        const baseFileName = image.file.name.split('.')[0];
+
+        if (settings.format === 'srcset' && image.processedResults) {
+          for (const result of image.processedResults) {
+            const response = await fetch(result.url);
+            const blob = await response.blob();
+            const fileName = `${baseFileName}${result.name || ''}.avif`; // e.g., image_small.avif
+            zip.file(fileName, blob);
+          }
+        } else if (image.processedUrl) {
           const response = await fetch(image.processedUrl);
           const blob = await response.blob();
-          const fileName = `${image.file.name.split('.')[0]}_optimized.${settings.format}`;
+          const fileName = `${baseFileName}_optimized.${settings.format}`;
           zip.file(fileName, blob);
         }
       }
@@ -71,11 +85,16 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       // Add metadata file
       const metadata = {
         exportedAt: new Date().toISOString(),
-        // selectedPreset is no longer passed directly, so we can't use it here
         settings: {
           format: settings.format,
           quality: settings.quality,
           optimization: settings.optimize,
+          // Add srcset dimensions if applicable
+          ...(settings.format === 'srcset' && {
+            srcsetSmallWidth: settings.srcsetSmallWidth,
+            srcsetMediumWidth: settings.srcsetMediumWidth,
+            srcsetLargeWidth: settings.srcsetLargeWidth,
+          }),
         },
         stats: {
           totalImages: images.length,
@@ -216,7 +235,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                 <div className="flex items-center space-x-4 min-w-0 flex-1">
                   <div className="w-16 h-16 bg-white rounded border border-slate-200 overflow-hidden flex-shrink-0">
                     <img
-                      src={image.processedUrl || image.originalUrl}
+                      src={settings.format === 'srcset' && image.processedResults ? image.processedResults[1]?.url || image.originalUrl : image.processedUrl || image.originalUrl}
                       alt={image.file.name}
                       className="w-full h-full object-contain"
                     />

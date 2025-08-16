@@ -48,20 +48,37 @@ const OptimizeImagesSection: React.FC = () => {
     setIsProcessing(true);
     setProcessingProgress(0);
     const startTime = Date.now();
-    const updatedImages = [...images];
+    const updatedImages: ImageFile[] = []; // Initialize as ImageFile[]
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
       try {
         const result = await processImage(image.file, settings);
-        updatedImages[i] = {
-          ...image,
-          processedUrl: result.url,
-          processedSize: result.size,
-        };
+
+        if (settings.format === 'srcset') {
+          const resultsArray = result as ProcessedImageResult[];
+          const totalSize = resultsArray.reduce((sum, r) => sum + r.size, 0);
+          updatedImages.push({
+            ...image,
+            processedResults: resultsArray,
+            processedSize: totalSize,
+            // processedUrl is not directly applicable for srcset, but keep it optional
+            // format will be 'srcset'
+          });
+        } else {
+          const singleResult = result as ProcessedImageResult;
+          updatedImages.push({
+            ...image,
+            processedUrl: singleResult.url,
+            processedSize: singleResult.size,
+            // format will be the selected format
+          });
+        }
         setProcessingProgress(((i + 1) / images.length) * 100);
       } catch (error) {
         console.error('Error processing image:', error);
+        // Handle error for individual image, perhaps mark it as failed
+        updatedImages.push({ ...image, processedUrl: undefined, processedSize: undefined }); // Mark as failed
       }
     }
 

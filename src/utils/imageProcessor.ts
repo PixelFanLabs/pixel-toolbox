@@ -1,21 +1,69 @@
 import { ProcessingSettings } from '../types';
+import { srcsetDimensions } from '../config/settings'; // Import srcsetDimensions
 
 export interface ProcessedImageResult {
   url: string;
   size: number;
   width: number;
   height: number;
+  name?: string; // Add name for srcset versions
 }
 
 export async function processImage(
   file: File,
   settings: ProcessingSettings
-): Promise<ProcessedImageResult> {
+): Promise<ProcessedImageResult | ProcessedImageResult[]> { // Changed return type
   return new Promise((resolve, reject) => {
     const img = new Image();
     
-    img.onload = () => {
+    img.onload = async () => { // Changed to async
       try {
+        if (settings.format === 'srcset') {
+          const originalAspectRatio = img.width / img.height;
+
+          const sizesToProcess = [
+            {
+              name: '_small',
+              width: settings.srcsetSmallWidth || srcsetDimensions.small,
+            },
+            {
+              name: '_medium',
+              width: settings.srcsetMediumWidth || srcsetDimensions.medium,
+            },
+            {
+              name: '_large',
+              width: settings.srcsetLargeWidth || srcsetDimensions.large,
+            },
+          ];
+
+          const results = await Promise.all(
+            sizesToProcess.map(async (sizeInfo) => {
+              const targetWidth = sizeInfo.width;
+              const targetHeight = Math.round(targetWidth / originalAspectRatio);
+
+              const blob = await resizeImageToDimensions(
+                img,
+                targetWidth,
+                targetHeight,
+                'avif', // Default to AVIF for srcset versions
+                settings.quality,
+                settings.optimize
+              );
+
+              return {
+                url: URL.createObjectURL(blob),
+                size: blob.size,
+                width: targetWidth,
+                height: targetHeight,
+                name: sizeInfo.name,
+              };
+            })
+          );
+          resolve(results);
+          return; // Exit after srcset processing
+        }
+
+        // Existing logic for other formats
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
@@ -159,4 +207,61 @@ function getMimeType(format: string): string {
     default:
       return 'image/png';
   }
+}
+
+async function resizeImageToDimensions(
+  img: HTMLImageElement,
+  targetWidth: number,
+  targetHeight: number,
+  format: string,
+  quality: number,
+  optimize: boolean
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+      reject(new Error('Could not get canvas context'));
+      return;
+    }
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    if (optimize) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+    }
+
+    const imgAspectRatio = img.width / img.height;
+    const canvasAspectRatio = targetWidth / targetHeight;
+
+    let sx = 0, sy = 0, sWidth = img.width, sHeight = img.height; // Source image
+    let dx = 0, dy = 0, dWidth = targetWidth, dHeight = targetHeight; // Destination canvas
+
+    if (imgAspectRatio > canvasAspectRatio) {
+      // Image is wider than canvas, fit by width, crop height
+      sHeight = img.width / canvasAspectRatio;
+      sy = (img.height - sHeight) / 2;
+    } else {
+      // Image is taller than canvas, fit by height, crop width
+      sWidth = img.height * canvasAspectRatio;
+      sx = (img.width - sWidth) / 2;
+    }
+
+    ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); // Use the 9-argument drawImage
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error('Failed to create blob during resize'));
+        }
+      },
+      getMimeType(format),
+      format === 'jpeg' ? quality / 100 : undefined
+    );
+  });
 }
