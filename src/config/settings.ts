@@ -101,7 +101,14 @@ export const formatOptions = [
   { value: 'png', label: 'PNG', description: 'Lossless quality, supports transparency' },
   { value: 'svg', label: 'SVG', description: 'Scalable vector graphics, ideal for logos and icons' },
   { value: 'avif', label: 'AVIF', description: 'Next-gen format with superior compression' },
+  { value: 'srcset', label: 'Srcset (Responsive)', description: 'Generate multiple sizes for responsive images' },
 ];
+
+export const srcsetDimensions = {
+  small: 600,
+  medium: 1200,
+  large: 1920, // Assuming original size is used for large
+};
 
 export const qualityPresets = [
   { value: 95, label: 'Maximum', description: 'Best quality, larger file size' },

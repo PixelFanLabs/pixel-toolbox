@@ -49,6 +49,9 @@ const AboutPage: React.FC = () => {
                   src="/images/photo-fustrated-pixeltoolbox.avif"
                   alt="Visual representing frustration with multiple tools"
                   className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
+                  loading="lazy"
+                  srcSet="/images/photo-fustrated-pixeltoolbox-small.avif 600w, /images/photo-fustrated-pixeltoolbox-medium.avif 1200w, /images/photo-fustrated-pixeltoolbox.avif 2000w"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             </div>
@@ -64,6 +67,9 @@ const AboutPage: React.FC = () => {
                 src="/images/photo-design-pixeltoolbox.avif"
                 alt="Visual representing the meaning behind PixelToolbox"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
+                loading="lazy"
+                srcSet="/images/photo-design-pixeltoolbox-small.avif 600w, /images/photo-design-pixeltoolbox-medium.avif 1200w, /images/photo-design-pixeltoolbox.avif 2000w"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
             <div>
