@@ -39,12 +39,12 @@ const FAQPage: React.FC = () => {
   return (
     <section id="faq" className="pt-24 pb-16 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center my-12">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center my-8">Frequently Asked Questions</h2>
         <SearchBar onSearch={setSearchTerm} />
         <div className="space-y-4">
           {filteredFaqData.map((item, index) => (
             <Accordion key={index} title={item.question}>
-              <p className="text-gray-600">{item.answer}</p>
+              <p className="text-gray-600 leading-relaxed max-w-2xl mx-auto">{item.answer}</p>
             </Accordion>
           ))}
         </div>
