@@ -35,9 +35,7 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
   }, [scrolled, isHomePage]);
 
   const handleNavLinkClick = (path: string) => {
-    if (location.pathname === path) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
