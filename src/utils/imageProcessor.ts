@@ -18,6 +18,8 @@ export async function processImage(
     
     img.onload = async () => { // Changed to async
       try {
+        const originalFileName = file.name.split('.').slice(0, -1).join('.'); // Get filename without extension
+        const outputFormat = 'avif'; // Hardcoded to AVIF for srcset as per UI
         if (settings.format === 'srcset') {
           const originalAspectRatio = img.width / img.height;
 
@@ -45,10 +47,12 @@ export async function processImage(
                 img,
                 targetWidth,
                 targetHeight,
-                'avif', // Default to AVIF for srcset versions
+                outputFormat, // Use the determined output format
                 settings.quality,
                 settings.optimize
               );
+
+              const fileName = `${originalFileName}-${targetWidth}w.${outputFormat}`;
 
               return {
                 url: URL.createObjectURL(blob),
