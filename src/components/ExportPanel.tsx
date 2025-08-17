@@ -30,6 +30,16 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
   const totalSavings = totalOriginalSize - totalProcessedSize;
   const averageCompression = calculateCompressionRatio(totalOriginalSize, totalProcessedSize);
 
+  // Calculate the total number of output files
+  const totalOutputFiles = images.reduce((acc, image) => {
+    if (settings.generateSrcset && image.processedResults) {
+      return acc + image.processedResults.length;
+    } else {
+      return acc + 1;
+    }
+  }, 0);
+
+
   const downloadSingle = async (image: ImageFile) => {
     if (settings.generateSrcset) {
       console.warn('Individual download not available for responsive images. Please use "Download All".');
@@ -153,32 +163,42 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
       {/* Results Summary (moved from PreviewPanel) */}
       {images.length > 0 && (
-        <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mb-8 flex flex-col md:flex-row gap-4 justify-center">
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
-              <BarChart3 className="w-5 h-5 text-green-600" />
-              <span className="font-medium text-green-800">File Size Saved</span>
+              <BarChart3 className="w-5 h-5 text-green-700" />
+              <span className="font-medium text-green-700">File Size Saved</span>
             </div>
             <div className="text-2xl font-bold text-green-700">{formatFileSize(totalSavings)}</div>
-            <div className="text-sm text-green-600">{(averageCompression).toFixed(1)}% average reduction</div>
+            <div className="text-sm text-green-700">{(averageCompression).toFixed(1)}% average reduction</div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center space-x-2 mb-2">
-              <Eye className="w-5 h-5 text-blue-600" />
-              <span className="font-medium text-blue-800">Images Processed</span>
+ {/* Images Processed Card */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex-1">
+            <div className="flex items-center space-x-2 mb-2 text-yellow-700">
+              <Eye className="w-5 h-5 text-yellow700"/>
+              <span className="font-medium text-yellow700">Images Processed</span>
             </div>
-            <div className="text-2xl font-bold text-blue-700">{images.length}</div>
-            <div className="text-sm text-blue-600">Ready for export</div>
+            <div className="text-2xl font-bold text-yellow-700">{images.length}</div>
+            <div className="text-sm text-yellow-700">Total images processed</div>
           </div>
 
+ {/* Images Generated Card */}
+ <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex-1">
+ <div className="flex items-center space-x-2 mb-2">
+ <Package className="w-5 h-5 text-blue-600" />
+ <span className="font-medium text-blue-800">Images Generated</span>
+            </div>
+            <div className="text-2xl font-bold text-blue-700">{totalOutputFiles}</div>
+            <div className="text-sm text-blue-600">Total images generated</div>
+          </div>
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
-              <Clock className="w-5 h-5 text-purple-600" />
-              <span className="font-medium text-purple-800">Processing Time</span>
+              <Clock className="w-5 h-5 text-purple-700" />
+              <span className="font-medium text-purple-700">Processing Time</span>
             </div>
             <div className="text-2xl font-bold text-purple-700">{processingTime.toFixed(1)}s</div>
-            <div className="text-sm text-purple-600">Average: {(processingTime / images.length).toFixed(1)}s per image</div>
+            <div className="text-sm text-purple-700">Average: {(processingTime / images.length).toFixed(1)}s per image</div>
           </div>
         </div>
       )}
