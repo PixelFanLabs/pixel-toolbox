@@ -48,22 +48,20 @@ const OptimizeImagesSection: React.FC = () => {
     setIsProcessing(true);
     setProcessingProgress(0);
     const startTime = Date.now();
-    const updatedImages: ImageFile[] = []; // Initialize as ImageFile[]
+    const updatedImages: ImageFile[] = [];
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
       try {
         const result = await processImage(image.file, settings);
 
-        if (settings.format === 'srcset') {
+        if (settings.generateSrcset && Array.isArray(result)) {
           const resultsArray = result as ProcessedImageResult[];
           const totalSize = resultsArray.reduce((sum, r) => sum + r.size, 0);
           updatedImages.push({
             ...image,
             processedResults: resultsArray,
             processedSize: totalSize,
-            // processedUrl is not directly applicable for srcset, but keep it optional
-            // format will be 'srcset'
           });
         } else {
           const singleResult = result as ProcessedImageResult;
@@ -71,14 +69,14 @@ const OptimizeImagesSection: React.FC = () => {
             ...image,
             processedUrl: singleResult.url,
             processedSize: singleResult.size,
-            // format will be the selected format
+            width: singleResult.width,
+            height: singleResult.height,
           });
         }
         setProcessingProgress(((i + 1) / images.length) * 100);
       } catch (error) {
         console.error('Error processing image:', error);
-        // Handle error for individual image, perhaps mark it as failed
-        updatedImages.push({ ...image, processedUrl: undefined, processedSize: undefined }); // Mark as failed
+        updatedImages.push({ ...image, processedUrl: undefined, processedSize: undefined });
       }
     }
 
@@ -98,18 +96,16 @@ const OptimizeImagesSection: React.FC = () => {
       </div>
 
       {/* Preview Button */}
-      {images.length > 0 && (
+      {images.length > 0 && ( /* Keep the button always rendered when there are images */
         <div className="mt-8 text-center">
           <button
             onClick={handleProcessImages}
-            disabled={isProcessing}
+            disabled={isProcessing || showExportSection} /* Disable if processing or if export section is shown (meaning processing is done and no settings changed) */
             className={`px-8 py-4 rounded-lg font-medium transition-colors text-lg ${
-              isProcessing
-                ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
+              isProcessing || showExportSection ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700' /* Apply greyed-out style when disabled */
+            } ${isProcessing || showExportSection ? '' : 'hover:bg-blue-700'}`}
           >
-            {isProcessing ? 'Processing...' : (showExportSection ? 'Re-generate Preview' : 'Generate Preview')}
+            {isProcessing ? 'Processing...' : ('Process Images')}
           </button>
         </div>
       )}

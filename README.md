@@ -4,7 +4,7 @@
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P41JNX62)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_NETLIFY_BADGE_ID/deploy-status)](https://app.netlify.com/sites/pixeltoolbox/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1acd1a91-ff54-4a7a-af66-d1a6c1905b67/deploy-status)](https://app.netlify.com/projects/pixeltoolbox/deploys)
 
 PixelToolbox empowers creators, marketers, and developers to effortlessly convert, optimize, and export images for web use—without the guesswork. It's a fast, client-side-only web app that runs entirely in your browser.
 

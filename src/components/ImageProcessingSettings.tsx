@@ -153,35 +153,6 @@ const ImageProcessingSettings: React.FC<ImageProcessingSettingsProps> = ({
           </div>
         )}
 
-        <div className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <Zap className="w-6 h-6 text-yellow-600" strokeWidth={1.5} />
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <h4 className="font-semibold text-slate-800">Smart Optimization</h4>
-                    <div className="relative group">
-                      <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                        Automatically balances file size and visual quality for the best results.
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-600">Automatically optimize file size while maintaining visual quality</p>
-                </div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={settings.optimize}
-                  onChange={(e) => handleSettingChange('optimize', e.target.checked)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-              </label>
-            </div>
-          </div>
       </div>
 
       {/* Resize Settings */}

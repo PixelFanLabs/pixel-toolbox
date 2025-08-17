@@ -1,78 +1,60 @@
 import { ProcessingSettings } from '../types';
-import { srcsetDimensions } from '../config/settings'; // Import srcsetDimensions
 
 export interface ProcessedImageResult {
   url: string;
   size: number;
   width: number;
   height: number;
-  name?: string; // Add name for srcset versions
+  name?: string;
 }
 
 export async function processImage(
   file: File,
   settings: ProcessingSettings
-): Promise<ProcessedImageResult | ProcessedImageResult[]> { // Changed return type
+): Promise<ProcessedImageResult | ProcessedImageResult[]> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     
-    img.onload = async () => { // Changed to async
+    img.onload = async () => {
       try {
-        if (settings.format === 'srcset') {
+        const originalFileName = file.name.split('.').slice(0, -1).join('.');
+        
+        // Handle srcset generation
+        if (settings.generateSrcset && settings.srcsetSizes) {
           const originalAspectRatio = img.width / img.height;
-
-          const sizesToProcess = [
-            {
-              name: '_small',
-              width: settings.srcsetSmallWidth || srcsetDimensions.small,
-            },
-            {
-              name: '_medium',
-              width: settings.srcsetMediumWidth || srcsetDimensions.medium,
-            },
-            {
-              name: '_large',
-              width: settings.srcsetLargeWidth || srcsetDimensions.large,
-            },
-          ];
-
-          const results = await Promise.all(
-            sizesToProcess.map(async (sizeInfo) => {
-              const targetWidth = sizeInfo.width;
+          const results: ProcessedImageResult[] = [];
+          
+          // Process each enabled srcset size
+          for (const [sizeKey, sizeConfig] of Object.entries(settings.srcsetSizes)) {
+            if (sizeConfig.enabled && sizeConfig.width) {
+              const targetWidth = sizeConfig.width;
               const targetHeight = Math.round(targetWidth / originalAspectRatio);
-
-              const blob = await resizeImageToDimensions(
+              
+              const blob = await processImageToBlob(
                 img,
                 targetWidth,
                 targetHeight,
-                'avif', // Default to AVIF for srcset versions
+                'webp', // Use WebP for srcset
                 settings.quality,
-                settings.optimize
+                settings.optimize,
+                settings.resizeMode
               );
-
-              return {
+              
+              results.push({
                 url: URL.createObjectURL(blob),
                 size: blob.size,
                 width: targetWidth,
                 height: targetHeight,
-                name: sizeInfo.name,
-              };
-            })
-          );
+                name: `-${targetWidth}w`,
+              });
+            }
+          }
+          
           resolve(results);
-          return; // Exit after srcset processing
-        }
-
-        // Existing logic for other formats
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        if (!ctx) {
-          reject(new Error('Could not get canvas context'));
           return;
         }
-
-        // Calculate dimensions
+        
+        // Handle single image processing
         const { width, height } = calculateDimensions(
           img.width,
           img.height,
@@ -81,52 +63,24 @@ export async function processImage(
           settings.maintainAspectRatio,
           settings.resizeMode
         );
-
-        canvas.width = width;
-        canvas.height = height;
-
-        // Apply optimization settings
-        if (settings.optimize) {
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-        }
-
-        // Draw the image
-        if (settings.resizeMode === 'fill' && settings.width && settings.height) {
-          // Calculate scaling to fill the entire canvas
-          const scaleX = settings.width / img.width;
-          const scaleY = settings.height / img.height;
-          const scale = Math.max(scaleX, scaleY);
-          
-          const scaledWidth = img.width * scale;
-          const scaledHeight = img.height * scale;
-          
-          const offsetX = (settings.width - scaledWidth) / 2;
-          const offsetY = (settings.height - scaledHeight) / 2;
-          
-          ctx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight);
-        } else {
-          ctx.drawImage(img, 0, 0, width, height);
-        }
-
-        // Convert to blob
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              const url = URL.createObjectURL(blob);
-              resolve({
-                url,
-                size: blob.size,
-                width,
-                height,
-              });
-            } else {
-              reject(new Error('Failed to create blob'));
-            }
-          },
-          getMimeType(settings.format),
-          settings.format === 'jpeg' ? settings.quality / 100 : undefined
+        
+        const blob = await processImageToBlob(
+          img,
+          width,
+          height,
+          settings.format as string,
+          settings.quality,
+          settings.optimize,
+          settings.resizeMode
         );
+        
+        resolve({
+          url: URL.createObjectURL(blob),
+          size: blob.size,
+          width,
+          height,
+        });
+        
       } catch (error) {
         reject(error);
       }
@@ -134,6 +88,92 @@ export async function processImage(
 
     img.onerror = () => reject(new Error('Failed to load image'));
     img.src = URL.createObjectURL(file);
+  });
+}
+
+async function processImageToBlob(
+  img: HTMLImageElement,
+  targetWidth: number,
+  targetHeight: number,
+  format: string,
+  quality: number,
+  optimize: boolean,
+  resizeMode: 'fit' | 'fill' | 'stretch'
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    if (!ctx) {
+      reject(new Error('Could not get canvas context'));
+      return;
+    }
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    // Apply optimization settings
+    if (optimize) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+    }
+
+    // Calculate drawing parameters based on resize mode
+    let sx = 0, sy = 0, sWidth = img.width, sHeight = img.height;
+    let dx = 0, dy = 0, dWidth = targetWidth, dHeight = targetHeight;
+
+    if (resizeMode === 'fill') {
+      // Fill mode: crop to fill the entire canvas
+      const imgAspectRatio = img.width / img.height;
+      const canvasAspectRatio = targetWidth / targetHeight;
+
+      if (imgAspectRatio > canvasAspectRatio) {
+        // Image is wider, crop width
+        sWidth = img.height * canvasAspectRatio;
+        sx = (img.width - sWidth) / 2;
+      } else {
+        // Image is taller, crop height
+        sHeight = img.width / canvasAspectRatio;
+        sy = (img.height - sHeight) / 2;
+      }
+    } else if (resizeMode === 'fit') {
+      // Fit mode: fit entire image within canvas (may have letterboxing)
+      const imgAspectRatio = img.width / img.height;
+      const canvasAspectRatio = targetWidth / targetHeight;
+
+      if (imgAspectRatio > canvasAspectRatio) {
+        // Image is wider, fit by width
+        dHeight = targetWidth / imgAspectRatio;
+        dy = (targetHeight - dHeight) / 2;
+      } else {
+        // Image is taller, fit by height
+        dWidth = targetHeight * imgAspectRatio;
+        dx = (targetWidth - dWidth) / 2;
+      }
+    }
+    // For stretch mode, use default values (entire image to entire canvas)
+
+    // Clear canvas with white background for JPEG
+    if (format === 'jpeg') {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, targetWidth, targetHeight);
+    }
+
+    // Draw the image
+    ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+    // Convert to blob
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error('Failed to create blob'));
+        }
+      },
+      getMimeType(format),
+      format === 'jpeg' ? quality / 100 : quality / 100
+    );
   });
 }
 
@@ -207,61 +247,4 @@ function getMimeType(format: string): string {
     default:
       return 'image/png';
   }
-}
-
-async function resizeImageToDimensions(
-  img: HTMLImageElement,
-  targetWidth: number,
-  targetHeight: number,
-  format: string,
-  quality: number,
-  optimize: boolean
-): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    if (!ctx) {
-      reject(new Error('Could not get canvas context'));
-      return;
-    }
-
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
-
-    if (optimize) {
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-    }
-
-    const imgAspectRatio = img.width / img.height;
-    const canvasAspectRatio = targetWidth / targetHeight;
-
-    let sx = 0, sy = 0, sWidth = img.width, sHeight = img.height; // Source image
-    let dx = 0, dy = 0, dWidth = targetWidth, dHeight = targetHeight; // Destination canvas
-
-    if (imgAspectRatio > canvasAspectRatio) {
-      // Image is wider than canvas, fit by width, crop height
-      sHeight = img.width / canvasAspectRatio;
-      sy = (img.height - sHeight) / 2;
-    } else {
-      // Image is taller than canvas, fit by height, crop width
-      sWidth = img.height * canvasAspectRatio;
-      sx = (img.width - sWidth) / 2;
-    }
-
-    ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight); // Use the 9-argument drawImage
-
-    canvas.toBlob(
-      (blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error('Failed to create blob during resize'));
-        }
-      },
-      getMimeType(format),
-      format === 'jpeg' ? quality / 100 : undefined
-    );
-  });
 }
