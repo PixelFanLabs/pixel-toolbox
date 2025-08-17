@@ -2,15 +2,19 @@ import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
 import ExportPanel from './ExportPanel';
-import { defaultSettings } from '../config/settings';
+import { defaultSettings, exportPresets } from '../config/settings'; // Import exportPresets
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
 import { processImage } from '../utils/imageProcessor'; // Import processImage
 
 const OptimizeImagesSection: React.FC = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [settings, setSettings] = useState<ProcessingSettings>(defaultSettings);
+  
+  // Find the CMS & Web Optimized preset to set as initial selectedPreset
+  const initialSelectedPreset = exportPresets.find(preset => preset.id === 'cms-web-optimized') || null;
+  const [selectedPreset, setSelectedPreset] = useState<ExportPreset | null>(initialSelectedPreset);
+
   const [isProcessing, setIsProcessing] = useState(false);
-  const [selectedPreset, setSelectedPreset] = useState<ExportPreset | null>(null);
   const [showExportSection, setShowExportSection] = useState(false); // New state for export section visibility
   const [processedImages, setProcessedImages] = useState<ImageFile[]>([]); // New state for processed images
   const [processingProgress, setProcessingProgress] = useState(0); // New state for processing progress

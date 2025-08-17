@@ -104,25 +104,33 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   return (
     <div className="p-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">Output Image Settings</h2>
+
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-slate-800 flex items-center relative">
-          <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
-          Image Profile
-          <div
-            className="ml-2 group relative flex items-center"
-            onMouseEnter={() => setIsHoveringImageProfileInfo(true)}
-            onMouseLeave={() => setIsHoveringImageProfileInfo(false)}
-          >
-            <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
-            {isHoveringImageProfileInfo && (
-              <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-                Choose an image profile to apply a set of recommended settings for common use cases, such as web, social media, or print.
+        <div className="flex justify-between items-center">
+          <div className="flex-1">
+            <span className="text-base font-medium text-slate-700 block">
+              Image Profile
+              <div
+                className="ml-2 group relative inline-flex items-center"
+                onMouseEnter={() => setIsHoveringImageProfileInfo(true)}
+                onMouseLeave={() => setIsHoveringImageProfileInfo(false)}
+              >
+                <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
+                {isHoveringImageProfileInfo && (
+                  <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or print.
+                  </div>
+                )}
               </div>
-            )}
+            </span>
+            <p className="text-sm text-slate-500 mt-1">
+              Select a preset for common image use cases.
+            </p>
           </div>
-        </h3>
+        </div>
         {/* Dropdown for presets */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative mt-4" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -228,18 +236,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </div>
       </div>
 
-      <div className="mb-8 mt-4">
-        <button
-          className="w-full flex items-center justify-between p-4 bg-slate-100 rounded-lg shadow-sm hover:bg-slate-200 transition-colors"
-          onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
-        >
-          <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-            <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
-            Fine-Tune Settings
-          </h3>
-          {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
-        </button>
-      </div>
+      <h2
+        className="text-2xl font-bold text-gray-900 mt-12 mb-8 flex items-center justify-between cursor-pointer"
+        onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
+      >
+        <span className="flex items-center">
+          <Settings className="w-6 h-6 mr-2 text-blue-500" strokeWidth={2} />
+          Fine-Tune Settings
+        </span>
+        {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
+      </h2>
 
       {isFineTuneExpanded && (
         <div className="space-y-6">
