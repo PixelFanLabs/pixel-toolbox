@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, ChevronUp, Settings, Info } from 'lucide-react';
-import { Switch } from '@headlessui/react'
+import { Sparkles, ChevronDown, ChevronUp, Settings } from 'lucide-react';
 
-import { ProcessingSettings, ExportPreset, Tooltip, Format } from '../types';
-import { exportPresets, formatOptions } from '../config/settings'; // Import formatOptions
+import { ProcessingSettings, ExportPreset, Format } from '../types';
+import { exportPresets } from '../config/settings';
 import ImageProcessingSettings from './ImageProcessingSettings';
+import ToggleButton from './ToggleButton';
 
 interface SettingsPanelProps {
   settings: ProcessingSettings;
@@ -55,7 +55,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       quality: preset.quality,
       width: preset.width,
       height: preset.height,
-      generateSrcset: preset.generateSrcset, // Update generateSrcset from preset
+      generateSrcset: preset.generateSrcset, // Revert to using preset's generateSrcset
     });
     setIsDropdownOpen(false);
   };
@@ -67,7 +67,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     });
   };
 
-  // Update the handler to accept a boolean from the Switch component
   const handleGenerateSrcsetChange = (checked: boolean) => {
     // When enabling srcset, ensure at least one size is enabled if none are
     const updatedSrcsetSizes = { ...srcsetSizes };
@@ -156,35 +155,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           )}
         </div>
 
-        {/* Generate Responsive Image Set (srcset) Toggle */}
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center space-x-2">
-            <label className="text-base font-medium text-slate-800">
-              Generate Responsive Images
-</label>
- <div className="relative group">
-              {/* Tooltip */}
-              <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                Generate multiple image sizes that can be used with the `srcset` attribute in HTML code. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS).
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
-              </div>
-            </div>
- </div>
- <Switch
-          checked={settings.generateSrcset}
+        <div className="mt-4">
+          <ToggleButton
+            id="generateSrcset"
+            label="Generate Responsive Images"
+            description="Generate multiple image sizes that can be used with the `srcset` attribute in HTML code. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS)."
+            checked={settings.generateSrcset}
             onChange={handleGenerateSrcsetChange}
-            className={`${ 
-              settings.generateSrcset ? 'bg-blue-600' : 'bg-gray-200'
-            } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
-          >
-            <span className="sr-only">Generate Responsive Image Set</span>
-            <span
-              className={`${
-                settings.generateSrcset ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-            />
-          </Switch>
+          />
         </div>
         {settings.generateSrcset && (
           <div className="space-y-4 mt-3">
@@ -226,35 +204,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </div>
           </div>
   )}
-        {/* Smart Optimization Toggle */}
- <div className="flex items-center justify-between mt-6">
- <div className="flex items-center space-x-2">
-            <label htmlFor="smartOptimization" className="text-base font-medium text-slate-800 cursor-pointer">
-              Smart Optimization
-            </label>
-            <div className="relative group">
- <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
- <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                Automatically balances file size and visual quality for the best results.
- An intelligent algorithm analyzes the image content and determines the optimal compression level to significantly reduce file size while preserving perceived visual quality. This automated process simplifies image optimization for you.
- <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
-              </div>
-            </div>
-          </div>
-          <Switch
+        <div className="mt-6">
+          <ToggleButton
+            id="smartOptimization"
+            label="Smart Optimization"
+            description="Automatically balances file size and visual quality for the best results. An intelligent algorithm analyzes the image content and determines the optimal compression level to significantly reduce file size while preserving perceived visual quality. This automated process simplifies image optimization for you."
             checked={isSmartOptimizationEnabled}
             onChange={handleSmartOptimizationChange}
-            className={`${
-              isSmartOptimizationEnabled ? 'bg-blue-600' : 'bg-gray-200'
-            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
-          >
-            <span className="sr-only">Enable Smart Optimization</span>
-            <span 
-              className={`${
-                isSmartOptimizationEnabled ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out`}
-            />
-          </Switch>
+          />
         </div>
       </div>
 
