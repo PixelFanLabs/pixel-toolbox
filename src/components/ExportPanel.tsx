@@ -161,9 +161,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
         </div>
       )}
 
-      {/* Results Summary (moved from PreviewPanel) */}
-      {images.length > 0 && (
+      {/* Results Summary */}
+      {images.length > 0 && !isProcessing && (
         <div className="mb-8 flex flex-col md:flex-row gap-4 justify-center">
+
+          {/* File Size Saved */}
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
               <BarChart3 className="w-5 h-5 text-green-700" />
@@ -173,9 +175,9 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
             <div className="text-sm text-green-700">{(averageCompression).toFixed(1)}% average reduction</div>
           </div>
 
- {/* Images Processed Card */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex-1">
-            <div className="flex items-center space-x-2 mb-2 text-yellow-700">
+          {/* Images Processed Card */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
               <Eye className="w-5 h-5 text-yellow700"/>
               <span className="font-medium text-yellow700">Images Processed</span>
             </div>
@@ -183,15 +185,17 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
             <div className="text-sm text-yellow-700">Total images processed</div>
           </div>
 
- {/* Images Generated Card */}
- <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex-1">
- <div className="flex items-center space-x-2 mb-2">
- <Package className="w-5 h-5 text-blue-600" />
- <span className="font-medium text-blue-800">Images Generated</span>
+          {/* Images Generated Card */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Package className="w-5 h-5 text-blue-700" />
+              <span className="font-medium text-blue-700">Images Generated</span>
             </div>
             <div className="text-2xl font-bold text-blue-700">{totalOutputFiles}</div>
-            <div className="text-sm text-blue-600">Total images generated</div>
+            <div className="text-sm text-blue-700">Total images generated</div>
           </div>
+
+          {/* Processing Time */}
           <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
               <Clock className="w-5 h-5 text-purple-700" />
