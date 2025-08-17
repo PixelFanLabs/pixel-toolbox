@@ -161,20 +161,21 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
         {/* Generate Responsive Image Set (srcset) Toggle */}
         <div className="flex items-center justify-between mt-4">
-          <div className="flex items-center space-x-2">
-            <label htmlFor="generateSrcset" className="text-base font-medium text-slate-800 cursor-pointer">
- Generate Responsive Image Set (srcset)
+ <div className="flex items-center space-x-2">
+ <label htmlFor="generateSrcset" className="text-base font-medium text-slate-800 cursor-pointer">
+              Generate Responsive Image Set (srcset)
  </label>
-            <div className="relative group">
- <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
+ <div className="relative group">
+              {/* Tooltip */}
+              <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
- Generate multiple image sizes and a `srcset` attribute. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS).
- <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
+                Generate multiple image sizes and a `srcset` attribute. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS).
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
               </div>
             </div>
           </div>
-          <Switch
-            checked={settings.generateSrcset}
+ <Switch as="div" // Render as a div to apply flex properties
+ checked={settings.generateSrcset}
             onChange={handleGenerateSrcsetChange}
             className={`${
               settings.generateSrcset ? 'bg-blue-600' : 'bg-gray-200'
