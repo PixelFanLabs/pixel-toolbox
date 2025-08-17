@@ -119,14 +119,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
                 {isHoveringImageProfileInfo && (
                   <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or print.
+                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or email.
                   </div>
                 )}
               </div>
             </span>
-            <p className="text-sm text-slate-500 mt-1">
-              Select a preset for common image use cases.
-            </p>
           </div>
         </div>
         {/* Dropdown for presets */}
