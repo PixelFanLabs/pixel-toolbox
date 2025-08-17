@@ -96,16 +96,14 @@ const OptimizeImagesSection: React.FC = () => {
       </div>
 
       {/* Preview Button */}
-      {images.length > 0 && (
+      {images.length > 0 && ( /* Keep the button always rendered when there are images */
         <div className="mt-8 text-center">
           <button
             onClick={handleProcessImages}
-            disabled={isProcessing}
+            disabled={isProcessing || showExportSection} /* Disable if processing or if export section is shown (meaning processing is done and no settings changed) */
             className={`px-8 py-4 rounded-lg font-medium transition-colors text-lg ${
-              isProcessing
-                ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            } ${isProcessing ? '' : 'hover:bg-blue-700'}`}
+              isProcessing || showExportSection ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700' /* Apply greyed-out style when disabled */
+            } ${isProcessing || showExportSection ? '' : 'hover:bg-blue-700'}`}
           >
             {isProcessing ? 'Processing...' : ('Process Images')}
           </button>
