@@ -163,7 +163,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
       {/* Results Summary */}
       {images.length > 0 && !isProcessing && (
-        <div className="mb-8 flex flex-col md:flex-row gap-4 justify-center">
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
 
           {/* File Size Saved */}
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
