@@ -10,7 +10,7 @@ interface SettingsPanelProps {
   settings: ProcessingSettings;
   onSettingsChange: (settings: ProcessingSettings) => void;
   onPresetSelect: (preset: ExportPreset) => void;
- selectedPreset: ExportPreset | null;
+  selectedPreset: ExportPreset | null;
 }
 
 const defaultSrcsetSizes = {
@@ -242,7 +242,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </div>
           </div>
           <Switch
-            checked={settings.generateSrcset}
+            checked={isSmartOptimizationEnabled}
             onChange={handleSmartOptimizationChange}
             className={`${
               isSmartOptimizationEnabled ? 'bg-blue-600' : 'bg-gray-200'
@@ -251,7 +251,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <span className="sr-only">Enable Smart Optimization</span>
             <span 
               className={`${
-                settings.generateSrcset ? 'translate-x-6' : 'translate-x-1'
+                isSmartOptimizationEnabled ? 'translate-x-6' : 'translate-x-1'
               } inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out`}
             />
           </Switch>
