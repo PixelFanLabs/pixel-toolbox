@@ -158,8 +158,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
         {/* Generate Responsive Image Set (srcset) Toggle */}
         <div className="flex items-center justify-between mt-4">
- <div className="flex items-center space-x-2">
- <label htmlFor="generateSrcset" className="text-base font-medium text-slate-800 cursor-pointer">
+          <div className="flex items-center space-x-2">
+            <label className="text-base font-medium text-slate-800">
               Generate Responsive Images
 </label>
  <div className="relative group">
@@ -171,8 +171,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </div>
             </div>
  </div>
- <Switch as="div" // Render as a div to apply flex properties
- checked={settings.generateSrcset}
+ <Switch
+          checked={settings.generateSrcset}
             onChange={handleGenerateSrcsetChange}
             className={`${
               settings.generateSrcset ? 'bg-blue-600' : 'bg-gray-200'
@@ -241,14 +241,19 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </div>
             </div>
           </div>
- <Switch
-            checked={isSmartOptimizationEnabled}
+          <Switch
+            checked={settings.generateSrcset}
             onChange={handleSmartOptimizationChange}
- className={`${
+            className={`${
               isSmartOptimizationEnabled ? 'bg-blue-600' : 'bg-gray-200'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}>
+            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
+          >
             <span className="sr-only">Enable Smart Optimization</span>
-            <span className={`${isSmartOptimizationEnabled ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`} />
+            <span 
+              className={`${
+                settings.generateSrcset ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out`}
+            />
           </Switch>
         </div>
       </div>
