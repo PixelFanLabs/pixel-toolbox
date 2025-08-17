@@ -38,6 +38,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   });
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => { document.removeEventListener('mousedown', handleClickOutside); }; }, []);
+
   const handlePresetSelect = (preset: ExportPreset) => {
     onPresetSelect(preset);
     onSettingsChange({
@@ -92,18 +101,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       optimize: checked,
     });
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className="p-8">
@@ -163,23 +160,23 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         <div className="flex items-center justify-between mt-4">
  <div className="flex items-center space-x-2">
  <label htmlFor="generateSrcset" className="text-base font-medium text-slate-800 cursor-pointer">
-              Generate Responsive Image Set (srcset)
- </label>
+              Generate Responsive Images
+</label>
  <div className="relative group">
               {/* Tooltip */}
               <Info className="w-4 h-4 text-slate-500 cursor-pointer" />
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-slate-800 text-white text-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                Generate multiple image sizes and a `srcset` attribute. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS).
+                Generate multiple image sizes that can be used with the `srcset` attribute in HTML code. This allows browsers to choose the most appropriate image for different screen sizes and resolutions, improving performance. This is particularly useful for images used on websites and in Content Management Systems (CMS).
                 <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
               </div>
             </div>
-          </div>
+ </div>
  <Switch as="div" // Render as a div to apply flex properties
  checked={settings.generateSrcset}
             onChange={handleGenerateSrcsetChange}
             className={`${
               settings.generateSrcset ? 'bg-blue-600' : 'bg-gray-200'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+            } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
           >
             <span className="sr-only">Generate Responsive Image Set</span>
             <span
