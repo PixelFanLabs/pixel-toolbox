@@ -6,6 +6,7 @@ export const defaultSettings: ProcessingSettings = {
   maintainAspectRatio: true,
   optimize: true,
   resizeMode: 'fit',
+  generateSrcset: false, // Added new property
 };
 
 export const exportPresets: ExportPreset[] = [
@@ -19,6 +20,7 @@ export const exportPresets: ExportPreset[] = [
     width: 200,
     height: 200,
     useCase: 'Profile pictures, user avatars, team photos',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'web-banner',
@@ -30,6 +32,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1200,
     height: 400,
     useCase: 'Website headers, hero images, banners',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'social-post',
@@ -41,6 +44,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1080,
     height: 1080,
     useCase: 'Instagram posts, Facebook images, social content',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'email-signature',
@@ -52,6 +56,7 @@ export const exportPresets: ExportPreset[] = [
     width: 300,
     height: 100,
     useCase: 'Email signatures, newsletter headers, small logos',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'blog-thumbnail',
@@ -63,6 +68,7 @@ export const exportPresets: ExportPreset[] = [
     width: 600,
     height: 400,
     useCase: 'Blog thumbnails, article previews, content cards',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'cms-ready',
@@ -72,6 +78,7 @@ export const exportPresets: ExportPreset[] = [
     format: 'webp',
     quality: 90,
     useCase: 'WordPress, Drupal, headless CMS, general web use',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'favicon',
@@ -83,6 +90,7 @@ export const exportPresets: ExportPreset[] = [
     width: 32,
     height: 32,
     useCase: 'Browser tabs, bookmarks, app icons',
+    generateSrcset: false, // Added new property
   },
   {
     id: 'email-attachment',
@@ -92,6 +100,7 @@ export const exportPresets: ExportPreset[] = [
     format: 'jpeg',
     quality: 75,
     useCase: 'Sending images via email, presentations',
+    generateSrcset: false, // Added new property
   },
 ];
 
@@ -101,7 +110,6 @@ export const formatOptions = [
   { value: 'png', label: 'PNG', description: 'Lossless quality, supports transparency' },
   { value: 'svg', label: 'SVG', description: 'Scalable vector graphics, ideal for logos and icons' },
   { value: 'avif', label: 'AVIF', description: 'Next-gen format with superior compression' },
-  { value: 'srcset', label: 'Srcset (Responsive)', description: 'Generate multiple sizes for responsive images' },
 ];
 
 export const srcsetDimensions = {

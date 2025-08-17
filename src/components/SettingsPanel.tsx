@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Settings } from 'lucide-react';
 import { ProcessingSettings, ExportPreset } from '../types';
-import { exportPresets } from '../config/settings';
+import { exportPresets, formatOptions } from '../config/settings'; // Import formatOptions
 import ImageProcessingSettings from './ImageProcessingSettings';
 
 interface SettingsPanelProps {
@@ -23,7 +23,29 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   const handlePresetSelect = (preset: ExportPreset) => {
     onPresetSelect(preset);
+    onSettingsChange({
+      ...settings,
+      format: preset.format,
+      quality: preset.quality,
+      width: preset.width,
+      height: preset.height,
+      generateSrcset: preset.generateSrcset, // Update generateSrcset from preset
+    });
     setIsDropdownOpen(false);
+  };
+
+  const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onSettingsChange({
+      ...settings,
+      format: e.target.value as 'png' | 'jpeg' | 'webp' | 'avif',
+    });
+  };
+
+  const handleGenerateSrcsetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSettingsChange({
+      ...settings,
+      generateSrcset: e.target.checked,
+    });
   };
 
   useEffect(() => {
@@ -43,8 +65,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
           <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
-          Select Image Format
+          Select Image format
         </h3>
+        {/* Dropdown for presets */}
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -60,7 +83,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                       {selectedPreset.width && selectedPreset.height && (
                         <span>{selectedPreset.width} × {selectedPreset.height}px • </span>
                       )}
-                      <span className="uppercase">{selectedPreset.format} • {selectedPreset.quality}% quality</span>
+                      <span className="uppercase">{selectedPreset.format} • {selectedPreset.quality}% quality {selectedPreset.generateSrcset ? ' • SRCSET' : ''}</span>
                     </div>
                 </div>
               </div>
@@ -90,6 +113,24 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </div>
           )}
         </div>
+
+        {/* Separate dropdown for base format when no preset is selected or fine-tuning */} 
+        <div className="mt-4">
+          <label htmlFor="output-format" className="block text-sm font-medium text-slate-700 mb-1">Output Format</label>
+          <select
+            id="output-format"
+            name="output-format"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            value={settings.format}
+            onChange={handleFormatChange}
+          >
+            {formatOptions.filter(opt => opt.value !== 'svg').map((option) => ( // SVG is not a raster image format for processing
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="mb-8">
@@ -97,16 +138,32 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           className="w-full flex items-center justify-between p-4 bg-slate-100 rounded-lg shadow-sm hover:bg-slate-200 transition-colors"
           onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
         >
-          <h2 className="text-xl font-bold text-slate-800">Fine-Tune Options</h2>
+          <h3 className="text-lg font-semibold text-slate-800 flex items-center">
+            <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
+            Fine-Tune Settings
+          </h3>
           {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
         </button>
       </div>
 
       {isFineTuneExpanded && (
-        <ImageProcessingSettings
-          settings={settings}
-          onSettingsChange={onSettingsChange}
-        />
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <label htmlFor="generateSrcset" className="text-base font-medium text-slate-800 cursor-pointer">Generate Responsive Image Set (srcset)</label>
+            <input
+              type="checkbox"
+              id="generateSrcset"
+              name="generateSrcset"
+              checked={settings.generateSrcset}
+              onChange={handleGenerateSrcsetChange}
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+          </div>
+          <ImageProcessingSettings
+            settings={settings}
+            onSettingsChange={onSettingsChange}
+          />
+        </div>
       )}
     </div>
   );
