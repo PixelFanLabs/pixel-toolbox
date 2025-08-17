@@ -14,7 +14,7 @@ export interface ImageFile {
 }
 
 export interface ProcessingSettings {
-  format: 'png' | 'jpeg' | 'webp' | 'avif'; // Removed 'srcset'
+  format: 'png' | 'jpeg' | 'webp' | 'avif' | 'srcset';
   quality: number;
   width?: number;
   height?: number;
@@ -25,14 +25,22 @@ export interface ProcessingSettings {
   srcsetSmallWidth?: number;
   srcsetMediumWidth?: number;
   srcsetLargeWidth?: number;
+  srcsetSizes?: {
+    small?: { width?: number; enabled: boolean; description: string };
+    medium?: { width?: number; enabled: boolean; description: string };
+    large?: { width?: number; enabled: boolean; description: string };
+    extraLarge?: { width?: number; enabled: boolean; description: string };
+  };
 }
+
+export type Format = 'png' | 'jpeg' | 'webp' | 'avif' | 'srcset';
 
 export interface ExportPreset {
   id: string;
   name: string;
   description: string;
   icon: string;
-  format: 'png' | 'jpeg' | 'webp' | 'avif'; // Removed 'srcset'
+  format: 'png' | 'jpeg' | 'webp' | 'avif';
   quality: number;
   width?: number;
   height?: number;
