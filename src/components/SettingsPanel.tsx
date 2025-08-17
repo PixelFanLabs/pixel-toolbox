@@ -174,7 +174,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
  <Switch
           checked={settings.generateSrcset}
             onChange={handleGenerateSrcsetChange}
-            className={`${
+            className={`${ 
               settings.generateSrcset ? 'bg-blue-600' : 'bg-gray-200'
             } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
           >
