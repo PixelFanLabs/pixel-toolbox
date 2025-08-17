@@ -178,8 +178,8 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           {/* Images Processed Card */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
-              <Eye className="w-5 h-5 text-yellow700"/>
-              <span className="font-medium text-yellow700">Images Processed</span>
+              <Eye className="w-5 h-5 text-yellow-700"/>
+              <span className="font-medium text-yellow-700">Images Processed</span>
             </div>
             <div className="text-2xl font-bold text-yellow-700">{images.length}</div>
             <div className="text-sm text-yellow-700">Total images processed</div>
