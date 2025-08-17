@@ -31,9 +31,8 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
   const averageCompression = calculateCompressionRatio(totalOriginalSize, totalProcessedSize);
 
   const downloadSingle = async (image: ImageFile) => {
-    // Disable individual download for srcset format
-    if (settings.format === 'srcset') {
-      console.warn('Individual download not available for srcset format. Please use "Download All".');
+    if (settings.generateSrcset) {
+      console.warn('Individual download not available for responsive images. Please use "Download All".');
       return;
     }
     if (!image.processedUrl) return;
@@ -45,7 +44,8 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${image.file.name.split('.')[0]}_optimized.${settings.format}`;
+      const fileExtension = settings.generateSrcset ? 'webp' : settings.format;
+      link.download = `${image.file.name.split('.')[0]}_optimized.${fileExtension}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -67,11 +67,11 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       for (const image of images) {
         const baseFileName = image.file.name.split('.')[0];
 
-        if (settings.format === 'srcset' && image.processedResults) {
+        if (settings.generateSrcset && image.processedResults) {
           for (const result of image.processedResults) {
             const response = await fetch(result.url);
             const blob = await response.blob();
-            const fileName = `${baseFileName}${result.name || ''}.avif`; // e.g., image_small.avif
+            const fileName = `${baseFileName}${result.name || ''}.webp`;
             zip.file(fileName, blob);
           }
         } else if (image.processedUrl) {
@@ -86,14 +86,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       const metadata = {
         exportedAt: new Date().toISOString(),
         settings: {
-          format: settings.format,
+          format: settings.generateSrcset ? 'responsive' : settings.format,
           quality: settings.quality,
           optimization: settings.optimize,
-          // Add srcset dimensions if applicable
-          ...(settings.format === 'srcset' && {
-            srcsetSmallWidth: settings.srcsetSmallWidth,
-            srcsetMediumWidth: settings.srcsetMediumWidth,
-            srcsetLargeWidth: settings.srcsetLargeWidth,
+          ...(settings.generateSrcset && {
+            responsive: true,
+            srcsetSizes: settings.srcsetSizes,
           }),
         },
         stats: {
@@ -235,7 +233,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                 <div className="flex items-center space-x-4 min-w-0 flex-1">
                   <div className="w-16 h-16 bg-white rounded border border-slate-200 overflow-hidden flex-shrink-0">
                     <img
-                      src={settings.format === 'srcset' && image.processedResults ? image.processedResults[1]?.url || image.originalUrl : image.processedUrl || image.originalUrl}
+                      src={settings.generateSrcset && image.processedResults ? image.processedResults[1]?.url || image.originalUrl : image.processedUrl || image.originalUrl}
                       alt={image.file.name}
                       className="w-full h-full object-contain"
                     />
