@@ -45,7 +45,7 @@ export async function processImage(
                 size: blob.size,
                 width: targetWidth,
                 height: targetHeight,
-                name: `_${sizeKey}`,
+                name: `-${targetWidth}w`,
               });
             }
           }

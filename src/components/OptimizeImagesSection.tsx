@@ -105,7 +105,7 @@ const OptimizeImagesSection: React.FC = () => {
               isProcessing
                 ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                 : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
+            } ${isProcessing ? '' : 'hover:bg-blue-700'}`}
           >
             {isProcessing ? 'Processing...' : (showExportSection ? 'Re-generate Preview' : 'Generate Preview')}
           </button>
