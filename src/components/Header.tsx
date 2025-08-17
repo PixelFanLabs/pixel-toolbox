@@ -35,9 +35,7 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
   }, [scrolled, isHomePage]);
 
   const handleNavLinkClick = (path: string) => {
-    if (location.pathname === path) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
@@ -81,13 +79,15 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
                 `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
               </li>
               <li>
-                <button
-                  onClick={openKofiModal}
+                <a
+                  href="https://ko-fi.com/pixelfan"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
                 >
                   <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
-                  Buy me a coffee
-                </button>
+ Buy me a coffee
+                </a>
               </li>
               
             </ul>
@@ -132,13 +132,15 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
               `} onClick={() => handleNavLinkClick('/faq')}>FAQ</Link>
             </li>
             <li>
-              <button
-                onClick={openKofiModal}
+              <a
+                href="https://ko-fi.com/pixelfan"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg"
               >
                 <img src="https://storage.ko-fi.com/cdn/cup-border.png" className="h-5 w-5 mr-2" alt="Ko-fi" />
-                Buy me a coffee
-              </button>
+ Buy me a coffee
+              </a>
             </li>
             
           </ul>

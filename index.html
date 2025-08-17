@@ -12,6 +12,16 @@
     <meta property="og:description" content="Convert, optimize, and export images for web use with our powerful client-side toolkit. No uploads required - all processing happens in your browser." />
     <meta property="og:type" content="website" />
     <title>PixelToolbox - Your Complete Toolkit for Web-Ready Images</title>
+    <style>
+      body { /* Prevent body overflow if the widget is positioned fixed */
+        overflow-x: hidden;
+      }
+      .kofi-widget-container {
+        position: fixed;
+        bottom: 20px; /* Adjust as needed for spacing from the bottom */
+        right: 20px; /* Adjust as needed for spacing from the right */
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
