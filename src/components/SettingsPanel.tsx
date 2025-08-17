@@ -173,7 +173,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           )}
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 mb-4">
           <ToggleButton
             id="generateSrcset"
             label="Generate Responsive Images"
@@ -183,7 +183,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
         {settings.generateSrcset && (
-          <div className="mt-3">
+          <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg">
             <h4 className="text-base font-semibold text-slate-800">Srcset Dimensions (px)</h4>
             <div className="space-y-3">
               {Object.keys(srcsetSizes).map((sizeKey) => {
