@@ -102,8 +102,8 @@ const Hero: React.FC = () => {
       <img
         className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-image-pixeltoolbox.avif"
-        srcSet="/images/hero-image-pixeltoolbox-small.avif 600w, /images/hero-image-pixeltoolbox-medium.avif 1200w, /images/hero-image-pixeltoolbox.avif 1920w"
-        sizes="100vw"
+        srcSet="/images/hero-image-pixeltoolbox-600w.avif 600w, /images/hero-image-pixeltoolbox-1200w.avif 1200w, /images/hero-image-pixeltoolbox-2000w.avif 2000w"
+        sizes="(max-width: 600px) 600w, (max-width: 1200px) 1200w, 2000w"
         alt="Background"
       />
       <div className="absolute inset-0 bg-black/40"></div>

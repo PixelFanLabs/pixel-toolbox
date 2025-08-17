@@ -6,14 +6,7 @@ import OptimizeImagesSection from './components/OptimizeImagesSection';
 import AboutPage from './pages/AboutPage';
 import FAQPage from './pages/FAQPage';
 
-import KofiModal from './components/KofiModal'; // Import the KofiModal component
-
 function App() {
-  const [isKofiModalOpen, setIsKofiModalOpen] = useState(false);
-
-  const openKofiModal = () => setIsKofiModalOpen(true);
-  const closeKofiModal = () => setIsKofiModalOpen(false);
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js';
@@ -36,7 +29,7 @@ function App() {
  return (
     <Router>
       <div id="top" className="min-h-screen flex flex-col">
-        <Header openKofiModal={openKofiModal} /> {/* Pass the openKofiModal function */}
+        <Header /> {/* Pass the openKofiModal function */}
 
         <main className="flex-grow">
           <Routes>
@@ -57,10 +50,6 @@ function App() {
             <p>© 2025 PixelToolbox. A free web service created by PixelFanLabs.</p>
           </div>
         </footer>
-
-
-        {/* Render the KofiModal component */}
-        <KofiModal isOpen={isKofiModalOpen} onClose={closeKofiModal} />
 
 
       </div>
