@@ -119,7 +119,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
                 {isHoveringImageProfileInfo && (
                   <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or email.
+                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or print.
                   </div>
                 )}
               </div>
@@ -183,36 +183,40 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
         {settings.generateSrcset && (
-          <div className="space-y-4 mt-3">
+          <div className="mt-3">
             <h4 className="text-base font-semibold text-slate-800">Srcset Dimensions (px)</h4>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {Object.keys(srcsetSizes).map((sizeKey) => {
                 const size = sizeKey as keyof typeof defaultSrcsetSizes;
                 const { width, enabled, description } = srcsetSizes[size];
                 const defaultWidth = defaultSrcsetSizes[size].width;
 
                 return (
-                  <div key={size} className="flex items-start space-x-4">
-                    <div className="flex items-center h-5 mt-1">
-                      <input
-                        id={`srcset-${size}-enabled`}
-                        type="checkbox"
-                        checked={enabled}
-                        onChange={(e) => handleSrcsetSizeChange(size, 'enabled', e.target.checked)}
-                        className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-                      />
+                  <div key={size} className="flex items-start justify-between py-2 border-b last:border-b-0 border-slate-100">
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5 mt-1 mr-2">
+                        <input
+                          id={`srcset-${size}-enabled`}
+                          type="checkbox"
+                          checked={enabled}
+                          onChange={(e) => handleSrcsetSizeChange(size, 'enabled', e.target.checked)}
+                          className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={`srcset-${size}-enabled`} className="block text-sm font-medium text-slate-700 cursor-pointer capitalize">
+                          {size} ({width || defaultWidth}px)
+                        </label>
+                        <p className="text-xs text-slate-500">{description}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <label htmlFor={`srcset-${size}-enabled`} className="block text-sm font-medium text-slate-700 cursor-pointer capitalize">
-                        {size} ({width || defaultWidth}px)
-                      </label>
-                      <p className="text-xs text-slate-500 mb-2">{description}</p>
+                    <div className="flex-shrink-0 w-24 ml-4">
                       <input
                         type="number"
                         value={width || ''}
                         onChange={(e) => handleSrcsetSizeChange(size, 'width', e.target.value ? parseInt(e.target.value) : undefined)}
                         placeholder={defaultWidth.toString()}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-right"
                         disabled={!enabled}
                       />
                     </div>
@@ -238,7 +242,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
       >
         <span className="flex items-center">
-          <Settings className="w-6 h-6 mr-2 text-blue-500" strokeWidth={2} />
           Fine-Tune Settings
         </span>
         {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
