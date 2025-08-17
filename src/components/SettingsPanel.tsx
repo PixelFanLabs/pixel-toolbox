@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, ChevronUp, Settings } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Settings, Info } from 'lucide-react';
 
 import { ProcessingSettings, ExportPreset, Format } from '../types';
 import { exportPresets } from '../config/settings';
@@ -29,6 +29,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFineTuneExpanded, setFineTuneExpanded] = useState(false);
   const [isSmartOptimizationEnabled, setIsSmartOptimizationEnabled] = useState(settings.optimize);
+  const [isHoveringImageProfileInfo, setIsHoveringImageProfileInfo] = useState(false); // New state for info hover
   // Initialize srcset sizes with defaults, overriding with saved settings if they exist
   const [srcsetSizes, setSrcsetSizes] = useState({
     small: { ...defaultSrcsetSizes.small, ...settings.srcsetSizes?.small },
@@ -77,7 +78,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onSettingsChange({
       ...settings,
       generateSrcset: checked,
-      srcsetSizes: updatedSrcsetSizes, // Pass updated sizes with the setting change
+      srcsetSizes: updatedSrcsetSizes,
     });
   };
 
@@ -104,9 +105,21 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
+        <h3 className="text-lg font-semibold text-slate-800 flex items-center relative">
           <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
-          Select Image format
+          Image Profile
+          <div
+            className="ml-2 group relative flex items-center"
+            onMouseEnter={() => setIsHoveringImageProfileInfo(true)}
+            onMouseLeave={() => setIsHoveringImageProfileInfo(false)}
+          >
+            <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
+            {isHoveringImageProfileInfo && (
+              <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                Choose an image profile to apply a set of recommended settings for common use cases, such as web, social media, or print.
+              </div>
+            )}
+          </div>
         </h3>
         {/* Dropdown for presets */}
         <div className="relative" ref={dropdownRef}>

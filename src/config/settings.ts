@@ -1,14 +1,5 @@
 import { ProcessingSettings, ExportPreset } from '../types';
 
-export const defaultSettings: ProcessingSettings = {
-  format: 'webp',
-  quality: 85,
-  maintainAspectRatio: true,
-  optimize: true,
-  resizeMode: 'fit',
-  generateSrcset: false, // Added new property
-};
-
 export const exportPresets: ExportPreset[] = [
   {
     id: 'web-avatar',
@@ -71,9 +62,9 @@ export const exportPresets: ExportPreset[] = [
     generateSrcset: false, // Added new property
   },
   {
-    id: 'cms-ready',
-    name: 'CMS Ready',
-    description: 'High-quality format for content management systems',
+    id: 'cms-web-optimized',
+    name: 'CMS & Web Optimized',
+    description: 'High-quality and optimized format for content management systems and general web use',
     icon: '🌐',
     format: 'webp',
     quality: 90,
@@ -103,6 +94,18 @@ export const exportPresets: ExportPreset[] = [
     generateSrcset: false, // Added new property
   },
 ];
+
+// Find the CMS & Web Optimized preset
+const cmsWebOptimizedPreset = exportPresets.find(preset => preset.id === 'cms-web-optimized');
+
+export const defaultSettings: ProcessingSettings = {
+  format: cmsWebOptimizedPreset?.format || 'webp',
+  quality: cmsWebOptimizedPreset?.quality || 85,
+  maintainAspectRatio: true,
+  optimize: true,
+  resizeMode: 'fit',
+  generateSrcset: cmsWebOptimizedPreset?.generateSrcset || false,
+};
 
 export const formatOptions = [
   { value: 'webp', label: 'WebP', description: 'Modern format with excellent compression' },
