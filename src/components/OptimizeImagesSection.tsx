@@ -107,7 +107,7 @@ const OptimizeImagesSection: React.FC = () => {
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             } ${isProcessing ? '' : 'hover:bg-blue-700'}`}
           >
-            {isProcessing ? 'Processing...' : (showExportSection ? 'Re-generate Preview' : 'Generate Preview')}
+            {isProcessing ? 'Processing...' : ('Process Images')}
           </button>
         </div>
       )}
