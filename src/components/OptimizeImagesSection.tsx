@@ -92,42 +92,90 @@ const OptimizeImagesSection: React.FC = () => {
   }, [images, settings]);
 
   return (
-    <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-12">Optimize Images</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <ImageUploader onImagesUploaded={handleImagesUploaded} images={images} handleRemoveImage={handleRemoveImage} />
-        <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
+    <div className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+            Optimize Your <span className="text-blue-600">Images</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            Transform your images into web-ready assets with our powerful optimization toolkit
+          </p>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <span className="text-blue-600 font-bold">1</span>
+              </div>
+              Upload Images
+            </h2>
+            <ImageUploader onImagesUploaded={handleImagesUploaded} images={images} handleRemoveImage={handleRemoveImage} />
+          </div>
+          
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <span className="text-blue-600 font-bold">2</span>
+              </div>
+              Configure Settings
+            </h2>
+            <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
+          </div>
+        </div>
+
+        {/* Process Button */}
+        {images.length > 0 && (
+          <div className="text-center mb-16">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <span className="text-blue-600 font-bold">3</span>
+                </div>
+                Process & Export
+              </h2>
+              <button
+                onClick={handleProcessImages}
+                disabled={isProcessing || showExportSection}
+                className={`px-12 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg ${
+                  isProcessing || showExportSection 
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-xl transform hover:scale-105'
+                }`}
+              >
+                {isProcessing ? 'Processing Images...' : 'Process Images'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Export Section */}
+        {showExportSection && processedImages.length > 0 && (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 border-b border-slate-200">
+              <h2 className="text-2xl font-bold text-slate-900 flex items-center">
+                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                  <span className="text-green-600 font-bold">✓</span>
+                </div>
+                Images Processed Successfully
+              </h2>
+              <p className="text-slate-600 mt-2">Your optimized images are ready for download</p>
+            </div>
+            <ExportPanel
+              images={processedImages}
+              settings={settings}
+              isProcessing={isProcessing}
+              handleRemoveImage={handleRemoveImage}
+              processingProgress={processingProgress}
+              processingTime={processingTime}
+            />
+          </div>
+        )}
+      </section>
       </div>
-
-      {/* Preview Button */}
-      {images.length > 0 && ( /* Keep the button always rendered when there are images */
-        <div className="mt-8 text-center">
-          <button
-            onClick={handleProcessImages}
-            disabled={isProcessing || showExportSection} /* Disable if processing or if export section is shown (meaning processing is done and no settings changed) */
-            className={`px-8 py-4 rounded-lg font-medium transition-colors text-lg ${
-              isProcessing || showExportSection ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700' /* Apply greyed-out style when disabled */
-            } ${isProcessing || showExportSection ? '' : 'hover:bg-blue-700'}`}
-          >
-            {isProcessing ? 'Processing...' : ('Process Images')}
-          </button>
-        </div>
-      )}
-
-      {/* Export Section (conditionally rendered) */}
-      {showExportSection && processedImages.length > 0 && (
-        <div className="mt-12">
-          <ExportPanel
-            images={processedImages} // Pass processed images
-            settings={settings}
-            isProcessing={isProcessing}
-            handleRemoveImage={handleRemoveImage}
-            processingProgress={processingProgress} // Pass processing progress
-            processingTime={processingTime} // Pass processing time
-          />
-        </div>
-      )}
-    </section>
   );
 };
 
