@@ -157,14 +157,17 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
   };
 
   return (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">
-        Export Your Images
-      </h2>
+    <div className="p-8 space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">
+          Export Your Images
+        </h2>
+        <p className="text-slate-600">Download your optimized images individually or as a complete package</p>
+      </div>
 
       {/* Processing Progress (moved from PreviewPanel) */}
       {isProcessing && (
-        <div className="mb-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="mb-8 p-6 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-xl">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-blue-800">Processing Images</h3>
             <span className="text-blue-700 font-medium">{Math.round(processingProgress)}%</span>
@@ -183,7 +186,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
         <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
 
           {/* File Size Saved */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="bg-green-50/80 backdrop-blur-sm border border-green-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
             <div className="flex items-center space-x-2 mb-2">
               <BarChart3 className="w-5 h-5 text-green-700" />
               <span className="font-medium text-green-700">File Size Saved</span>
@@ -193,7 +196,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           </div>
 
           {/* Images Processed Card */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-yellow-50/80 backdrop-blur-sm border border-yellow-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
             <div className="flex items-center space-x-2 mb-2">
               <Eye className="w-5 h-5 text-yellow-700"/>
               <span className="font-medium text-yellow-700">Images Processed</span>
@@ -203,7 +206,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           </div>
 
           {/* Images Generated Card */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
             <div className="flex items-center space-x-2 mb-2">
               <Package className="w-5 h-5 text-blue-700" />
               <span className="font-medium text-blue-700">Images Generated</span>
@@ -213,7 +216,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           </div>
 
           {/* Processing Time */}
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+          <div className="bg-purple-50/80 backdrop-blur-sm border border-purple-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
             <div className="flex items-center space-x-2 mb-2">
               <Clock className="w-5 h-5 text-purple-700" />
               <span className="font-medium text-purple-700">Processing Time</span>
@@ -225,7 +228,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       )}
 
       {/* Batch Export */}
-      <div className="bg-white border border-slate-200 rounded-lg p-6 mb-8">
+      <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl p-6 mb-8 shadow-lg hover:shadow-xl transition-all duration-300">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h3 className="text-lg font-semibold text-slate-800">Batch Export</h3>
@@ -234,12 +237,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
           <button
             onClick={downloadAll}
             disabled={isExporting}
-            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+            className={`px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-lg ${
               isExporting
                 ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                 : exportComplete
                 ? 'bg-green-600 text-white'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-xl transform hover:scale-105'
             }`}
           >
             {isExporting ? (
@@ -267,10 +270,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
         <h3 className="text-lg font-semibold text-slate-800 mb-4">Individual Downloads</h3>
         <div className="space-y-4">
           {allIndividualOutputImages.map((outputImage) => (
-            <div key={outputImage.id} className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+            <div key={outputImage.id} className="bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <div className="w-16 h-16 bg-white rounded border border-slate-200 overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-16 bg-white rounded-lg border border-slate-200 overflow-hidden flex-shrink-0 shadow-sm">
                     <img
                       src={outputImage.url}
                       alt={outputImage.displayName}
@@ -291,10 +294,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                 <button
                   onClick={() => downloadSingle(outputImage)}
                   disabled={downloadedImages[outputImage.id]}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+                  className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex-shrink-0 shadow-md ${
                     downloadedImages[outputImage.id]
                       ? 'bg-green-600 text-white cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-lg transform hover:scale-105'
                   }`}
                 >
                   {downloadedImages[outputImage.id] ? (
