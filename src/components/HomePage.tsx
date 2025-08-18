@@ -1,11 +1,10 @@
 import React from 'react';
 import Hero from './Hero';
+import { ImageFile } from '../types';
 
-interface HomePageProps {
-  onImagesUploaded: (images: ImageFile[]) => void;
-}
+interface HomePageProps {}
 
-const HomePage: React.FC<HomePageProps> = ({ onImagesUploaded }) => {
+const HomePage: React.FC<HomePageProps> = () => {
   return (
     <div>
       <Hero />

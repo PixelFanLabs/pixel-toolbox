@@ -104,10 +104,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
 
   return (
     <div
-      className={`relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ${
+      className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
         isDragOver
           ? 'border-blue-400 bg-blue-50'
-          : 'border-slate-300 hover:border-blue-300 hover:bg-slate-50'
+          : 'border-slate-300 hover:border-blue-300 hover:bg-blue-50/50'
       }`}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -122,13 +122,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
         id="file-upload"
       />
       
-      <div className="space-y-4">
-        <div className="w-16 h-16 flex items-center justify-center mx-auto">
+      <div className="space-y-6">
+        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
           <Upload className="w-8 h-8 text-blue-600" strokeWidth={1.5} />
         </div>
         
         <div>
-          <h3 className="text-xl font-semibold text-slate-800 mb-2">
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
             {isLoading ? 'Processing images...' : 'Drop your images here'}
           </h3>
           <p className="text-slate-600 mb-4">
@@ -141,7 +141,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
 
         <label
           htmlFor="file-upload"
-          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors cursor-pointer"
+          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl transform hover:scale-105"
         >
           <Upload className="w-5 h-5 mr-2" strokeWidth={1.5} />
           Choose Images
@@ -150,7 +150,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
 
       {/* Error Message */}
       {error && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-3">
+        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start space-x-3">
           <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" strokeWidth={1.5} />
           <div>
             <h4 className="text-red-800 font-medium">Upload Error</h4>
@@ -161,11 +161,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
 
       {/* Image List */}
       {images.length > 0 && (
-        <div className="mt-8 space-y-4 max-h-64 overflow-y-auto"> {/* Added max-h and overflow for scroll */}
+        <div className="mt-8 space-y-3 max-h-64 overflow-y-auto">
           {images.map((image) => (
-            <div key={image.id} className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
-              <div className="flex items-center space-x-3 overflow-hidden"> {/* Added overflow-hidden */}
-                <img src={image.originalUrl} alt={image.file.name} className="w-12 h-12 object-cover rounded-md" />
+            <div key={image.id} className="flex items-center justify-between p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200">
+              <div className="flex items-center space-x-3 overflow-hidden">
+                <img src={image.originalUrl} alt={image.file.name} className="w-12 h-12 object-cover rounded-lg" />
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-slate-800 text-sm truncate" title={image.file.name}>{image.file.name}</h4>
                   <p className="text-xs text-slate-600">{formatFileSize(image.originalSize)}</p>
@@ -173,7 +173,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesUploaded, images,
               </div>
               <button
                 onClick={() => handleRemoveImage(image.id)}
-                className="text-slate-400 hover:text-red-500 transition-colors"
+                className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50"
                 title="Remove image"
               >
                 <XCircle className="w-4 h-4" />

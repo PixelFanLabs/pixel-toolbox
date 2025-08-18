@@ -103,10 +103,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   return (
-    <div className="p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">Output Image Settings</h2>
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800 mb-6">Output Image Settings</h3>
 
-      <div className="mb-8">
+        <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div className="flex-1">
             <span className="text-base font-medium text-slate-700 block">
@@ -118,7 +119,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               >
                 <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
                 {isHoveringImageProfileInfo && (
-                  <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                  <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-800 text-white text-xs rounded-xl py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 shadow-lg">
                     Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or print.
                   </div>
                 )}
@@ -126,11 +127,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </span>
           </div>
         </div>
-        {/* Dropdown for presets */}
         <div className="relative mt-4" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-white/80 backdrop-blur-sm border border-slate-300 rounded-xl text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-blue-300 transition-all duration-200"
           >
             {selectedPreset ? (
               <div className="flex items-center space-x-3">
@@ -153,12 +153,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+            <div className="absolute z-10 mt-1 w-full bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-xl max-h-60 overflow-y-auto">
               {exportPresets.map((preset) => (
                 <div
                   key={preset.id}
                   onClick={() => handlePresetSelect(preset)}
-                  className="px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
+                  className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-100 last:border-b-0 transition-colors duration-200"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{preset.icon}</span>
@@ -173,7 +173,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           )}
         </div>
 
-        <div className="mt-4 mb-4">
+        <div className="mt-6">
           <ToggleButton
             id="generateSrcset"
             label="Generate Responsive Images"
@@ -183,7 +183,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
         {settings.generateSrcset && (
-          <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg">
+          <div className="mt-4 p-4 bg-blue-50/50 border border-blue-200 rounded-xl">
             <h4 className="text-base font-semibold text-slate-800">Srcset Dimensions (px)</h4>
             <div className="space-y-3">
               {Object.keys(srcsetSizes).map((sizeKey) => {
@@ -200,7 +200,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                           type="checkbox"
                           checked={enabled}
                           onChange={(e) => handleSrcsetSizeChange(size, 'enabled', e.target.checked)}
-                          className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                          className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 focus:ring-2"
                         />
                       </div>
                       <div>
@@ -216,7 +216,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         value={width || ''}
                         onChange={(e) => handleSrcsetSizeChange(size, 'width', e.target.value ? parseInt(e.target.value) : undefined)}
                         placeholder={defaultWidth.toString()}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-right"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-right transition-all duration-200"
                         disabled={!enabled}
                       />
                     </div>
@@ -226,7 +226,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </div>
           </div>
   )}
-        <div className="mt-6">
+        <div className="mt-8">
           <ToggleButton
             id="smartOptimization"
             label="Smart Optimization"
@@ -236,16 +236,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
       </div>
+      </div>
 
-      <h2
-        className="text-2xl font-bold text-gray-900 mt-12 mb-8 flex items-center justify-between cursor-pointer"
+      <div className="border-t border-slate-200 pt-8">
+        <h3
+        className="text-lg font-semibold text-slate-800 mb-6 flex items-center justify-between cursor-pointer"
         onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
       >
         <span className="flex items-center">
           Fine-Tune Settings
         </span>
         {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
-      </h2>
+        </h3>
 
       {isFineTuneExpanded && (
         <div className="space-y-6">
@@ -255,6 +257,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
       )}
+      </div>
     </div>
   );
 };
