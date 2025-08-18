@@ -86,8 +86,8 @@ const LearnPage: React.FC = () => {
           {/* Articles Section */}
           <div className="w-full lg:w-2/3">
             {filteredContent.length > 0 ? (
-              filteredContent.map((article, index) => (
-                <article key={index} id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
+              filteredContent.map((article, articleIndex) => (
+                <article key={articleIndex} id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
                   <img
                     src={article.image.src}
                     srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
@@ -99,6 +99,19 @@ const LearnPage: React.FC = () => {
                     <p className="text-slate-500 mb-6">By {article.author}</p>
                     
                     {article.content.map((contentItem, contentIndex) => {
+                      // Start of code for Adsterra Native Banner Ads
+                      if (contentIndex === 0 && contentItem.type === 'paragraph') {
+                        return (
+                          <React.Fragment key={contentIndex}>
+                            <p className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>
+                            {/* Adsterra Native Banner Ad Unit */}
+                            <div className="my-8 flex justify-center">
+                              <div id="container-eaa56e5d2f00d1d5a4b44c95331429f1"></div>
+                            </div>
+                          </React.Fragment>
+                        );
+                      }
+                      // End of code for Adsterra Native Banner Ads
                       if (contentItem.type === 'heading') {
                         const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
                         return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
