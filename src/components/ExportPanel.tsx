@@ -24,6 +24,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
   const [isExporting, setIsExporting] = useState(false);
   const [exportComplete, setExportComplete] = useState(false);
   const [showComparison, setShowComparison] = useState(false); // For comparison view in individual images
+  const [downloadedImages, setDownloadedImages] = useState<Record<string, boolean>>({}); // New state for individual downloads
 
   const totalOriginalSize = images.reduce((acc, img) => acc + img.originalSize, 0);
   const totalProcessedSize = images.reduce((acc, img) => acc + (img.processedSize || 0), 0);
@@ -39,28 +40,49 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
     }
   }, 0);
 
-
-  const downloadSingle = async (image: ImageFile) => {
-    if (settings.generateSrcset) {
-      console.warn('Individual download not available for responsive images. Please use "Download All".');
-      return;
+  // Flattened list of all individual output images for display and download
+  const allIndividualOutputImages = images.flatMap(image => {
+    if (settings.generateSrcset && image.processedResults) {
+      return image.processedResults.map(result => ({
+        id: `${image.id}-${result.name}`,
+        url: result.url,
+        size: result.size,
+        width: result.width,
+        height: result.height,
+        displayName: `${image.file.name.split('.')[0]}${result.name}.webp`,
+        originalSize: image.originalSize,
+      }));
+    } else if (image.processedUrl) {
+      return [{
+        id: image.id,
+        url: image.processedUrl,
+        size: image.processedSize || 0,
+        width: image.width || 0,
+        height: image.height || 0,
+        displayName: `${image.file.name.split('.')[0]}_optimized.${settings.format}`,
+        originalSize: image.originalSize,
+      }];
     }
-    if (!image.processedUrl) return;
+    return [];
+  });
+
+  const downloadSingle = async (outputItem: { id: string; url: string; displayName: string }) => {
+    if (!outputItem.url) return;
 
     try {
-      const response = await fetch(image.processedUrl);
+      const response = await fetch(outputItem.url);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
       link.href = url;
-      const fileExtension = settings.generateSrcset ? 'webp' : settings.format;
-      link.download = `${image.file.name.split('.')[0]}_optimized.${fileExtension}`;
+      link.download = outputItem.displayName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
       URL.revokeObjectURL(url);
+      setDownloadedImages(prev => ({ ...prev, [outputItem.id]: true })); // Mark as downloaded
     } catch (error) {
       console.error('Error downloading image:', error);
     }
@@ -134,14 +156,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
     }
   };
 
-  // No longer need the empty state check here, as ExportPanel is only rendered when images are processed
-
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
-          <p className="text-slate-600">Download your optimized images individually or as a batch. Batch ZIP exports come complete with a handy metadata file detailing all processing specifics.</p>
+          <p className="text-slate-600">Download your optimized images individually or as a batch. Batch ZIP exports include a dedicated metadata file detailing all processing specifics.</p>
         </div>
       </div>
 
@@ -243,62 +263,58 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
             )}
           </button>
         </div>
-
-        {/* Removed selectedPreset display here */}
       </div>
 
       {/* Individual Images */}
       <div>
         <h3 className="text-lg font-semibold text-slate-800 mb-4">Individual Downloads</h3>
         <div className="space-y-4">
-          {images.map((image) => (
-            <div key={image.id} className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+          {allIndividualOutputImages.map((outputImage) => (
+            <div key={outputImage.id} className="bg-slate-50 border border-slate-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 min-w-0 flex-1">
                   <div className="w-16 h-16 bg-white rounded border border-slate-200 overflow-hidden flex-shrink-0">
                     <img
-                      src={settings.generateSrcset && image.processedResults ? image.processedResults[1]?.url || image.originalUrl : image.processedUrl || image.originalUrl}
-                      alt={image.file.name}
+                      src={outputImage.url}
+                      alt={outputImage.displayName}
                       className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-medium text-slate-800 truncate">{image.file.name}</h4>
+                    <h4 className="font-medium text-slate-800 truncate">{outputImage.displayName}</h4>
                     <div className="flex items-center space-x-4 text-sm text-slate-600 mt-1">
-                      <span>{image.width} × {image.height}px</span>
-                      <span>{formatFileSize(image.processedSize || 0)}</span>
+                      <span>{outputImage.width} × {outputImage.height}px</span>
+                      <span>{formatFileSize(outputImage.size)}</span>
                       <span className="text-green-600 font-medium">
-                        -{calculateCompressionRatio(image.originalSize, image.processedSize || image.originalSize).toFixed(1)}%
+                        -{calculateCompressionRatio(outputImage.originalSize, outputImage.size).toFixed(1)}%
                       </span>
                     </div>
                   </div>
                 </div>
                 <button
-                  onClick={() => downloadSingle(image)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex-shrink-0"
+                  onClick={() => downloadSingle(outputImage)}
+                  disabled={downloadedImages[outputImage.id]}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 ${
+                    downloadedImages[outputImage.id]
+                      ? 'bg-green-600 text-white cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
                 >
-                  <Download className="w-4 h-4 mr-2 inline-block" />
-                  Download
+                  {downloadedImages[outputImage.id] ? (
+                    <>
+                      <Check className="w-4 h-4 mr-2 inline-block" />
+                      Downloaded
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4 mr-2 inline-block" />
+                      Download
+                    </>
+                  )}
                 </button>
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Export Notes */}
-      <div className="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-lg">
-        <div className="flex items-start space-x-3">
-          <FileText className="w-5 h-5 text-slate-500 mt-0.5" />
-          <div>
-            <h4 className="font-medium text-slate-800 mb-1">Export Information</h4>
-            <ul className="text-sm text-slate-600 space-y-1">
-              <li>• Individual files are renamed with "_optimized" suffix</li>
-              <li>• Batch ZIP exports come complete with a handy metadata file detailing all processing specifics.</li>
-              <li>• All processing was done client-side - your images never left your browser</li>
-              <li>• Exported images are ready for web use with optimal file sizes</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
