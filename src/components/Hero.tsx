@@ -97,7 +97,7 @@ const Hero: React.FC = () => {
   return (
     <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 overflow-hidden h-[55vh] flex flex-col">
       <img
-        className="absolute inset-0 h-full w-full object-cover opacity-50"
+        className="absolute inset-0 h-full w-full object-cover"
         src="/images/hero-abstract-background-pixeltoolbox-1600w.webp"
         srcSet="/images/hero-abstract-background-pixeltoolbox-480w.webp 480w, /images/hero-abstract-background-pixeltoolbox-800w.webp 800w, /images/hero-abstract-background-pixeltoolbox-1200w.webp 1200w, /images/hero-abstract-background-pixeltoolbox-1600w.webp 1600w"
         sizes="(max-width: 480px) 480w, (max-width: 800px) 800w, (max-width: 1200px) 1200w, 1600w"
@@ -107,7 +107,7 @@ const Hero: React.FC = () => {
           e.target.style.display = 'none'; // Hide the image if it fails to load
         }}
       />
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/15"></div>
       
       <div className="relative z-10 w-full lg:max-w-6xl mx-auto flex flex-col h-full pt-24">
         {/* Tagline */}
@@ -149,7 +149,7 @@ const Hero: React.FC = () => {
                         className: "text-white/90",
                       })}
                     </div>
-                    <h3 className="text-sm lg:text-base font-medium text-white/80">
+                    <h3 className="text-sm lg:text-base font-medium text-white/80 [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]">
                       {feature.name}
                     </h3>
                   </div>

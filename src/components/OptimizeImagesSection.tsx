@@ -128,43 +128,46 @@ const OptimizeImagesSection: React.FC = () => {
         </div>
 
         {/* Process Button */}
-        {images.length > 0 && (
-          <div className="text-center mb-16">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-blue-600 font-bold">3</span>
-                </div>
-                Process & Export
-              </h2>
-              <button
-                onClick={handleProcessImages}
-                disabled={isProcessing || showExportSection}
-                className={`px-12 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg ${
-                  isProcessing || showExportSection 
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-xl transform hover:scale-105'
-                }`}
-              >
-                {isProcessing ? 'Processing Images...' : 'Process Images'}
-              </button>
+        <div className="text-center mb-16">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <span className="text-blue-600 font-bold">3</span>
+              </div>
+              Process & Export
+            </h2>
+            <button
+              onClick={handleProcessImages}
+              disabled={isProcessing || showExportSection || images.length === 0}
+              className={`px-12 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg ${
+                isProcessing || showExportSection || images.length === 0
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 hover:shadow-xl transform hover:scale-105'
+              }`}
+            >
+              {isProcessing ? 'Processing Images...' : 'Process Images'}
+            </button>
+            {images.length === 0 && (
+              <p className="mt-4 text-slate-500 text-sm">
+                Please upload images in Step 1 to enable processing.
+              </p>
+            )}
 
-              {/* Export Panel - Now integrated within the Process section */}
-              {showExportSection && processedImages.length > 0 && (
-                <div className="mt-8">
-                  <ExportPanel
-                    images={processedImages}
-                    settings={settings}
-                    isProcessing={isProcessing}
-                    handleRemoveImage={handleRemoveImage}
-                    processingProgress={processingProgress}
-                    processingTime={processingTime}
-                  />
-                </div>
-              )}
-            </div>
+            {/* Export Panel - Now integrated within the Process section */}
+            {showExportSection && processedImages.length > 0 && (
+              <div className="mt-8">
+                <ExportPanel
+                  images={processedImages}
+                  settings={settings}
+                  isProcessing={isProcessing}
+                  handleRemoveImage={handleRemoveImage}
+                  processingProgress={processingProgress}
+                  processingTime={processingTime}
+                />
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </section>
       </div>
   );

@@ -51,7 +51,7 @@ const AboutPage: React.FC = () => {
                   alt="Visual representing frustration with multiple tools"
                   className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
                   loading="lazy"
-                  srcSet="/images/photo-fustrated-pixeltoolbox-480w.webp 480w, /images/photo-fustrated-pixeltoolbox-800w.webp 800w, /images/photo-fustrated-pixeltoolbox-1200w.webp 2000w /images/photo-fustrated-pixeltoolbox-1600w.webp 1600w"
+                  srcSet="/images/photo-fustrated-pixeltoolbox-480w.webp 480w, /images/photo-fustrated-pixeltoolbox-800w.webp 800w, /images/photo-fustrated-pixeltoolbox-1200w.webp 1200w"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
@@ -69,7 +69,7 @@ const AboutPage: React.FC = () => {
                 alt="Visual representing the meaning behind PixelToolbox"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
                 loading="lazy"
-                srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w, /images/photo-latop-design-pixeltoolbox-1600w.webp 1600w"
+                  srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -121,6 +121,50 @@ const AboutPage: React.FC = () => {
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">User Focused</h3>
               <p className="text-slate-600">Built for creators, by creators.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Us Section */}
+        <div className="mb-20">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-items-center">
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 flex items-center justify-center lg:justify-start">
+                Contact Us
+              </h2>
+              <p className="text-lg text-slate-700 leading-relaxed mb-6">
+                Have questions, feedback, or interested in collaboration? We'd love to hear from you!
+              </p>
+              <p className="text-lg text-blue-700 font-medium mb-6">
+                Email us at:{' '}
+                <a
+                  href="mailto:contactpixelfanlabs@gmail.com"
+                  className="hover:underline"
+                >
+                  contactpixelfanlabs@gmail.com
+                </a>
+              </p>
+              <div className="text-left text-lg text-slate-700 leading-relaxed space-y-4">
+                <p>You can contact us for:</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>General questions about PixelToolbox</li>
+                  <li>Reporting issues or bugs</li>
+                  <li>Suggesting new features or improvements</li>
+                  <li>Collaboration opportunities</li>
+                  <li>Privacy concerns</li>
+                </ul>
+              </div>
+            </div>
+            <div className="relative order-1 lg:order-2">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
+              <img
+                src="/images/photo-contact-us-pixeltoolbox-1200w.webp"
+                alt="Illustration of someone sending an email"
+                className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
+                loading="lazy"
+                srcSet="/images/photo-contact-us-pixeltoolbox-480w.webp 480w, /images/photo-contact-us-pixeltoolbox-800w.webp 800w, /images/photo-contact-us-pixeltoolbox-1200w.webp 1200w"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>

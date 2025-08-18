@@ -1,0 +1,62 @@
+
+[
+  {
+    "title": "Understanding and Implementing srcset for Responsive Images",
+    "author": "PixelToolbox Team",
+    "image": {
+      "src": "public/images/photo-latop-design-pixeltoolbox-800w.webp",
+      "srcset": [
+        {
+          "src": "public/images/photo-latop-design-pixeltoolbox-480w.webp",
+          "descriptor": "480w"
+        },
+        {
+          "src": "public/images/photo-latop-design-pixeltoolbox-800w.webp",
+          "descriptor": "800w"
+        },
+        {
+          "src": "public/images/photo-latop-design-pixeltoolbox-1200w.webp",
+          "descriptor": "1200w"
+        }
+      ]
+    },
+    "content": [
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "What is Srcset?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Srcset is an attribute of the `<img>` tag in HTML that allows you to provide a list of image sources, each with a descriptor that tells the browser about the size of the image. This enables the browser to select the most appropriate image to display based on the user's device, screen size, and resolution."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Why Use Srcset?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Using srcset is crucial for web performance and user experience. It ensures that users on mobile devices with smaller screens don't have to download large, high-resolution images intended for desktop displays. This saves bandwidth, reduces page load times, and improves the overall performance of your website."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "How to Implement Srcset"
+      },
+      {
+        "type": "paragraph",
+        "text": "To implement srcset, you add the `srcset` attribute to your `<img>` tag, providing a comma-separated list of image URLs, each with a width descriptor (e.g., `480w`, `800w`, `1200w`). You also use the `sizes` attribute to inform the browser about the size of the image relative to the viewport."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Responsive Images and Srcset"
+      },
+      {
+        "type": "paragraph",
+        "text": "Srcset is a key part of creating responsive images. By providing multiple image sources, you allow the browser to make an intelligent decision about which image to load, resulting in a better experience for all users, regardless of their device."
+      }
+    ]
+  }
+]
