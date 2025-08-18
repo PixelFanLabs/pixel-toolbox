@@ -123,6 +123,28 @@ const ImageProcessingSettings: React.FC<ImageProcessingSettingsProps> = ({
                 <span>Better quality</span>
               </div>
             </div>
+
+            {/* Preserve Metadata Toggle */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="preserveMetadata"
+                  checked={settings.preserveMetadata}
+                  onChange={(e) => handleSettingChange('preserveMetadata', e.target.checked)}
+                  className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                />
+                <label htmlFor="preserveMetadata" className="ml-3 text-sm font-medium text-slate-700">Preserve Metadata (EXIF, IPTC, XMP)</label>
+                <div className="relative group ml-2">
+                  <Info className="w-4 h-4 text-slate-400 cursor-help" />
+                  <div className="absolute left-1/2 transform -translate-x-1/2 -mt-10 w-64 p-2 text-xs text-white bg-slate-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    Keep original image metadata like camera settings, date, and copyright information. It is recommended to keep this off unless necessary to ensure maximum compression.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
         )}
 

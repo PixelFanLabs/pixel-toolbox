@@ -107,6 +107,7 @@ export const defaultSettings: ProcessingSettings = {
   optimize: true,
   resizeMode: cmsWebOptimizedPreset?.resizeMode || 'fit', // Ensure resizeMode is pulled from preset or defaults to fit
   generateSrcset: cmsWebOptimizedPreset?.generateSrcset || false,
+  preserveMetadata: false, // Default to off
 };
 
 export const formatOptions = [

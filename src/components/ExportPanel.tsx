@@ -59,7 +59,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
         size: image.processedSize || 0,
         width: image.width || 0,
         height: image.height || 0,
-        displayName: `${image.file.name.split('.')[0]}_optimized.${settings.format}`,
+        displayName: `${image.file.name.split('.')[0]}-optimized.${settings.format}`,
         originalSize: image.originalSize,
       }];
     }
@@ -109,7 +109,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
         } else if (image.processedUrl) {
           const response = await fetch(image.processedUrl);
           const blob = await response.blob();
-          const fileName = `${baseFileName}_optimized.${settings.format}`;
+          const fileName = `${baseFileName}-optimized.${settings.format}`;
           zip.file(fileName, blob);
         }
       }

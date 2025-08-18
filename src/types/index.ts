@@ -31,6 +31,7 @@ export interface ProcessingSettings {
     large?: { width?: number; enabled: boolean; description: string };
     extraLarge?: { width?: number; enabled: boolean; description: string };
   };
+  preserveMetadata: boolean; // New property
 }
 
 export type Format = 'png' | 'jpeg' | 'webp' | 'avif' | 'srcset';
