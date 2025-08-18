@@ -128,8 +128,8 @@ const AboutPage: React.FC = () => {
         {/* Contact Us Section */}
         <div className="mb-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-items-center">
-            <div className="text-center lg:text-left">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 flex items-center justify-center lg:justify-start">
                 Contact Us
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-6">
@@ -155,7 +155,7 @@ const AboutPage: React.FC = () => {
                 </ul>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative order-1 lg:order-2">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
               <img
                 src="/images/photo-contact-us-pixeltoolbox-1200w.webp"
