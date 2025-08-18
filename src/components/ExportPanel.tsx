@@ -229,12 +229,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
       {/* Batch Export */}
       <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl p-6 mb-8 shadow-lg hover:shadow-xl transition-all duration-300">
-        <div className="flex items-center justify-between mb-4">
-          <div>
+ <div className="flex flex-col md:flex-row items-center justify-between mb-4 space-y-4 md:space-y-0"> {/* Adjusted layout for small screens */}
+ <div className="flex-grow pr-4 text-center md:text-left"> {/* Added flex-grow, pr-4, and text alignment */}
             <h3 className="text-lg font-semibold text-slate-800">Batch Export</h3>
             <p className="text-slate-600">Download all images as a ZIP file with metadata.</p>
           </div>
-          <button
+          <button className="flex-shrink-0 mt-4 md:mt-0 px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-lg flex items-center justify-center" // Added flex-shrink-0, mt-4, md:mt-0, flex, items-center, justify-center
             onClick={downloadAll}
             disabled={isExporting}
             className={`px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-lg ${
