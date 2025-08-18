@@ -158,11 +158,9 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
-        </div>
-      </div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">
+        Export Your Images
+      </h2>
 
       {/* Processing Progress (moved from PreviewPanel) */}
       {isProcessing && (

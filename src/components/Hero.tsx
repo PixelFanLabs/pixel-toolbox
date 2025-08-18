@@ -54,11 +54,8 @@ const Hero: React.FC = () => {
         if (scrollY < fadeStart) {
           setTaglineOpacity(1);
           setTaglineScale(1);
-        } else if (scrollY > fadeEnd) {
-          setTaglineOpacity(0);
-          setTaglineScale(0.8);
         } else {
-          const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+          const progress = Math.min(1, Math.max(0, (scrollY - fadeStart) / (fadeEnd - fadeStart)));
           setTaglineOpacity(1 - progress);
           setTaglineScale(1 - (progress * 0.2)); // Scale from 1 to 0.8
         }
@@ -98,13 +95,17 @@ const Hero: React.FC = () => {
   }, [previewIndex]);
 
   return (
-    <div className="relative bg-blue-800 overflow-hidden h-[55vh] flex flex-col">
+    <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 overflow-hidden h-[55vh] flex flex-col">
       <img
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-50"
         src="/images/hero-image-pixeltoolbox.avif"
         srcSet="/images/hero-image-pixeltoolbox-600w.avif 600w, /images/hero-image-pixeltoolbox-1200w.avif 1200w, /images/hero-image-pixeltoolbox-2000w.avif 2000w"
         sizes="(max-width: 600px) 600w, (max-width: 1200px) 1200w, 2000w"
         alt="Background"
+        onError={(e: any) => {
+          e.target.onerror = null; // Prevents infinite loop
+          e.target.style.display = 'none'; // Hide the image if it fails to load
+        }}
       />
       <div className="absolute inset-0 bg-black/40"></div>
       
