@@ -1,14 +1,5 @@
 import { ProcessingSettings, ExportPreset } from '../types';
 
-export const defaultSettings: ProcessingSettings = {
-  format: 'webp',
-  quality: 85,
-  maintainAspectRatio: true,
-  optimize: true,
-  resizeMode: 'fit',
-  generateSrcset: false, // Added new property
-};
-
 export const exportPresets: ExportPreset[] = [
   {
     id: 'web-avatar',
@@ -20,7 +11,9 @@ export const exportPresets: ExportPreset[] = [
     width: 200,
     height: 200,
     useCase: 'Profile pictures, user avatars, team photos',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
+    maintainAspectRatio: false, // Updated
+    resizeMode: 'fill', // Updated
   },
   {
     id: 'web-banner',
@@ -32,7 +25,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1200,
     height: 400,
     useCase: 'Website headers, hero images, banners',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'social-post',
@@ -44,7 +37,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1080,
     height: 1080,
     useCase: 'Instagram posts, Facebook images, social content',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'email-signature',
@@ -56,7 +49,7 @@ export const exportPresets: ExportPreset[] = [
     width: 300,
     height: 100,
     useCase: 'Email signatures, newsletter headers, small logos',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'blog-thumbnail',
@@ -68,17 +61,17 @@ export const exportPresets: ExportPreset[] = [
     width: 600,
     height: 400,
     useCase: 'Blog thumbnails, article previews, content cards',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
-    id: 'cms-ready',
-    name: 'CMS Ready',
-    description: 'High-quality format for content management systems',
+    id: 'cms-web-optimized',
+    name: 'CMS & Web Optimized',
+    description: 'High-quality and optimized format for content management systems and general web use',
     icon: '🌐',
     format: 'webp',
     quality: 90,
     useCase: 'WordPress, Drupal, headless CMS, general web use',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'favicon',
@@ -90,7 +83,7 @@ export const exportPresets: ExportPreset[] = [
     width: 32,
     height: 32,
     useCase: 'Browser tabs, bookmarks, app icons',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'email-attachment',
@@ -100,9 +93,22 @@ export const exportPresets: ExportPreset[] = [
     format: 'jpeg',
     quality: 75,
     useCase: 'Sending images via email, presentations',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
 ];
+
+// Find the CMS & Web Optimized preset
+const cmsWebOptimizedPreset = exportPresets.find(preset => preset.id === 'cms-web-optimized');
+
+export const defaultSettings: ProcessingSettings = {
+  format: cmsWebOptimizedPreset?.format || 'webp',
+  quality: cmsWebOptimizedPreset?.quality || 85,
+  maintainAspectRatio: cmsWebOptimizedPreset?.maintainAspectRatio ?? true, // Ensure maintainAspectRatio is pulled from preset or defaults to true
+  optimize: true,
+  resizeMode: cmsWebOptimizedPreset?.resizeMode || 'fit', // Ensure resizeMode is pulled from preset or defaults to fit
+  generateSrcset: cmsWebOptimizedPreset?.generateSrcset || false,
+  preserveMetadata: false, // Default to off
+};
 
 export const formatOptions = [
   { value: 'webp', label: 'WebP', description: 'Modern format with excellent compression' },

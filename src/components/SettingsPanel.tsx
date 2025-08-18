@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, ChevronUp, Settings } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Settings, Info } from 'lucide-react';
 
 import { ProcessingSettings, ExportPreset, Format } from '../types';
 import { exportPresets } from '../config/settings';
@@ -29,6 +29,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFineTuneExpanded, setFineTuneExpanded] = useState(false);
   const [isSmartOptimizationEnabled, setIsSmartOptimizationEnabled] = useState(settings.optimize);
+  const [isHoveringImageProfileInfo, setIsHoveringImageProfileInfo] = useState(false); // New state for info hover
   // Initialize srcset sizes with defaults, overriding with saved settings if they exist
   const [srcsetSizes, setSrcsetSizes] = useState({
     small: { ...defaultSrcsetSizes.small, ...settings.srcsetSizes?.small },
@@ -77,7 +78,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     onSettingsChange({
       ...settings,
       generateSrcset: checked,
-      srcsetSizes: updatedSrcsetSizes, // Pass updated sizes with the setting change
+      srcsetSizes: updatedSrcsetSizes,
     });
   };
 
@@ -103,13 +104,30 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
   return (
     <div className="p-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-8">Output Image Settings</h2>
+
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
-          <Sparkles className="w-5 h-5 mr-2 text-yellow-500" strokeWidth={1.5} />
-          Select Image format
-        </h3>
+        <div className="flex justify-between items-center">
+          <div className="flex-1">
+            <span className="text-base font-medium text-slate-700 block">
+              Image Profile
+              <div
+                className="ml-2 group relative inline-flex items-center"
+                onMouseEnter={() => setIsHoveringImageProfileInfo(true)}
+                onMouseLeave={() => setIsHoveringImageProfileInfo(false)}
+              >
+                <Info className="w-4 h-4 text-slate-400 cursor-pointer" />
+                {isHoveringImageProfileInfo && (
+                  <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-slate-700 text-white text-xs rounded-lg py-2 px-3 w-64 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                    Choose an image profile to apply a set of recommended settings for common use cases, suchs as web, social media, or print.
+                  </div>
+                )}
+              </div>
+            </span>
+          </div>
+        </div>
         {/* Dropdown for presets */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative mt-4" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -155,7 +173,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           )}
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 mb-4">
           <ToggleButton
             id="generateSrcset"
             label="Generate Responsive Images"
@@ -165,36 +183,40 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           />
         </div>
         {settings.generateSrcset && (
-          <div className="space-y-4 mt-3">
+          <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg">
             <h4 className="text-base font-semibold text-slate-800">Srcset Dimensions (px)</h4>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {Object.keys(srcsetSizes).map((sizeKey) => {
                 const size = sizeKey as keyof typeof defaultSrcsetSizes;
                 const { width, enabled, description } = srcsetSizes[size];
                 const defaultWidth = defaultSrcsetSizes[size].width;
 
                 return (
-                  <div key={size} className="flex items-start space-x-4">
-                    <div className="flex items-center h-5 mt-1">
-                      <input
-                        id={`srcset-${size}-enabled`}
-                        type="checkbox"
-                        checked={enabled}
-                        onChange={(e) => handleSrcsetSizeChange(size, 'enabled', e.target.checked)}
-                        className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-                      />
+                  <div key={size} className="flex items-start justify-between py-2 border-b last:border-b-0 border-slate-100">
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5 mt-1 mr-2">
+                        <input
+                          id={`srcset-${size}-enabled`}
+                          type="checkbox"
+                          checked={enabled}
+                          onChange={(e) => handleSrcsetSizeChange(size, 'enabled', e.target.checked)}
+                          className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor={`srcset-${size}-enabled`} className="block text-sm font-medium text-slate-700 cursor-pointer capitalize">
+                          {size} ({width || defaultWidth}px)
+                        </label>
+                        <p className="text-xs text-slate-500">{description}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <label htmlFor={`srcset-${size}-enabled`} className="block text-sm font-medium text-slate-700 cursor-pointer capitalize">
-                        {size} ({width || defaultWidth}px)
-                      </label>
-                      <p className="text-xs text-slate-500 mb-2">{description}</p>
+                    <div className="flex-shrink-0 w-24 ml-4">
                       <input
                         type="number"
                         value={width || ''}
                         onChange={(e) => handleSrcsetSizeChange(size, 'width', e.target.value ? parseInt(e.target.value) : undefined)}
                         placeholder={defaultWidth.toString()}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-right"
                         disabled={!enabled}
                       />
                     </div>
@@ -215,18 +237,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         </div>
       </div>
 
-      <div className="mb-8 mt-4">
-        <button
-          className="w-full flex items-center justify-between p-4 bg-slate-100 rounded-lg shadow-sm hover:bg-slate-200 transition-colors"
-          onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
-        >
-          <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-            <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
-            Fine-Tune Settings
-          </h3>
-          {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
-        </button>
-      </div>
+      <h2
+        className="text-2xl font-bold text-gray-900 mt-12 mb-8 flex items-center justify-between cursor-pointer"
+        onClick={() => setFineTuneExpanded(!isFineTuneExpanded)}
+      >
+        <span className="flex items-center">
+          Fine-Tune Settings
+        </span>
+        {isFineTuneExpanded ? <ChevronUp className="w-6 h-6 text-slate-600" /> : <ChevronDown className="w-6 h-6 text-slate-600" />}
+      </h2>
 
       {isFineTuneExpanded && (
         <div className="space-y-6">
