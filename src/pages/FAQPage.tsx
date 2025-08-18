@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, HelpCircle, Shield, DollarSign, Globe, Download, Zap, Code } from 'lucide-react';
+import SearchBar from '../components/SearchBar';
 
 const faqData = [
   {
@@ -76,18 +77,7 @@ const FAQPage: React.FC = () => {
         {/* Search Section */}
         <div className="mb-16">
           <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-6 w-6 text-slate-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search frequently asked questions..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 text-lg border-2 border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 bg-white/80 backdrop-blur-sm"
-              />
-            </div>
+            <SearchBar onSearch={setSearchTerm} placeholder="Search frequently asked questions..." />
             {searchTerm && (
               <p className="mt-4 text-slate-600 text-center">
                 Found {filteredFaqData.length} result{filteredFaqData.length !== 1 ? 's' : ''} for "{searchTerm}"

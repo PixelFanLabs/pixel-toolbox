@@ -59,7 +59,7 @@ const LearnPage: React.FC = () => {
           {/* Sidebar */}
           <aside className="w-full lg:w-1/3 lg:sticky lg:top-24 self-start mb-12 lg:mb-0">
             <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
-              <SearchBar onSearch={setSearchTerm} />
+              <SearchBar onSearch={setSearchTerm} placeholder="Search articles..." />
               <nav>
                 <div 
                   className="flex justify-between items-center cursor-pointer lg:cursor-default"
