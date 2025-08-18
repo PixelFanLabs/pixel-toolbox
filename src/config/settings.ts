@@ -11,7 +11,9 @@ export const exportPresets: ExportPreset[] = [
     width: 200,
     height: 200,
     useCase: 'Profile pictures, user avatars, team photos',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
+    maintainAspectRatio: false, // Updated
+    resizeMode: 'fill', // Updated
   },
   {
     id: 'web-banner',
@@ -23,7 +25,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1200,
     height: 400,
     useCase: 'Website headers, hero images, banners',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'social-post',
@@ -35,7 +37,7 @@ export const exportPresets: ExportPreset[] = [
     width: 1080,
     height: 1080,
     useCase: 'Instagram posts, Facebook images, social content',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'email-signature',
@@ -47,7 +49,7 @@ export const exportPresets: ExportPreset[] = [
     width: 300,
     height: 100,
     useCase: 'Email signatures, newsletter headers, small logos',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'blog-thumbnail',
@@ -59,7 +61,7 @@ export const exportPresets: ExportPreset[] = [
     width: 600,
     height: 400,
     useCase: 'Blog thumbnails, article previews, content cards',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'cms-web-optimized',
@@ -69,7 +71,7 @@ export const exportPresets: ExportPreset[] = [
     format: 'webp',
     quality: 90,
     useCase: 'WordPress, Drupal, headless CMS, general web use',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'favicon',
@@ -81,7 +83,7 @@ export const exportPresets: ExportPreset[] = [
     width: 32,
     height: 32,
     useCase: 'Browser tabs, bookmarks, app icons',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
   {
     id: 'email-attachment',
@@ -91,7 +93,7 @@ export const exportPresets: ExportPreset[] = [
     format: 'jpeg',
     quality: 75,
     useCase: 'Sending images via email, presentations',
-    generateSrcset: false, // Added new property
+    generateSrcset: false,
   },
 ];
 
@@ -101,9 +103,9 @@ const cmsWebOptimizedPreset = exportPresets.find(preset => preset.id === 'cms-we
 export const defaultSettings: ProcessingSettings = {
   format: cmsWebOptimizedPreset?.format || 'webp',
   quality: cmsWebOptimizedPreset?.quality || 85,
-  maintainAspectRatio: true,
+  maintainAspectRatio: cmsWebOptimizedPreset?.maintainAspectRatio ?? true, // Ensure maintainAspectRatio is pulled from preset or defaults to true
   optimize: true,
-  resizeMode: 'fit',
+  resizeMode: cmsWebOptimizedPreset?.resizeMode || 'fit', // Ensure resizeMode is pulled from preset or defaults to fit
   generateSrcset: cmsWebOptimizedPreset?.generateSrcset || false,
 };
 

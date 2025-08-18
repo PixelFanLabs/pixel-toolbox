@@ -14,6 +14,8 @@ const ImageProcessingSettings: React.FC<ImageProcessingSettingsProps> = ({
 }) => {
   const [isFormatDropdownOpen, setFormatDropdownOpen] = useState(false);
   const [isResizeModeDropdownOpen, setResizeModeDropdownOpen] = useState(false);
+  const [isFormatQualityExpanded, setIsFormatQualityExpanded] = useState(true); // New state for collapsable
+  const [isResizeCropExpanded, setIsResizeCropExpanded] = useState(true); // New state for collapsable
   const formatDropdownRef = useRef<HTMLDivElement>(null);
   const resizeModeDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -58,141 +60,158 @@ const ImageProcessingSettings: React.FC<ImageProcessingSettingsProps> = ({
     <>
       <div className="space-y-6 mb-8">
         {/* Format Settings */}
-        <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-          <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
-          Format & Quality
+        <h3
+          className="text-lg font-semibold text-slate-800 flex items-center justify-between cursor-pointer"
+          onClick={() => setIsFormatQualityExpanded(!isFormatQualityExpanded)}
+        >
+          <span className="flex items-center">
+            <Settings className="w-5 h-5 mr-2 text-blue-500" strokeWidth={1.5} />
+            Format & Quality
+          </span>
+          {isFormatQualityExpanded ? <ChevronUp className="w-5 h-5 text-slate-600" /> : <ChevronDown className="w-5 h-5 text-slate-600" />}
         </h3>
-        <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-3">Output Format</label>
-            <div className="relative" ref={formatDropdownRef}>
-              <button
-                onClick={() => setFormatDropdownOpen(!isFormatDropdownOpen)}
-                className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {selectedFormat ? (
-                  <div>
-                    <div className="font-medium text-slate-800">{selectedFormat.label}</div>
-                    <div className="text-sm text-slate-600">{selectedFormat.description}</div>
-                  </div>
-                ) : (
-                  <span>Choose a format...</span>
-                )}
-                <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${isFormatDropdownOpen ? 'transform rotate-180' : ''}`} />
-              </button>
-
-              {isFormatDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {formatOptions.map((format) => (
-                    <div
-                      key={format.value}
-                      onClick={() => handleFormatSelect(format.value)}
-                      className="px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
-                    >
-                      <div className="font-medium text-slate-800">{format.label}</div>
-                      <div className="text-sm text-slate-600">{format.description}</div>
+        {isFormatQualityExpanded && (
+          <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-3">Output Format</label>
+              <div className="relative" ref={formatDropdownRef}>
+                <button
+                  onClick={() => setFormatDropdownOpen(!isFormatDropdownOpen)}
+                  className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {selectedFormat ? (
+                    <div>
+                      <div className="font-medium text-slate-800">{selectedFormat.label}</div>
+                      <div className="text-sm text-slate-600">{selectedFormat.description}</div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+                  ) : (
+                    <span>Choose a format...</span>
+                  )}
+                  <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${isFormatDropdownOpen ? 'transform rotate-180' : ''}`} />
+                </button>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-3">Quality Level: {settings.quality}%</label>
-            <input
-              type="range"
-              min="10"
-              max="100"
-              step="5"
-              value={settings.quality}
-              onChange={(e) => handleSettingChange('quality', parseInt(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer"
-            />
-            <div className="flex justify-between text-xs text-slate-500 mt-2">
-              <span>Smaller file</span>
-              <span>Better quality</span>
+                {isFormatDropdownOpen && (
+                  <div className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    {formatOptions.map((format) => (
+                      <div
+                        key={format.value}
+                        onClick={() => handleFormatSelect(format.value)}
+                        className="px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
+                      >
+                        <div className="font-medium text-slate-800">{format.label}</div>
+                        <div className="text-sm text-slate-600">{format.description}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-3">Quality Level: {settings.quality}%</label>
+              <input
+                type="range"
+                min="10"
+                max="100"
+                step="5"
+                value={settings.quality}
+                onChange={(e) => handleSettingChange('quality', parseInt(e.target.value))}
+                className="w-full h-2 bg-slate-200 rounded-full appearance-none cursor-pointer"
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-2">
+                <span>Smaller file</span>
+                <span>Better quality</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
       </div>
 
       {/* Resize Settings */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-slate-800 flex items-center">
-          <Crop className="w-5 h-5 mr-2 text-green-500" strokeWidth={1.5} />
-          Resize & Crop
+        <h3
+          className="text-lg font-semibold text-slate-800 flex items-center justify-between cursor-pointer"
+          onClick={() => setIsResizeCropExpanded(!isResizeCropExpanded)}
+        >
+          <span className="flex items-center">
+            <Crop className="w-5 h-5 mr-2 text-green-500" strokeWidth={1.5} />
+            Resize & Crop
+          </span>
+          {isResizeCropExpanded ? <ChevronUp className="w-5 h-5 text-slate-600" /> : <ChevronDown className="w-5 h-5 text-slate-600" />}
         </h3>
-        <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Width (px)</label>
-              <input
-                type="number"
-                value={settings.width || ''}
-                onChange={(e) => handleSettingChange('width', e.target.value ? parseInt(e.target.value) : undefined)}
-                placeholder="Auto"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+        {isResizeCropExpanded && (
+          <div className="mt-3 pl-4 border-l-4 border-blue-200 rounded-bl-lg space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Width (px)</label>
+                <input
+                  type="number"
+                  value={settings.width || ''}
+                  onChange={(e) => handleSettingChange('width', e.target.value ? parseInt(e.target.value) : undefined)}
+                  placeholder="Auto"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Height (px)</label>
+                <input
+                  type="number"
+                  value={settings.height || ''}
+                  onChange={(e) => handleSettingChange('height', e.target.value ? parseInt(e.target.value) : undefined)}
+                  placeholder="Auto"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Height (px)</label>
+
+            <div className="flex items-center mt-4">
               <input
-                type="number"
-                value={settings.height || ''}
-                onChange={(e) => handleSettingChange('height', e.target.value ? parseInt(e.target.value) : undefined)}
-                placeholder="Auto"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                type="checkbox"
+                id="maintainAspectRatio"
+                checked={settings.maintainAspectRatio}
+                onChange={(e) => handleSettingChange('maintainAspectRatio', e.target.checked)}
+                className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
               />
+              <label htmlFor="maintainAspectRatio" className="ml-3 text-sm font-medium text-slate-700">Maintain aspect ratio</label>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-3">Resize Mode</label>
-            <div className="relative" ref={resizeModeDropdownRef}>
-              <button
-                onClick={() => setResizeModeDropdownOpen(!isResizeModeDropdownOpen)}
-                className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {selectedResizeMode ? (
-                  <div>
-                    <div className="font-medium text-slate-800">{selectedResizeMode.label}</div>
-                    <div className="text-sm text-slate-600">{selectedResizeMode.description}</div>
-                  </div>
-                ) : (
-                  <span>Choose a resize mode...</span>
-                )}
-                <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${isResizeModeDropdownOpen ? 'transform rotate-180' : ''}`} />
-              </button>
-
-              {isResizeModeDropdownOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {resizeModes.map((mode) => (
-                    <div
-                      key={mode.value}
-                      onClick={() => handleResizeModeSelect(mode.value as any)}
-                      className="px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
-                    >
-                      <div className="font-medium text-slate-800">{mode.label}</div>
-                      <div className="text-sm text-slate-600">{mode.description}</div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-3">Resize Mode</label>
+              <div className="relative" ref={resizeModeDropdownRef}>
+                <button
+                  onClick={() => setResizeModeDropdownOpen(!isResizeModeDropdownOpen)}
+                  className="w-full bg-white border border-slate-300 rounded-lg text-left px-4 py-3 flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {selectedResizeMode ? (
+                    <div>
+                      <div className="font-medium text-slate-800">{selectedResizeMode.label}</div>
+                      <div className="text-sm text-slate-600">{selectedResizeMode.description}</div>
                     </div>
-                  ))}
-                </div>
-              )}
+                  ) : (
+                    <span>Choose a resize mode...</span>
+                  )}
+                  <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${isResizeModeDropdownOpen ? 'transform rotate-180' : ''}`} />
+                </button>
+
+                {isResizeModeDropdownOpen && (
+                  <div className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    {resizeModes.map((mode) => (
+                      <div
+                        key={mode.value}
+                        onClick={() => handleResizeModeSelect(mode.value as any)}
+                        className="px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
+                      >
+                        <div className="font-medium text-slate-800">{mode.label}</div>
+                        <div className="text-sm text-slate-600">{mode.description}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="maintainAspectRatio"
-              checked={settings.maintainAspectRatio}
-              onChange={(e) => handleSettingChange('maintainAspectRatio', e.target.checked)}
-              className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-            />
-            <label htmlFor="maintainAspectRatio" className="ml-3 text-sm font-medium text-slate-700">Maintain aspect ratio</label>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

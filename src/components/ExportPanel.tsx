@@ -75,7 +75,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       const zip = new JSZip();
 
       for (const image of images) {
-        const baseFileName = image.file.name.split('.')[0];
+        const baseFileName = image.file.name.split('.').slice(0, -1).join('.');
 
         if (settings.generateSrcset && image.processedResults) {
           for (const result of image.processedResults) {
@@ -141,7 +141,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
-          <p className="text-slate-600">Download your optimized images individually or as a batch.</p>
+          <p className="text-slate-600">Download your optimized images individually or as a batch. Batch ZIP exports come complete with a handy metadata file detailing all processing specifics.</p>
         </div>
       </div>
 
@@ -294,7 +294,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
             <h4 className="font-medium text-slate-800 mb-1">Export Information</h4>
             <ul className="text-sm text-slate-600 space-y-1">
               <li>• Individual files are renamed with "_optimized" suffix</li>
-              <li>• ZIP export includes metadata file with processing details</li>
+              <li>• Batch ZIP exports come complete with a handy metadata file detailing all processing specifics.</li>
               <li>• All processing was done client-side - your images never left your browser</li>
               <li>• Exported images are ready for web use with optimal file sizes</li>
             </ul>
