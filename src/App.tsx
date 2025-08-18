@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
 import OptimizeImagesSection from './components/OptimizeImagesSection';
 import AboutPage from './pages/AboutPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import FAQPage from './pages/FAQPage';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             } />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           </Routes>
         </main>
 
@@ -48,6 +50,7 @@ function App() {
         <footer className="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-8">
           <div className="max-w-6xl mx-auto px-6 text-center text-sm">
             <p>© 2025 PixelToolbox. A free web service created by PixelFanLabs.</p>
+            <Link to="/privacy-policy" className="text-blue-300 hover:underline">Privacy Policy</Link>
           </div>
         </footer>
 

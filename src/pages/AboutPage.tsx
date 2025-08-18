@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Heart, Code, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AboutPage: React.FC = () => {
   return (
@@ -85,6 +86,9 @@ const AboutPage: React.FC = () => {
                 </p>
                 <p className="text-blue-700 font-medium">
                   For complete transparency, the source code is available on GitHub for independent review.
+                </p>
+                <p>
+                  For a detailed explanation of how we handle your data, please read our <Link to="/privacy-policy" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">Privacy Policy</Link>.
                 </p>
               </div>
             </div>
