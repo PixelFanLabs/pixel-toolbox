@@ -51,7 +51,7 @@ const AboutPage: React.FC = () => {
                   alt="Visual representing frustration with multiple tools"
                   className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
                   loading="lazy"
-                  srcSet="/images/photo-fustrated-pixeltoolbox-480w.webp 480w, /images/photo-fustrated-pixeltoolbox-800w.webp 800w, /images/photo-fustrated-pixeltoolbox-1200w.webp 2000w /images/photo-fustrated-pixeltoolbox-1600w.webp 1600w"
+                  srcSet="/images/photo-fustrated-pixeltoolbox-480w.webp 480w, /images/photo-fustrated-pixeltoolbox-800w.webp 800w, /images/photo-fustrated-pixeltoolbox-1200w.webp 1200w"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
@@ -69,7 +69,7 @@ const AboutPage: React.FC = () => {
                 alt="Visual representing the meaning behind PixelToolbox"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
                 loading="lazy"
-                srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w, /images/photo-latop-design-pixeltoolbox-1600w.webp 1600w"
+                  srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
