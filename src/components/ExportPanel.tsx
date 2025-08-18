@@ -229,12 +229,12 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
 
       {/* Batch Export */}
       <div className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl p-6 mb-8 shadow-lg hover:shadow-xl transition-all duration-300">
-        <div className="flex items-center justify-between mb-4">
-          <div>
+ <div className="flex flex-col md:flex-row items-center justify-between mb-4 space-y-4 md:space-y-0"> {/* Adjusted layout for small screens */}
+ <div className="flex-grow pr-4 text-center md:text-left"> {/* Added flex-grow, pr-4, and text alignment */}
             <h3 className="text-lg font-semibold text-slate-800">Batch Export</h3>
             <p className="text-slate-600">Download all images as a ZIP file with metadata.</p>
           </div>
-          <button
+          <button className="flex-shrink-0 mt-4 md:mt-0 px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-lg flex items-center justify-center" // Added flex-shrink-0, mt-4, md:mt-0, flex, items-center, justify-center
             onClick={downloadAll}
             disabled={isExporting}
             className={`px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-lg ${
@@ -269,11 +269,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       <div>
         <h3 className="text-lg font-semibold text-slate-800 mb-4">Individual Downloads</h3>
         <div className="space-y-4">
-          {allIndividualOutputImages.map((outputImage) => (
-            <div key={outputImage.id} className="bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <div className="w-16 h-16 bg-white rounded-lg border border-slate-200 overflow-hidden flex-shrink-0 shadow-sm">
+ {allIndividualOutputImages.map((outputImage) => (
+ <div key={outputImage.id} className="bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
+ <div className="flex items-center space-x-4 min-w-0 flex-1">
+ <div className="w-16 h-16 bg-white rounded-lg border border-slate-200 overflow-hidden flex-shrink-0 shadow-sm">
                     <img
                       src={outputImage.url}
                       alt={outputImage.displayName}
@@ -291,7 +290,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                     </div>
                   </div>
                 </div>
-                <button
+ <button
                   onClick={() => downloadSingle(outputImage)}
                   disabled={downloadedImages[outputImage.id]}
                   className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex-shrink-0 shadow-md ${
@@ -313,7 +312,6 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                   )}
                 </button>
               </div>
-            </div>
           ))}
         </div>
       </div>

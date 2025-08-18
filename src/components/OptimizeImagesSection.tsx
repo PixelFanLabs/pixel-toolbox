@@ -107,7 +107,7 @@ const OptimizeImagesSection: React.FC = () => {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                 <span className="text-blue-600 font-bold">1</span>
               </div>
@@ -117,7 +117,7 @@ const OptimizeImagesSection: React.FC = () => {
           </div>
           
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                 <span className="text-blue-600 font-bold">2</span>
               </div>
@@ -149,18 +149,9 @@ const OptimizeImagesSection: React.FC = () => {
                 {isProcessing ? 'Processing Images...' : 'Process Images'}
               </button>
 
-              {/* Success Message and Export Panel - Now integrated within the Process section */}
+              {/* Export Panel - Now integrated within the Process section */}
               {showExportSection && processedImages.length > 0 && (
                 <div className="mt-8">
-                  <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 border border-green-200 rounded-xl mb-6">
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center">
-                      <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                        <span className="text-green-600 font-bold text-sm">✓</span>
-                      </div>
-                      Images Processed Successfully
-                    </h3>
-                    <p className="text-slate-600 mt-2">Your optimized images are ready for download</p>
-                  </div>
                   <ExportPanel
                     images={processedImages}
                     settings={settings}
