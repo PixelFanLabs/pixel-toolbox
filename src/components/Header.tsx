@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
-interface HeaderProps {
-  openKofiModal: () => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
+const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -67,6 +63,12 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
                 `} onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
               </li>
               <li>
+                <Link to="/learn" className={`
+                  ${location.pathname === '/learn' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                  hover:text-blue-100 transition-colors font-medium
+                `} onClick={() => handleNavLinkClick('/learn')}>Learn</Link>
+              </li>
+              <li>
                 <Link to="/about" className={`
                   ${location.pathname === '/about' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
                   hover:text-blue-100 transition-colors font-medium
@@ -118,6 +120,12 @@ const Header: React.FC<HeaderProps> = ({ openKofiModal }) => {
                 ${location.pathname === '/' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
                 hover:text-blue-300 transition-colors font-medium
               `} onClick={() => handleNavLinkClick('/')}>Optimize Images</Link>
+            </li>
+            <li>
+              <Link to="/learn" className={`
+                ${location.pathname === '/learn' ? 'text-blue-300 font-semibold border-b-2 border-blue-300' : 'text-white'}
+                hover:text-blue-300 transition-colors font-medium
+              `} onClick={() => handleNavLinkClick('/learn')}>Learn</Link>
             </li>
             <li>
               <Link to="/about" className={`

@@ -6,6 +6,7 @@ import OptimizeImagesSection from './components/OptimizeImagesSection';
 import AboutPage from './pages/AboutPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import FAQPage from './pages/FAQPage';
+import LearnPage from './pages/LearnPage';
 
 function App() {
   useEffect(() => {
@@ -42,6 +43,7 @@ function App() {
             } />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/learn" element={<LearnPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           </Routes>
         </main>
