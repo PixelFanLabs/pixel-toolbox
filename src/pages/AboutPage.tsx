@@ -135,7 +135,7 @@ const AboutPage: React.FC = () => {
               <p className="text-lg text-slate-700 leading-relaxed mb-6">
                 Have questions, feedback, or interested in collaboration? We'd love to hear from you!
               </p>
-              <p className="text-blue-700 font-medium mb-6">
+              <p className="text-lg text-blue-700 font-medium mb-6">
                 Email us at:{' '}
                 <a
                   href="mailto:contactpixelfanlabs@gmail.com"
