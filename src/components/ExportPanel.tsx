@@ -269,11 +269,10 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       <div>
         <h3 className="text-lg font-semibold text-slate-800 mb-4">Individual Downloads</h3>
         <div className="space-y-4">
-          {allIndividualOutputImages.map((outputImage) => (
-            <div key={outputImage.id} className="bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 min-w-0 flex-1">
-                  <div className="w-16 h-16 bg-white rounded-lg border border-slate-200 overflow-hidden flex-shrink-0 shadow-sm">
+ {allIndividualOutputImages.map((outputImage) => (
+ <div key={outputImage.id} className="bg-slate-50/80 backdrop-blur-sm border border-slate-200 rounded-xl p-4 hover:shadow-md transition-all duration-200 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
+ <div className="flex items-center space-x-4 min-w-0 flex-1">
+ <div className="w-16 h-16 bg-white rounded-lg border border-slate-200 overflow-hidden flex-shrink-0 shadow-sm">
                     <img
                       src={outputImage.url}
                       alt={outputImage.displayName}
@@ -291,7 +290,7 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                     </div>
                   </div>
                 </div>
-                <button
+ <button
                   onClick={() => downloadSingle(outputImage)}
                   disabled={downloadedImages[outputImage.id]}
                   className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex-shrink-0 shadow-md ${
@@ -313,7 +312,6 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
                   )}
                 </button>
               </div>
-            </div>
           ))}
         </div>
       </div>
