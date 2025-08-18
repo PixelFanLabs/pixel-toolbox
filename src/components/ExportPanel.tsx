@@ -161,7 +161,6 @@ const ExportPanel: React.FC<ExportPanelProps> = ({
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Export Your Images</h2>
-          <p className="text-slate-600">Download your optimized images individually or as a batch. Batch ZIP exports include a dedicated metadata file detailing all processing specifics.</p>
         </div>
       </div>
 
