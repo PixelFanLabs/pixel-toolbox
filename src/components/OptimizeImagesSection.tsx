@@ -117,16 +117,28 @@ const OptimizeImagesSection: React.FC = () => {
       // Clear any existing ad content to prevent duplicates on re-render
       adContainer.innerHTML = '';
 
-      // Determine ad dimensions based on screen width
-      const adWidth = screenWidth < 768 ? 320 : 728;
-      const adHeight = screenWidth < 768 ? 50 : 90;
+      let adUnitConfig;
+
+      if (screenWidth <= 767) { // Mobile
+        adUnitConfig = {
+          key: 'fc90c823d309f14535f6acea73d24ced', // 320x50
+          width: 320,
+          height: 50,
+        };
+      } else { // Tablet and Desktop
+        adUnitConfig = {
+          key: 'ad8f4ced24d88f4f48d5c63acc6b9634', // 728x90
+          width: 728,
+          height: 90,
+        };
+      }
 
       const scriptText = `
         var atOptions = {
-          'key' : 'ad8f4ced24d88f4f48d5c63acc6b9634',
+          'key' : '${adUnitConfig.key}',
           'format' : 'iframe',
-          'height' : ${adHeight},
-          'width' : ${adWidth},
+          'height' : ${adUnitConfig.height},
+          'width' : ${adUnitConfig.width},
           'params' : {}
         };
       `;
@@ -138,7 +150,7 @@ const OptimizeImagesSection: React.FC = () => {
 
       const invokeScript = document.createElement('script');
       invokeScript.type = 'text/javascript';
-      invokeScript.src = '//www.highperformanceformat.com/ad8f4ced24d88f4f48d5c63acc6b9634/invoke.js';
+      invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
       invokeScript.async = true; 
       adContainer.appendChild(invokeScript); 
     };
@@ -152,7 +164,7 @@ const OptimizeImagesSection: React.FC = () => {
         adContainer.innerHTML = ''; // Clear ad content on unmount
       }
     };
-  }, [screenWidth]); // Re-run effect when screenWidth 
+  }, [screenWidth]); // Re-run effect when screenWidth changes
   // End - Effect to load Adsterra script Banner Placeholder
 
   return (
@@ -169,7 +181,7 @@ const OptimizeImagesSection: React.FC = () => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -192,7 +204,7 @@ const OptimizeImagesSection: React.FC = () => {
         </div>
 
         {/* Start - Adsterra Leaderboard Banner Placeholder */}
-        <div className="my-8 flex justify-center mb-16" ref={adContainerRef}>
+        <div className="my-8 flex justify-center" ref={adContainerRef}>
           {/* Ad will be loaded dynamically here */}
         </div>
         {/* End - Adsterra Leaderboard Banner Placeholder */}
