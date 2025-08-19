@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import learnContent from '../content/learnContent.json';
+import AdsterraNativeBanner from '../components/AdsterraNativeBanner'; // Import the new ad component
 
 interface Content {
   type: string;
@@ -87,39 +88,31 @@ const LearnPage: React.FC = () => {
           <div className="w-full lg:w-2/3">
             {filteredContent.length > 0 ? (
               filteredContent.map((article, articleIndex) => (
-                <article key={articleIndex} id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
-                  <img
-                    src={article.image.src}
-                    srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
-                    alt={article.title}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-8">
-                    <h2 className="text-3xl font-bold mb-3 text-slate-900">{article.title}</h2>
-                    <p className="text-slate-500 mb-6">By {article.author}</p>
-                    
-                    {article.content.map((contentItem, contentIndex) => {
-                      {/* Start of code for Adsterra Native Banner Ads */}
-                      if (contentIndex === 0 && contentItem.type === 'paragraph') {
-                        return (
-                          <React.Fragment key={contentIndex}>
-                            <p className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>
-                            {/* Adsterra Native Banner Ad Unit */}
-                            <div className="my-8 flex justify-center">
-                              <div id="container-eaa56e5d2f00d1d5a4b44c95331429f1"></div>
-                            </div>
-                          </React.Fragment>
-                        );
-                      }
-                      {/* End of code for Adsterra Native Banner Ads */}
-                      if (contentItem.type === 'heading') {
-                        const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
-                        return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
-                      }
-                      return <p key={contentIndex} className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>;
-                    })}
-                  </div>
-                </article>
+                <React.Fragment key={articleIndex}>
+                  <article id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
+                    <img
+                      src={article.image.src}
+                      srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
+                      alt={article.title}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="p-8">
+                      <h2 className="text-3xl font-bold mb-3 text-slate-900">{article.title}</h2>
+                      <p className="text-slate-500 mb-6">By {article.author}</p>
+                      
+                      {article.content.map((contentItem, contentIndex) => {
+                        if (contentItem.type === 'heading') {
+                          const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
+                          return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
+                        }
+                        return <p key={contentIndex} className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>;
+                      })}
+                    </div>
+                  </article>
+                  {/* Start Render AdsterraNativeBanner after each article */}
+                  <AdsterraNativeBanner />
+                  {/* End Render AdsterraNativeBanner after each article */}
+                </React.Fragment>
               ))
             ) : (
               <div className="bg-white rounded-xl shadow-lg p-8 text-center border border-slate-200">

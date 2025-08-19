@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
 import ExportPanel from './ExportPanel';
@@ -19,6 +19,20 @@ const OptimizeImagesSection: React.FC = () => {
   const [processedImages, setProcessedImages] = useState<ImageFile[]>([]); // New state for processed images
   const [processingProgress, setProcessingProgress] = useState(0); // New state for processing progress
   const [processingTime, setProcessingTime] = useState(0); // New state for processing time
+
+  // Start - Code for Adsterra Banner
+  // Ref for the ad container
+  const adContainerRef = useRef<HTMLDivElement>(null);
+
+  // State for screen width to handle responsive ads
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  // End - Code for Adsterra Banner
 
   const handleImagesUploaded = useCallback((newImages: ImageFile[]) => {
     setImages(prevImages => [...prevImages, ...newImages]);
@@ -91,6 +105,56 @@ const OptimizeImagesSection: React.FC = () => {
     setShowExportSection(true); // Show export section after processing
   }, [images, settings]);
 
+  // Start - Effect to load Adsterra script Banner Placeholder
+  useEffect(() => {
+    const loadAdsterra = () => {
+      const adContainer = adContainerRef.current; 
+      if (!adContainer) {
+        console.warn('Adsterra leaderboard banner container not found.');
+        return;
+      }
+
+      // Clear any existing ad content to prevent duplicates on re-render
+      adContainer.innerHTML = '';
+
+      // Determine ad dimensions based on screen width
+      const adWidth = screenWidth < 768 ? 320 : 728;
+      const adHeight = screenWidth < 768 ? 50 : 90;
+
+      const scriptText = `
+        var atOptions = {
+          'key' : 'ad8f4ced24d88f4f48d5c63acc6b9634',
+          'format' : 'iframe',
+          'height' : ${adHeight},
+          'width' : ${adWidth},
+          'params' : {}
+        };
+      `;
+
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.innerHTML = scriptText;
+      adContainer.appendChild(script); 
+
+      const invokeScript = document.createElement('script');
+      invokeScript.type = 'text/javascript';
+      invokeScript.src = '//www.highperformanceformat.com/ad8f4ced24d88f4f48d5c63acc6b9634/invoke.js';
+      invokeScript.async = true; 
+      adContainer.appendChild(invokeScript); 
+    };
+
+    loadAdsterra();
+
+    // Cleanup function to remove scripts if the component unmounts
+    return () => {
+      const adContainer = adContainerRef.current;
+      if (adContainer) {
+        adContainer.innerHTML = ''; // Clear ad content on unmount
+      }
+    };
+  }, [screenWidth]); // Re-run effect when screenWidth 
+  // End - Effect to load Adsterra script Banner Placeholder
+
   return (
     <div className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
       <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,6 +190,12 @@ const OptimizeImagesSection: React.FC = () => {
             <SettingsPanel settings={settings} onSettingsChange={handleSettingsChange} onPresetSelect={handlePresetSelect} selectedPreset={selectedPreset} />
           </div>
         </div>
+
+        {/* Start - Adsterra Leaderboard Banner Placeholder */}
+        <div className="my-8 flex justify-center mb-16" ref={adContainerRef}>
+          {/* Ad will be loaded dynamically here */}
+        </div>
+        {/* End - Adsterra Leaderboard Banner Placeholder */}
 
         {/* Process Button */}
         <div className="text-center mb-16">
@@ -167,22 +237,6 @@ const OptimizeImagesSection: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Adsterra Leaderboard Banner Ad */}
-        <div className="my-8 flex justify-center">
-          <script type="text/javascript" dangerouslySetInnerHTML={{
-            __html: `
-              atOptions = {
-                'key' : 'ad8f4ced24d88f4f48d5c63acc6b9634',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-              };
-            `
-          }}></script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/ad8f4ced24d88f4f48d5c63acc6b9634/invoke.js"></script>
         </div>
       </section>
       </div>
