@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
 import ExportPanel from './ExportPanel';
-import { defaultSettings, exportPresets } from '/home/user/pixel-toolbox/src/config/settings'; // Import exportPresets
+import { defaultSettings, exportPresets } from '../config/settings'; // Corrected import path
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
 import { processImage } from '../utils/imageProcessor'; // Import processImage
 
