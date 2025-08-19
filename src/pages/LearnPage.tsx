@@ -99,7 +99,7 @@ const LearnPage: React.FC = () => {
                     <p className="text-slate-500 mb-6">By {article.author}</p>
                     
                     {article.content.map((contentItem, contentIndex) => {
-                      // Start of code for Adsterra Native Banner Ads
+                      {/* Start of code for Adsterra Native Banner Ads */}
                       if (contentIndex === 0 && contentItem.type === 'paragraph') {
                         return (
                           <React.Fragment key={contentIndex}>
@@ -111,7 +111,7 @@ const LearnPage: React.FC = () => {
                           </React.Fragment>
                         );
                       }
-                      // End of code for Adsterra Native Banner Ads
+                      {/* End of code for Adsterra Native Banner Ads */}
                       if (contentItem.type === 'heading') {
                         const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
                         return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
