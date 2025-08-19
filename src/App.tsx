@@ -7,7 +7,6 @@ import AboutPage from './pages/AboutPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import FAQPage from './pages/FAQPage';
 import LearnPage from './pages/LearnPage';
-import AdsterraPopunder from './components/AdsterraPopunder'; // Import the new popunder component
 
 function App() {
   useEffect(() => {
@@ -33,7 +32,6 @@ function App() {
     <Router>
       <div id="top" className="min-h-screen flex flex-col">
         <Header /> {/* Pass the openKofiModal function */}
-        <AdsterraPopunder /> {/* Include the popunder ad component here */}
 
         <main className="flex-grow">
           <Routes>
