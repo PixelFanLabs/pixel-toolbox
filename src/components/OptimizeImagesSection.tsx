@@ -20,9 +20,9 @@ const OptimizeImagesSection: React.FC = () => {
   const [processingProgress, setProcessingProgress] = useState(0); // New state for processing progress
   const [processingTime, setProcessingTime] = useState(0); // New state for processing time
 
-  // Start - Code for Adsterra Banner
-  // Ref for the ad container
-  const adContainerRef = useRef<HTMLDivElement>(null);
+  // Start - Code for Adsterra Banners
+  const adContainerRefMid = useRef<HTMLDivElement>(null); // Ref for the existing mid-content ad
+  const adContainerRefPostProcess = useRef<HTMLDivElement>(null); // Ref for the new post-process ad
 
   // State for screen width to handle responsive ads
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -32,7 +32,7 @@ const OptimizeImagesSection: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  // End - Code for Adsterra Banner
+  // End - Code for Adsterra Banners
 
   const handleImagesUploaded = useCallback((newImages: ImageFile[]) => {
     setImages(prevImages => [...prevImages, ...newImages]);
@@ -105,28 +105,40 @@ const OptimizeImagesSection: React.FC = () => {
     setShowExportSection(true); // Show export section after processing
   }, [images, settings]);
 
-  // Start - Effect to load Adsterra script Banner Placeholder
+  // Effect to load Mid-Content Adsterra Banner
   useEffect(() => {
-    const loadAdsterra = () => {
-      const adContainer = adContainerRef.current; 
+    const loadAdsterraMid = () => {
+      const adContainer = adContainerRefMid.current; 
       if (!adContainer) {
-        console.warn('Adsterra leaderboard banner container not found.');
+        console.warn('Adsterra mid-content banner container not found.');
         return;
       }
 
       // Clear any existing ad content to prevent duplicates on re-render
       adContainer.innerHTML = '';
 
-      // Determine ad dimensions based on screen width
-      const adWidth = screenWidth < 768 ? 320 : 728;
-      const adHeight = screenWidth < 768 ? 50 : 90;
+      let adUnitConfig;
+
+      if (screenWidth <= 767) { // Mobile
+        adUnitConfig = {
+          key: 'fc90c823d309f14535f6acea73d24ced', // 320x50
+          width: 320,
+          height: 50,
+        };
+      } else { // Tablet and Desktop
+        adUnitConfig = {
+          key: 'ad8f4ced24d88f4f48d5c63acc6b9634', // 728x90
+          width: 728,
+          height: 90,
+        };
+      }
 
       const scriptText = `
         var atOptions = {
-          'key' : 'ad8f4ced24d88f4f48d5c63acc6b9634',
+          'key' : '${adUnitConfig.key}',
           'format' : 'iframe',
-          'height' : ${adHeight},
-          'width' : ${adWidth},
+          'height' : ${adUnitConfig.height},
+          'width' : ${adUnitConfig.width},
           'params' : {}
         };
       `;
@@ -138,22 +150,83 @@ const OptimizeImagesSection: React.FC = () => {
 
       const invokeScript = document.createElement('script');
       invokeScript.type = 'text/javascript';
-      invokeScript.src = '//www.highperformanceformat.com/ad8f4ced24d88f4f48d5c63acc6b9634/invoke.js';
+      invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
       invokeScript.async = true; 
       adContainer.appendChild(invokeScript); 
     };
 
-    loadAdsterra();
+    loadAdsterraMid();
 
     // Cleanup function to remove scripts if the component unmounts
     return () => {
-      const adContainer = adContainerRef.current;
+      const adContainer = adContainerRefMid.current;
       if (adContainer) {
         adContainer.innerHTML = ''; // Clear ad content on unmount
       }
     };
-  }, [screenWidth]); // Re-run effect when screenWidth 
-  // End - Effect to load Adsterra script Banner Placeholder
+  }, [screenWidth]); 
+
+  // Effect to load Post-Process Adsterra Banner
+  useEffect(() => {
+    const loadAdsterraPostProcess = () => {
+      const adContainer = adContainerRefPostProcess.current; 
+      if (!adContainer || !showExportSection) {
+        // Only load if container exists AND export section is shown
+        return;
+      }
+
+      // Clear any existing ad content to prevent duplicates on re-render
+      adContainer.innerHTML = '';
+
+      let adUnitConfig;
+
+      if (screenWidth <= 767) { // Mobile
+        adUnitConfig = {
+          key: '7d0611dfd5286d972307c89c9c3c231c', // 300x250 mobile
+          width: 300,
+          height: 250,
+        };
+      } else { // Tablet and Desktop
+        adUnitConfig = {
+          key: 'ad8f4ced24d88f4f48d5c63acc6b9634', // 728x90 desktop
+          width: 728,
+          height: 90,
+        };
+      }
+
+      const scriptText = `
+        var atOptions = {
+          'key' : '${adUnitConfig.key}',
+          'format' : 'iframe',
+          'height' : ${adUnitConfig.height},
+          'width' : ${adUnitConfig.width},
+          'params' : {}
+        };
+      `;
+
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.innerHTML = scriptText;
+      adContainer.appendChild(script); 
+
+      const invokeScript = document.createElement('script');
+      invokeScript.type = 'text/javascript';
+      invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
+      invokeScript.async = true; 
+      adContainer.appendChild(invokeScript); 
+    };
+
+    loadAdsterraPostProcess();
+
+    // Cleanup function to remove scripts if the component unmounts or export section hides
+    return () => {
+      const adContainer = adContainerRefPostProcess.current;
+      if (adContainer) {
+        adContainer.innerHTML = ''; // Clear ad content on unmount or hide
+      }
+    };
+  }, [screenWidth, showExportSection]); // Re-run effect when screenWidth or showExportSection changes
+
 
   return (
     <div className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
@@ -169,7 +242,7 @@ const OptimizeImagesSection: React.FC = () => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg hover:shadow-xl transition-all duration-300">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -191,14 +264,14 @@ const OptimizeImagesSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Start - Adsterra Leaderboard Banner Placeholder */}
-        <div className="my-8 flex justify-center mb-16" ref={adContainerRef}>
+        {/* Start - Adsterra Mid-Content Banner Placeholder (Existing Ad) */}
+        <div className="my-8 flex justify-center" ref={adContainerRefMid}>
           {/* Ad will be loaded dynamically here */}
         </div>
-        {/* End - Adsterra Leaderboard Banner Placeholder */}
+        {/* End - Adsterra Mid-Content Banner Placeholder */}
 
         {/* Process Button */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 shadow-lg">
             <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center justify-center">
               <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -238,6 +311,14 @@ const OptimizeImagesSection: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Start - Adsterra Post-Process Banner Placeholder (New Ad) */}
+        {showExportSection && processedImages.length > 0 && (
+          <div className="my-8 flex justify-center" ref={adContainerRefPostProcess}>
+            {/* Ad will be loaded dynamically here */}
+          </div>
+        )}
+        {/* End - Adsterra Post-Process Banner Placeholder */}
       </section>
       </div>
   );
