@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import ImageUploader from './ImageUploader';
 import SettingsPanel from './SettingsPanel';
 import ExportPanel from './ExportPanel';
-import { defaultSettings, exportPresets } from '../config/settings'; // Import exportPresets
+import { defaultSettings, exportPresets } from '/home/user/pixel-toolbox/src/config/settings'; // Import exportPresets
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
 import { processImage } from '../utils/imageProcessor'; // Import processImage
 
@@ -60,7 +60,7 @@ const OptimizeImagesSection: React.FC = () => {
         const result = await processImage(image.file, settings);
 
         if (settings.generateSrcset && Array.isArray(result)) {
-          const resultsArray = result as ProcessedImageResult[];
+          const resultsArray = result as { url: string; size: number; width: number; height: number }[];
           const totalSize = resultsArray.reduce((sum, r) => sum + r.size, 0);
           updatedImages.push({
             ...image,
@@ -68,7 +68,7 @@ const OptimizeImagesSection: React.FC = () => {
             processedSize: totalSize,
           });
         } else {
-          const singleResult = result as ProcessedImageResult;
+          const singleResult = result as { url: string; size: number; width: number; height: number };
           updatedImages.push({
             ...image,
             processedUrl: singleResult.url,
@@ -167,6 +167,22 @@ const OptimizeImagesSection: React.FC = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Adsterra Leaderboard Banner Ad */}
+        <div className="my-8 flex justify-center">
+          <script type="text/javascript" dangerouslySetInnerHTML={{
+            __html: `
+              atOptions = {
+                'key' : 'ad8f4ced24d88f4f48d5c63acc6b9634',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+              };
+            `
+          }}></script>
+          <script type="text/javascript" src="//www.highperformanceformat.com/ad8f4ced24d88f4f48d5c63acc6b9634/invoke.js"></script>
         </div>
       </section>
       </div>
