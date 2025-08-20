@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, HelpCircle, Shield, DollarSign, Globe, Download, Zap, Code } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
+import { Helmet } from 'react-helmet-async';
 
 const faqData = [
   {
@@ -34,8 +35,8 @@ const faqData = [
     category: 'Usage'
   },
   {
-    question: 'What exactly does selecting "Smart Optimization" do?',
-    answer: '"Smart Optimization" improves the visual quality of your images by applying a high-quality smoothing algorithm during the resizing process. It doesn\'t change your other settings (like format or quality); it works with them to produce a better-looking result, especially when making images smaller.',
+    question: 'What exactly does selecting \"Smart Optimization\" do?',
+    answer: '\"Smart Optimization\" improves the visual quality of your images by applying a high-quality smoothing algorithm during the resizing process. It doesn\'t change your other settings (like format or quality); it works with them to produce a better-looking result, especially when making images smaller.',
     icon: <Zap className="w-6 h-6 text-yellow-600" />,
     category: 'Features'
   },
@@ -61,17 +62,38 @@ const FAQPage: React.FC = () => {
 
   const categories = Array.from(new Set(faqData.map(item => item.category)));
 
+  // Generate FAQPage schema
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
+
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <Helmet>
+        <title>FAQ | PixelToolbox - Your Questions Answered</title>
+        <meta
+          name="description"
+          content="Find answers to frequently asked questions about PixelToolbox, including security, privacy, supported formats, and usage tips."
+        />
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
             Frequently Asked <span className="text-blue-600">Questions</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Everything you need to know about PixelToolbox
-          </p>
         </div>
 
         {/* Search Section */}
@@ -103,7 +125,7 @@ const FAQPage: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 hover:border-blue-300 transition-all duration-300 overflow-hidden group"
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-300 hover:border-blue-300 transition-all duration-300 overflow-hidden group"
                   >
                     <button
                       className="w-full text-left p-6 focus:outline-none"

@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
         src="/images/hero-abstract-background-pixeltoolbox-1600w.webp"
         srcSet="/images/hero-abstract-background-pixeltoolbox-480w.webp 480w, /images/hero-abstract-background-pixeltoolbox-800w.webp 800w, /images/hero-abstract-background-pixeltoolbox-1200w.webp 1200w, /images/hero-abstract-background-pixeltoolbox-1600w.webp 1600w"
         sizes="(max-width: 480px) 480w, (max-width: 800px) 800w, (max-width: 1200px) 1200w, 1600w"
-        alt=""
+        alt="Abstract background for PixelToolbox hero section"
         onError={(e: any) => {
           e.target.onerror = null; // Prevents infinite loop
           e.target.style.display = 'none'; // Hide the image if it fails to load

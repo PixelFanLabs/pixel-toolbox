@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const PrivacyPolicyPage: React.FC = () => {
   useEffect(() => {
@@ -7,6 +8,13 @@ const PrivacyPolicyPage: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <Helmet>
+        <title>Privacy Policy | PixelToolbox - Data Handling & Security</title>
+        <meta
+          name="description"
+          content="Understand PixelToolbox's privacy policy, including how we handle data, use Google AdSense, and ensure your image processing is client-side for maximum security."
+        />
+      </Helmet>
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
