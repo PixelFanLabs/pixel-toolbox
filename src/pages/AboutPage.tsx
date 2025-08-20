@@ -144,16 +144,6 @@ const AboutPage: React.FC = () => {
                   contactpixelfanlabs@gmail.com
                 </a>
               </p>
-              <div className="text-left text-lg text-slate-700 leading-relaxed space-y-4">
-                <p>You can contact us for:</p>
-                <ul className="list-disc list-inside space-y-2">
-                  <li>General questions about PixelToolbox</li>
-                  <li>Reporting issues or bugs</li>
-                  <li>Suggesting new features or improvements</li>
-                  <li>Collaboration opportunities</li>
-                  <li>Privacy concerns</li>
-                </ul>
-              </div>
             </div>
             <div className="relative order-1 lg:order-2">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>

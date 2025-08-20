@@ -47,9 +47,6 @@ const LearnPage: React.FC = () => {
             Learn About 
             <span className="text-blue-600"> Web Image Formats</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Explore our articles and guides on modern web image formats and optimization techniques.
-          </p>
         </div>
       </section>
 

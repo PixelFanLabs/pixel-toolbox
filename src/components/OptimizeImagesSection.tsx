@@ -236,9 +236,6 @@ const OptimizeImagesSection: React.FC = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
             Optimize Your <span className="text-blue-600">Images</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Transform your images into web-ready assets with our powerful optimization toolkit
-          </p>
         </div>
 
         {/* Main Content Grid */}

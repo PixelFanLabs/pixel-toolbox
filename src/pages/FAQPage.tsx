@@ -34,8 +34,8 @@ const faqData = [
     category: 'Usage'
   },
   {
-    question: 'What exactly does selecting "Smart Optimization" do?',
-    answer: '"Smart Optimization" improves the visual quality of your images by applying a high-quality smoothing algorithm during the resizing process. It doesn\'t change your other settings (like format or quality); it works with them to produce a better-looking result, especially when making images smaller.',
+    question: 'What exactly does selecting \"Smart Optimization\" do?',
+    answer: '\"Smart Optimization\" improves the visual quality of your images by applying a high-quality smoothing algorithm during the resizing process. It doesn\'t change your other settings (like format or quality); it works with them to produce a better-looking result, especially when making images smaller.',
     icon: <Zap className="w-6 h-6 text-yellow-600" />,
     category: 'Features'
   },
@@ -69,9 +69,6 @@ const FAQPage: React.FC = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
             Frequently Asked <span className="text-blue-600">Questions</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Everything you need to know about PixelToolbox
-          </p>
         </div>
 
         {/* Search Section */}
@@ -103,7 +100,7 @@ const FAQPage: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 hover:border-blue-300 transition-all duration-300 overflow-hidden group"
+                    className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-300 hover:border-blue-300 transition-all duration-300 overflow-hidden group"
                   >
                     <button
                       className="w-full text-left p-6 focus:outline-none"
