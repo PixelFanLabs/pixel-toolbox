@@ -5,6 +5,7 @@ import ExportPanel from './ExportPanel';
 import { defaultSettings, exportPresets } from '../config/settings'; // Corrected import path
 import { ImageFile, ProcessingSettings, ExportPreset } from '../types';
 import { processImage } from '../utils/imageProcessor'; // Import processImage
+import { Helmet } from 'react-helmet-async';
 
 const OptimizeImagesSection: React.FC = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
@@ -230,6 +231,13 @@ const OptimizeImagesSection: React.FC = () => {
 
   return (
     <div className="pt-8 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <Helmet>
+        <title>Optimize Images | PixelToolbox - Free Online Image Optimizer</title>
+        <meta
+          name="description"
+          content="Optimize and convert your images for the web with PixelToolbox. Reduce file size, resize, and convert to WebP, AVIF, JPEG, PNG, or GIF, all for free."
+        />
+      </Helmet>
       <section id="optimize" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div className="text-center mb-16">

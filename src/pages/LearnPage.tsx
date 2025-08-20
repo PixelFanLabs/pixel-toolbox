@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import learnContent from '../content/learnContent.json';
-import AdsterraNativeBanner from '../components/AdsterraNativeBanner'; // Import the new ad component
+import { Helmet } from 'react-helmet-async';
 
 interface Content {
   type: string;
@@ -40,6 +40,13 @@ const LearnPage: React.FC = () => {
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <Helmet>
+        <title>Learn | Web Image Formats & Optimization - PixelToolbox</title>
+        <meta
+          name="description"
+          content="Explore articles and guides on modern web image formats like WebP, AVIF, and optimization techniques to improve your website performance with PixelToolbox."
+        />
+      </Helmet>
       {/* Hero Section */}
       <section className="mb-16">
         <div className="container mx-auto px-4 text-center">
@@ -84,33 +91,32 @@ const LearnPage: React.FC = () => {
           {/* Articles Section */}
           <div className="w-full lg:w-2/3">
             {filteredContent.length > 0 ? (
-              filteredContent.map((article, articleIndex) => (
-                <React.Fragment key={articleIndex}>
-                  <article id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
-                    <img
-                      src={article.image.src}
-                      srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
-                      alt={article.title}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="p-8">
-                      <h2 className="text-3xl font-bold mb-3 text-slate-900">{article.title}</h2>
-                      <p className="text-slate-500 mb-6">By {article.author}</p>
-                      
-                      {article.content.map((contentItem, contentIndex) => {
-                        if (contentItem.type === 'heading') {
-                          const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
-                          return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
-                        }
-                        return <p key={contentIndex} className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>;
-                      })}
-                    </div>
-                  </article>
-                  {/* Start Render AdsterraNativeBanner after each article */}
-                  <AdsterraNativeBanner />
-                  {/* End Render AdsterraNativeBanner after each article */}
-                </React.Fragment>
-              ))
+              filteredContent.map((article, articleIndex) => {
+                return (
+                  <React.Fragment key={articleIndex}>
+                    <article id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
+                      <img
+                        src={article.image.src}
+                        srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
+                        alt={`Article thumbnail for ${article.title}`}
+                        className="w-full h-64 object-cover"
+                      />
+                      <div className="p-8">
+                        <h2 className="text-3xl font-bold mb-3 text-slate-900">{article.title}</h2>
+                        <p className="text-slate-500 mb-6">By {article.author}</p>
+                        
+                        {article.content.map((contentItem, contentIndex) => {
+                          if (contentItem.type === 'heading') {
+                            const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
+                            return <Tag key={contentIndex} className="text-2xl font-semibold mt-8 mb-4 text-slate-800">{contentItem.text}</Tag>;
+                          }
+                          return <p key={contentIndex} className="mb-4 text-slate-700 leading-relaxed">{contentItem.text}</p>;
+                        })}
+                      </div>
+                    </article>
+                  </React.Fragment>
+                );
+              })
             ) : (
               <div className="bg-white rounded-xl shadow-lg p-8 text-center border border-slate-200">
                 <h2 className="text-2xl font-bold text-slate-800 mb-2">No Articles Found</h2>

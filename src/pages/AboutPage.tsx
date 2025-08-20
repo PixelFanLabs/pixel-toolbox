@@ -1,10 +1,18 @@
 import React from 'react';
 import { Shield, Heart, Code, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage: React.FC = () => {
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
+      <Helmet>
+        <title>About PixelToolbox | Free Image Optimization Tool</title>
+        <meta
+          name="description"
+          content="Learn about PixelToolbox, a free and secure online image optimization tool from PixelFanLabs. Discover our mission for privacy and ease of use."
+        />
+      </Helmet>
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
@@ -48,7 +56,7 @@ const AboutPage: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
                 <img
                   src="/images/photo-fustrated-pixeltoolbox-1600w.webp"
-                  alt="Visual representing frustration with multiple tools"
+                  alt="Frustrated designer using multiple image tools"
                   className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
                   loading="lazy"
                   srcSet="/images/photo-fustrated-pixeltoolbox-480w.webp 480w, /images/photo-fustrated-pixeltoolbox-800w.webp 800w, /images/photo-fustrated-pixeltoolbox-1200w.webp 1200w"
@@ -66,7 +74,7 @@ const AboutPage: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform -rotate-3"></div>
               <img
                 src="/images/photo-latop-design-pixeltoolbox-1600w.webp"
-                alt="Visual representing the meaning behind PixelToolbox"
+                alt="Designer using PixelToolbox on a laptop"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
                 loading="lazy"
                   srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w"
@@ -149,7 +157,7 @@ const AboutPage: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
               <img
                 src="/images/photo-contact-us-pixeltoolbox-1200w.webp"
-                alt="Illustration of someone sending an email"
+                alt="Contact us illustration"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform -rotate-1 hover:rotate-0 transition-transform duration-300"
                 loading="lazy"
                 srcSet="/images/photo-contact-us-pixeltoolbox-480w.webp 480w, /images/photo-contact-us-pixeltoolbox-800w.webp 800w, /images/photo-contact-us-pixeltoolbox-1200w.webp 1200w"

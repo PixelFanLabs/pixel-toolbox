@@ -68,7 +68,7 @@ export async function processImage(
           img,
           width,
           height,
-          settings.format as string,
+          'webp', // Use WebP for all single image processing
           settings.quality,
           settings.optimize,
           settings.resizeMode
