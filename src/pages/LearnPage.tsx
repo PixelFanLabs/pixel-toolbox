@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import learnContent from '../content/learnContent.json';
@@ -27,6 +27,7 @@ const LearnPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredContent, setFilteredContent] = useState<Article[]>(learnContent);
   const [isTocOpen, setIsTocOpen] = useState(false);
+  const adContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const results = learnContent.filter(article =>
@@ -37,6 +38,27 @@ const LearnPage: React.FC = () => {
     );
     setFilteredContent(results);
   }, [searchTerm]);
+
+  useEffect(() => {
+    const loadAd = () => {
+      const adContainer = adContainerRef.current;
+      if (adContainer) {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = '//pl27455742.profitableratecpm.com/595098208be58f6b1fc62e768dcc579c/invoke.js';
+        adContainer.appendChild(script);
+      }
+    };
+
+    loadAd();
+
+    return () => {
+      const adContainer = adContainerRef.current;
+      if (adContainer) {
+        adContainer.innerHTML = ''; // Clear the ad container on unmount
+      }
+    };
+  }, []);
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
@@ -83,6 +105,7 @@ const LearnPage: React.FC = () => {
                       </a>
                     </li>
                   ))}
+                  <div className="my-8" ref={adContainerRef} id="container-595098208be58f6b1fc62e768dcc579c"></div>
                 </ul>
               </nav>
             </div>
