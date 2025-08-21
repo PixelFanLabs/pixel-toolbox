@@ -28,6 +28,14 @@ const LearnPage: React.FC = () => {
   const [filteredContent, setFilteredContent] = useState<Article[]>(learnContent);
   const [isTocOpen, setIsTocOpen] = useState(false);
   const adContainerRef = useRef<HTMLDivElement>(null);
+  const adRefs = useRef<HTMLDivElement[]>([null]);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const results = learnContent.filter(article =>
@@ -59,6 +67,52 @@ const LearnPage: React.FC = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    adRefs.current.forEach((adContainer, index) => {
+      if (adContainer) {
+        // Clear any existing ad content to prevent duplicates on re-render
+        adContainer.innerHTML = '';
+
+        let adUnitConfig;
+
+        if (screenWidth <= 767) { // Mobile
+          adUnitConfig = {
+            key: '7d0611dfd5286d972307c89c9c3c231c',
+            width: 300,
+            height: 250,
+          };
+        } else { // Tablet and Desktop
+          adUnitConfig = {
+            key: 'ad8f4ced24d88f4f48d5c63acc6b9634',
+            width: 728,
+            height: 90,
+          };
+        }
+
+        const scriptText = `
+          var atOptions = {
+            'key' : '${adUnitConfig.key}',
+            'format' : 'iframe',
+            'height' : ${adUnitConfig.height},
+            'width' : ${adUnitConfig.width},
+            'params' : {}
+          };
+        `;
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.innerHTML = scriptText;
+        adContainer.appendChild(script);
+
+        const invokeScript = document.createElement('script');
+        invokeScript.type = 'text/javascript';
+        invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
+        invokeScript.async = true;
+        adContainer.appendChild(invokeScript);
+      }
+    });
+  }, [screenWidth, filteredContent]);
 
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
@@ -115,9 +169,11 @@ const LearnPage: React.FC = () => {
           <div className="w-full lg:w-2/3">
             {filteredContent.length > 0 ? (
               filteredContent.map((article, articleIndex) => {
+                const adIndex = articleIndex === 0 || (articleIndex - 1) % 2 === 0 ? articleIndex : -1;
                 return (
                   <React.Fragment key={articleIndex}>
-                    <article id={article.title.replace(/\s+/g, '-')} className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
+                    <article id={article.title.replace(/\s+/g, '-')}
+                     className="mb-12 bg-white rounded-xl shadow-lg overflow-hidden transition-shadow duration-300 hover:shadow-2xl border border-slate-200">
                       <img
                         src={article.image.src}
                         srcSet={article.image.srcset.map(s => `${s.src} ${s.descriptor}`).join(', ')}
@@ -127,7 +183,7 @@ const LearnPage: React.FC = () => {
                       <div className="p-8">
                         <h2 className="text-3xl font-bold mb-3 text-slate-900">{article.title}</h2>
                         <p className="text-slate-500 mb-6">By {article.author}</p>
-                        
+
                         {article.content.map((contentItem, contentIndex) => {
                           if (contentItem.type === 'heading') {
                             const Tag = `h${contentItem.level}` as keyof JSX.IntrinsicElements;
@@ -137,6 +193,11 @@ const LearnPage: React.FC = () => {
                         })}
                       </div>
                     </article>
+                    {adIndex !== -1 && (
+                      <div className="my-8 flex justify-center" ref={el => (adRefs.current[adIndex] = el)} id="container-595098208be58f6b1fc62e768dcc579c">
+                        {/* Ad will be loaded dynamically here */}
+                      </div>
+                    )}
                   </React.Fragment>
                 );
               })
