@@ -48,27 +48,6 @@ const LearnPage: React.FC = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    const loadAd = () => {
-      const adContainer = adContainerRef.current;
-      if (adContainer) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = '//pl27455742.profitableratecpm.com/595098208be58f6b1fc62e768dcc579c/invoke.js';
-        adContainer.appendChild(script);
-      }
-    };
-
-    loadAd();
-
-    return () => {
-      const adContainer = adContainerRef.current;
-      if (adContainer) {
-        adContainer.innerHTML = ''; // Clear the ad container on unmount
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     adRefs.current.forEach((adContainer, index) => {
       if (adContainer) {
         // Clear any existing ad content to prevent duplicates on re-render
@@ -159,7 +138,7 @@ const LearnPage: React.FC = () => {
                       </a>
                     </li>
                   ))}
-                  <div className="my-8" ref={adContainerRef} id="container-595098208be58f6b1fc62e768dcc579c"></div>
+                  {/* Removed pop-under ad container */}
                 </ul>
               </nav>
             </div>
