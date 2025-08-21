@@ -150,7 +150,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         {/* Adsterra Banner before Privacy Section */}
-        <div className="my-12 flex justify-center" ref={adContainerRefPrivacy}>
+        <div className="mt-20 mb-20 flex justify-center" ref={adContainerRefPrivacy}>
           {/* Ad will be loaded dynamically here */}
         </div>
 
@@ -255,7 +255,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         {/* Adsterra Banner after Contact Us Section */}
-        <div className="my-12 flex justify-center" ref={adContainerRefContact}>
+        <div className="mt-20 mb-20 flex justify-center" ref={adContainerRefContact}>
           {/* Ad will be loaded dynamically here */}
         </div>
 
