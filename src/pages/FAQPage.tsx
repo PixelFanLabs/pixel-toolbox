@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, HelpCircle, Shield, DollarSign, Globe, Download, Zap, Code } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
 import { Helmet } from 'react-helmet-async';
+import AdsterraBannerAd from '../components/AdsterraBannerAd'; // Import the new AdsterraBannerAd component
 
 const faqData = [
   {
@@ -102,10 +103,15 @@ const FAQPage: React.FC = () => {
             <SearchBar onSearch={setSearchTerm} placeholder="Search frequently asked questions..." />
             {searchTerm && (
               <p className="mt-4 text-slate-600 text-center">
-                Found {filteredFaqData.length} result{filteredFaqData.length !== 1 ? 's' : ''} for "{searchTerm}"
+                Found {filteredFaqData.length} result{filteredF-aqData.length !== 1 ? 's' : ''} for "{searchTerm}"
               </p>
             )}
           </div>
+        </div>
+
+        {/* Adsterra Banner Ad after Search Bar */}
+        <div className="my-16 flex justify-center">
+          <AdsterraBannerAd />
         </div>
 
         {/* FAQ Items */}
@@ -165,6 +171,11 @@ const FAQPage: React.FC = () => {
               })
             )}
           </div>
+        </div>
+
+        {/* Adsterra Banner Ad before CTA */}
+        <div className="my-16 flex justify-center">
+          <AdsterraBannerAd />
         </div>
 
         {/* Call to Action */}
