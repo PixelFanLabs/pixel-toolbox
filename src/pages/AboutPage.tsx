@@ -1,9 +1,91 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Shield, Heart, Code, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 const AboutPage: React.FC = () => {
+  const adContainerRefPrivacy = useRef<HTMLDivElement>(null);
+  const adContainerRefContact = useRef<HTMLDivElement>(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const loadAdsterraBanner = (containerRef: React.RefObject<HTMLDivElement>, mobileKey: string, desktopKey: string) => {
+    const adContainer = containerRef.current;
+    if (!adContainer) {
+      console.warn('Adsterra banner container not found.');
+      return;
+    }
+
+    adContainer.innerHTML = ''; // Clear any existing ad content
+
+    let adUnitConfig;
+    if (screenWidth <= 767) { // Mobile
+      adUnitConfig = {
+        key: mobileKey,
+        width: 300,
+        height: 250,
+      };
+    } else { // Tablet and Desktop
+      adUnitConfig = {
+        key: desktopKey,
+        width: 728,
+        height: 90,
+      };
+    }
+
+    const scriptText = `
+      var atOptions = {
+        'key' : '${adUnitConfig.key}',
+        'format' : 'iframe',
+        'height' : ${adUnitConfig.height},
+        'width' : ${adUnitConfig.width},
+        'params' : {}
+      };
+    `;
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = scriptText;
+    adContainer.appendChild(script);
+
+    const invokeScript = document.createElement('script');
+    invokeScript.type = 'text/javascript';
+    invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
+    invokeScript.async = true;
+    adContainer.appendChild(invokeScript);
+  };
+
+  useEffect(() => {
+    // Load the first banner before Privacy section
+    loadAdsterraBanner(adContainerRefPrivacy, '7d0611dfd5286d972307c89c9c3c231c', 'ad8f4ced24d88f4f48d5c63acc6b9634');
+
+    // Cleanup function for the first banner
+    return () => {
+      const adContainer = adContainerRefPrivacy.current;
+      if (adContainer) {
+        adContainer.innerHTML = '';
+      }
+    };
+  }, [screenWidth]);
+
+  useEffect(() => {
+    // Load the second banner after Contact Us section
+    loadAdsterraBanner(adContainerRefContact, '7d0611dfd5286d972307c89c9c3c231c', 'ad8f4ced24d88f4f48d5c63acc6b9634');
+
+    // Cleanup function for the second banner
+    return () => {
+      const adContainer = adContainerRefContact.current;
+      if (adContainer) {
+        adContainer.innerHTML = '';
+      }
+    };
+  }, [screenWidth]);
+
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
       <Helmet>
@@ -67,6 +149,11 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Adsterra Banner before Privacy Section */}
+        <div className="my-12 flex justify-center" ref={adContainerRefPrivacy}>
+          {/* Ad will be loaded dynamically here */}
+        </div>
+
         {/* Privacy Section */}
         <div className="mb-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -77,7 +164,7 @@ const AboutPage: React.FC = () => {
                 alt="Designer using PixelToolbox on a laptop"
                 className="relative w-full h-auto rounded-2xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-300"
                 loading="lazy"
-                  srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w"
+                srcSet="/images/photo-latop-design-pixeltoolbox-480w.webp 480w, /images/photo-latop-design-pixeltoolbox-800w.webp 800w, /images/photo-latop-design-pixeltoolbox-1200w.webp 1200w"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -165,6 +252,11 @@ const AboutPage: React.FC = () => {
               />
             </div>
           </div>
+        </div>
+
+        {/* Adsterra Banner after Contact Us Section */}
+        <div className="my-12 flex justify-center" ref={adContainerRefContact}>
+          {/* Ad will be loaded dynamically here */}
         </div>
 
         {/* Call to Action */}
