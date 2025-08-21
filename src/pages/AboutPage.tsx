@@ -38,7 +38,10 @@ const AboutPage: React.FC = () => {
       };
     }
 
-    const scriptText = `
+    // Create and append the script for atOptions
+    const atOptionsScript = document.createElement('script');
+    atOptionsScript.type = 'text/javascript';
+    atOptionsScript.innerHTML = `
       var atOptions = {
         'key' : '${adUnitConfig.key}',
         'format' : 'iframe',
@@ -47,16 +50,13 @@ const AboutPage: React.FC = () => {
         'params' : {}
       };
     `;
+    adContainer.appendChild(atOptionsScript);
 
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = scriptText;
-    adContainer.appendChild(script);
-
+    // Create and append the script for invoke.js
     const invokeScript = document.createElement('script');
     invokeScript.type = 'text/javascript';
     invokeScript.src = `//www.highperformanceformat.com/${adUnitConfig.key}/invoke.js`;
-    invokeScript.async = true;
+    invokeScript.async = true; // Essential for non-blocking loading
     adContainer.appendChild(invokeScript);
   };
 
