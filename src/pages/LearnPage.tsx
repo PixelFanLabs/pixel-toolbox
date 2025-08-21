@@ -27,8 +27,8 @@ const LearnPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredContent, setFilteredContent] = useState<Article[]>(learnContent);
   const [isTocOpen, setIsTocOpen] = useState(false);
-  const adContainerRef = useRef<HTMLDivElement>(null);
   const adRefs = useRef<HTMLDivElement[]>([null]);
+  const nativeAdContainerRef = useRef<HTMLDivElement>(null); // Ref for the native ad
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -47,6 +47,7 @@ const LearnPage: React.FC = () => {
     setFilteredContent(results);
   }, [searchTerm]);
 
+  // Effect for the banner ads within the article content
   useEffect(() => {
     adRefs.current.forEach((adContainer, index) => {
       if (adContainer) {
@@ -93,6 +94,32 @@ const LearnPage: React.FC = () => {
     });
   }, [screenWidth, filteredContent]);
 
+  // Effect for the native ad at the bottom of the table of contents
+  useEffect(() => {
+    const loadNativeAd = () => {
+      const adContainer = nativeAdContainerRef.current;
+      if (adContainer) {
+        // Clear any existing ad content to prevent duplicates on re-render
+        adContainer.innerHTML = '';
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.setAttribute('data-cfasync', 'false');
+        script.src = '//pl27455742.profitableratecpm.com/595098208be58f6b1fc62e768dcc579c/invoke.js';
+        adContainer.appendChild(script);
+      }
+    };
+
+    loadNativeAd();
+
+    return () => {
+      const adContainer = nativeAdContainerRef.current;
+      if (adContainer) {
+        adContainer.innerHTML = ''; // Clean up on unmount
+      }
+    };
+  }, []); // Empty dependency array ensures this runs once on mount
+
   return (
     <div className="pt-24 pb-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 min-h-screen">
       <Helmet>
@@ -138,7 +165,12 @@ const LearnPage: React.FC = () => {
                       </a>
                     </li>
                   ))}
-                  {/* Removed pop-under ad container */}
+                  {/* Native Ad at the bottom of the Table of Contents */}
+                  <li className="mt-4 pt-4 border-t border-slate-200">
+                    <div ref={nativeAdContainerRef} id="container-595098208be58f6b1fc62e768dcc579c" className="my-4">
+                      {/* Native Ad will be loaded dynamically here */}
+                    </div>
+                  </li>
                 </ul>
               </nav>
             </div>
